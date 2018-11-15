@@ -32,4 +32,9 @@ Route::group(['middleware' => 'web'], function() {
 
 Route::group(['middleware' => ['web','auth']], function () {
     Route::get('/creditor/list', 'CreditorController@list');
+    Route::get('/creditor/add', 'CreditorController@add');
+
+    Route::get('debt-type/list', 'DebtTypeController@list');
+
+    Route::get('debt/list', 'DebtController@list');
 });

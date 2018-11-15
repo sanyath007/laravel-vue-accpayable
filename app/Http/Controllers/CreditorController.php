@@ -19,4 +19,14 @@ class CreditorController extends Controller
     		'creditors' => $creditors,
     	]);
     }
+
+    public function add()
+    {
+    	$creditors = Creditor::paginate(20);
+    	// dd($creditors);
+
+    	return view('creditors.list', [
+    		'creditors' => $creditors,
+    	]);
+    }
 }
