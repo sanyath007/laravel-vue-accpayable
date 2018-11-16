@@ -15,6 +15,9 @@
 	<!-- Compiled and minified CSS -->
   	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"> -->
 	<!-- <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/> -->
+	<link rel="stylesheet" href="{{ asset('/css/select2.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/css/bootstrap-datepicker.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('/css/daterangepicker.css') }}">
 	<link rel="stylesheet" href="{{ asset('/bower/fullcalendar/dist/fullcalendar.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('/bower/ng-tags-input/ng-tags-input.min.css') }}">
@@ -57,6 +60,7 @@
 	<script src="{{ asset('/js/bootstrap-tagsinput-angular.min.js') }}"></script> -->
 	<script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
 	<script src="{{ asset('/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
+	<script src="{{ asset('/js/select2.full.min.js') }}"></script>
 	<script src="{{ asset('/js/daterangepicker.js') }}"></script>
 	<script src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
 	<script src="{{ asset('/js/jquery.knob.min.js') }}"></script>
@@ -71,20 +75,20 @@
 	<!-- AngularJS Components -->
 	<script src="{{ asset('/js/app.js') }}"></script>
 	<script src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
-	<!-- <script src="{{ asset('/js/reserveCtrl.js') }}"></script>
+	<!--<script src="{{ asset('/js/reserveCtrl.js') }}"></script>
 	<script src="{{ asset('/js/assignCtrl.js') }}"></script>
 	<script src="{{ asset('/js/maintainedCtrl.js') }}"></script>
 	<script src="{{ asset('/js/insuranceCtrl.js') }}"></script>
 	<script src="{{ asset('/js/taxCtrl.js') }}"></script>
-	<script src="{{ asset('/js/fuelCtrl.js') }}"></script>
-	<script src="{{ asset('/js/reportCtrl.js') }}"></script>
-	<script src="{{ asset('/js/directives/highcharts.js') }}"></script>
-	<script src="{{ asset('/js/services/report.js') }}"></script> -->
+	<script src="{{ asset('/js/fuelCtrl.js') }}"></script>-->
+	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
+	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
+	<script src="{{ asset('/js/services/report.js') }}"></script>
 
 	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 	<script src="{{ asset('/js/services/dashboard.js') }}"></script>
 	<!-- AdminLTE for demo purposes -->
-	<script src="{{ asset('/js/services/demo.js') }}"></script>
+	<!--<script src="{{ asset('/js/services/demo.js') }}"></script>-->
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini" ng-app="app" ng-controller="mainCtrl">
@@ -391,7 +395,13 @@
 						<img src="{{ asset('/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
 					</div>
 					<div class="pull-left info">
-						<p>{{ Auth::user()->person_firstname }} {{ Auth::user()->person_lastname }}</p>
+						<p>
+
+							@if (!Auth::guest())
+ 								{{ Auth::user()->person_firstname }} {{ Auth::user()->person_lastname }}
+ 							@endif
+
+						</p>
 						<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
 					</div>
 				</div>
@@ -440,7 +450,7 @@
 							<li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> ค้างจ่ายรายเดือน</a></li>
 						</ul>
 					</li>
-					<li class="treeview">
+					<!-- <li class="treeview">
 						<a href="#">
 							<i class="fa fa-edit"></i> <span>Forms</span>
 							<span class="pull-right-container">
@@ -452,7 +462,7 @@
 							<li><a href="pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
 							<li><a href="pages/forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>
 						</ul>
-					</li>
+					</li> -->
 					<li class="treeview">
 						<a href="#">
 							<i class="fa fa-pie-chart"></i>
@@ -462,10 +472,18 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-							<li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
-							<li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
-							<li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
+							<li>
+								<a href="{{ url('/debt-creditor/list') }}">
+									<i class="fa fa-circle-o"></i> ยอดหนี้รายเจ้าหนี้
+								</a>
+							</li>
+							<li>
+								<a href="{{ url('/debt-debttype/list') }}">
+									<i class="fa fa-circle-o"></i> ยอดหนี้รายประเภทหนี้
+								</a>
+							</li>
+							<!-- <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
+							<li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li> -->
 						</ul>
 					</li>
 					<li class="treeview">
