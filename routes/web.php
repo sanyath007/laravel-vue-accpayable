@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('debt/add', 'DebtController@add');
 
     Route::get('debt-creditor/list', 'ReportController@debtCreditor');    
+    Route::get('debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showAll}', 'ReportController@debtCreditorRpt');    
     Route::get('debt-debttype/list', 'ReportController@debtDebttype');    
     Route::get('debt-debttype/rpt/{debtType}/{sdate}/{edate}/{showAll}', 'ReportController@debtDebttypeRpt');    
 });

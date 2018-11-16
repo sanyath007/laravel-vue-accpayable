@@ -63,7 +63,7 @@
                             <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="showall" name="showall" value="1"> แสดงทั้งหมด
+                                        <input type="checkbox" id="showall" name="showall"> แสดงทั้งหมด
                                     </label>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getDebtPerType()" class="btn btn-primary">ค้นหา</button>
+                            <button ng-click="getDebtData('/debt-creditor/rpt')" class="btn btn-primary">ค้นหา</button>
                         </div>
                     </form>
                 </div><!-- /.box -->
@@ -89,25 +89,25 @@
                                     <th style="width: 5%; text-align: center;">#</th>
                                     <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
                                     <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
-                                    <th style="text-align: left;">เจ้าหนี้</th>
                                     <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
+                                    <th style="text-align: left;">เจ้าหนี้</th>
                                     <th style="width: 8%; text-align: center;">ยอดหนี้</th>
                                     <th style="width: 8%; text-align: center;">ภาษี</th>
                                     <th style="width: 8%; text-align: center;">สุทธิ</th>
+                                    <th style="width: 8%; text-align: center;">สถานะ</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repear="debt, (key, val) in debts">
+                                <tr ng-repeat="debt in debts">
                                     <td style="text-align: center;">@{{ debt.debt_id }}</td>
                                     <td style="text-align: left;">@{{ debt.debt_date }}</td>
                                     <td style="text-align: center;">@{{ debt.deliver_no }}</td>
-                                    <td style="text-align: center;">@{{ debt.deliver_date }}</td>
+                                    <td style="text-align: left;">@{{ debt.debt_type_name }}</td>
                                     <td style="text-align: left;">@{{ debt.supplier_name }}</td>
-                                    <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_amount }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_vat }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_total }}</td>                                    
+                                    <td style="text-align: center;">@{{ debt.debt_status }}</td>             
                                 </tr>
                             </tbody>
                         </table>
@@ -133,10 +133,12 @@
             $('.select2').select2()
 
             //Date range picker with time picker
-            $('#debtDate').daterangepicker({ 
-                timePicker: true, 
-                timePickerIncrement: 30, 
-                format: 'YYYY-MM-DD' 
+            $('#debtDate').daterangepicker({
+                timePickerIncrement: 30,
+                locale: {
+                    format: 'YYYY-MM-DD',
+                    separator: " , ",
+                }
             });
         });
     </script>

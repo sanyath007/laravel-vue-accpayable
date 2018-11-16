@@ -63,7 +63,7 @@
                             <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="showall" name="showall" value="1"> แสดงทั้งหมด
+                                        <input type="checkbox" id="showall" name="showall"> แสดงทั้งหมด
                                     </label>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getDebtPerType()" class="btn btn-primary">ค้นหา</button>
+                            <button ng-click="getDebtData('/debt-debttype/rpt')" class="btn btn-primary">ค้นหา</button>
                         </div>
                     </form>
                 </div><!-- /.box -->
@@ -107,7 +107,16 @@
                                     <td style="text-align: center;">@{{ debt.debt_amount }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_vat }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_total }}</td>                                    
-                                    <td style="text-align: center;">@{{ debt.debt_status }}</td>             
+                                    <td style="text-align: center;">
+                                        @{{ debt.debt_status }}
+                                        <a  href="#"
+                                            class="label label-info"
+                                            data-balloon-length="small" 
+                                            data-balloon="วันที่ชำระ : @{{ debt.paid_date }}" 
+                                            data-balloon-pos="up">
+                                            <i class="fa fa-info"></i>
+                                        </a>
+                                    </td>             
                                 </tr>
                             </tbody>
                         </table>
@@ -133,10 +142,12 @@
             $('.select2').select2()
 
             //Date range picker with time picker
-            $('#debtDate').daterangepicker({ 
-                // timePicker: true, 
-                timePickerIncrement: 30, 
-                format: 'YYYY-MM-DD' 
+            $('#debtDate').daterangepicker({
+                timePickerIncrement: 30,
+                locale: {
+                    format: 'YYYY-MM-DD',
+                    separator: " , ",
+                }
             });
         });
     </script>

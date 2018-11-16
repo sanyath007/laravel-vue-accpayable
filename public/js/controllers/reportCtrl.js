@@ -5,16 +5,14 @@ app.controller('reportCtrl', function($scope, $http, toaster, ModalService, CONF
 
     $scope.debts = []
 
-    $scope.getDebtPerType = function() {
-    	console.log($("#debtType").val());
-    	console.log($("#debtDate").val());
-    	console.log($("#showall").val());
-
+    $scope.getDebtData = function(URL) {
+    	var debtDate = ($("#debtDate").val()).split(",");
+    	var sDate = debtDate[0].trim();
+    	var eDate = debtDate[1].trim();
     	var debtType = $("#debtType").val();
-    	var debtDate = $("#debtDate").val();
-    	var showAll = $("#showall").val();
-
-    	$http.get(CONFIG.BASE_URL + '/debt-debttype/rpt/' +debtType+ '/2018-11-01/2018-11-16/' +showAll)
+    	var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+    	console.log(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' +showAll);
+    	$http.get(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' +showAll)
     	.then(function(res) {
     		console.log(res);
     		$scope.debts = res.data;
