@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Debt;
+use App\Models\DebtType;
+use App\Models\Creditor;
+
 
 class DebtController extends Controller
 {
@@ -14,17 +16,27 @@ class DebtController extends Controller
     	// dd($creditors);
 
     	return view('debts.list', [
-    		'debts' => $debts,
+            "creditors" => Creditor::all(),
     	]);
     }
 
-    public function add()
+    public function debtRpt($creditor, $sdate, $edate, $showall)
+    {
+        $totalDebt = Debt::where('supplier_id', '=', $creditor)->sum('debt_total');
+        
+        return [
+            "debts"     => Debt::where('supplier_id', '=', $creditor)->with('debttype')->paginate(20),
+            "totalDebt" => $totalDebt,
+        ];
+    }
+
+    public function add($creditor)
     {
     	$debts = Debt::paginate(20);
-    	// dd($creditors);
 
-    	return view('debts.list', [
-    		'debts' => $debts,
+    	return view('debts.add', [
+    		"creditor" => Creditor::where('supplier_id', '=', $creditor)->first(),
+            "debttypes" => DebtType::all(),
     	]);
     }
 }

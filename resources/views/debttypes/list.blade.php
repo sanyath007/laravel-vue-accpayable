@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Simple Tables
-            <small>preview of simple tables</small>
+            รายการประเภทหนี้
+            <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">ประเภทรายการหนี้</li>
+            <li class="breadcrumb-item active">รายการประเภทหนี้</li>
         </ol>
     </section>
 
@@ -24,7 +24,7 @@
                 <div class="box">
 
                     <div class="box-header with-border">
-                      <h3 class="box-title">รายการประเภทรายการหนี้</h3>
+                      <h3 class="box-title">รายการประเภทหนี้</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
@@ -68,13 +68,43 @@
                                 </li>
                             @endif
                         
-                            @for($i=1; $i<=$debttypes->lastPage(); $i++)
-                                <li class="{{ ($debttypes->currentPage() === $i) ? 'active' : '' }}">
-                                    <a href="{{ $debttypes->url($i) }}">
-                                        {{ $i }}
+                            <li class="{{ ($debttypes->currentPage() === 1) ? 'disabled' : '' }}">
+                                <a href="{{ $debttypes->url($debttypes->currentPage() - 1) }}" aria-label="Prev">
+                                    <span aria-hidden="true">Prev</span>
+                                </a>
+                            </li>
+
+                            @for($i=$debttypes->currentPage(); $i < $debttypes->currentPage() + 10; $i++)
+                                @if ($debttypes->currentPage() <= $debttypes->lastPage() && ($debttypes->lastPage() - $debttypes->currentPage()) > 10)
+                                    <li class="{{ ($debttypes->currentPage() === $i) ? 'active' : '' }}">
+                                        <a href="{{ $debttypes->url($i) }}">
+                                            {{ $i }}
+                                        </a>
+                                    </li> 
+                                @else
+                                    @if ($i <= $debttypes->lastPage())
+                                        <li class="{{ ($debttypes->currentPage() === $i) ? 'active' : '' }}">
+                                            <a href="{{ $debttypes->url($i) }}">
+                                                {{ $i }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endif
+                            @endfor
+
+                            @if ($debttypes->currentPage() < $debttypes->lastPage() && ($debttypes->lastPage() - $debttypes->currentPage()) > 10)
+                                <li>
+                                    <a href="{{ $debttypes->url($debttypes->currentPage() + 10) }}">
+                                        ...
                                     </a>
                                 </li>
-                            @endfor
+                            @endif
+                            
+                            <li class="{{ ($debttypes->currentPage() === $debttypes->lastPage()) ? 'disabled' : '' }}">
+                                <a href="{{ $debttypes->url($debttypes->currentPage() + 1) }}" aria-label="Next">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
 
                             @if($debttypes->currentPage() !== $debttypes->lastPage())
                                 <li>

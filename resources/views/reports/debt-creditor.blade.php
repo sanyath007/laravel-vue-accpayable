@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Simple Tables
-            <small>preview of simple tables</small>
+            ยอดหนี้รายเจ้าหนี้
+            <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการรับหนี้</li>
+            <li class="breadcrumb-item active">ยอดหนี้รายเจ้าหนี้</li>
         </ol>
     </section>
 
@@ -23,14 +23,14 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">Date picker</h3>
+                        <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
 
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>ประเภทหนี้</label>
+                                    <label>เจ้าหนี้</label>
                                     <select id="debtType" class="form-control select2" style="width: 100%; font-size: 12px;">
 
                                         <option selected="selected">-- กรุณาเลือก --</option>
@@ -113,10 +113,15 @@
                         </table>
                     </div><!-- /.box-body -->
 
+                    <!-- Loading (remove the following to stop the loading)-->
+                    <div ng-show="loading" class="overlay">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <!-- end loading -->
+                    
                     <div class="box-footer clearfix">
                         <ul class="pagination pagination-sm no-margin pull-right">
 
-                            
                         </ul>
                     </div><!-- /.box-footer -->
 

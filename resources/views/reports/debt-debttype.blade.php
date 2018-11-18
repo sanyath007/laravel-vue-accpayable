@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Simple Tables
-            <small>preview of simple tables</small>
+            ยอดหนี้รายประเภทหนี้
+            <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการรับหนี้</li>
+            <li class="breadcrumb-item active">ยอดหนี้รายประเภทหนี้</li>
         </ol>
     </section>
 
@@ -20,6 +20,7 @@
 
         <div class="row">
             <div class="col-md-12">
+
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
@@ -27,6 +28,7 @@
                     
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
+
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>ประเภทหนี้</label>
@@ -79,11 +81,11 @@
                 <div class="box">
 
                     <div class="box-header with-border">
-                      <h3 class="box-title">รายการรับหนี้</h3>
+                      <h3 class="box-title">ยอดหนี้รายประเภทหนี้</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
-                      <table class="table table-bordered" style="font-size: 12px;">
+                        <table class="table table-bordered" style="font-size: 12px;">
                             <thead>
                                 <tr>
                                     <th style="width: 5%; text-align: center;">#</th>
@@ -104,9 +106,9 @@
                                     <td style="text-align: center;">@{{ debt.deliver_no }}</td>
                                     <td style="text-align: left;">@{{ debt.debt_type_name }}</td>
                                     <td style="text-align: left;">@{{ debt.supplier_name }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_amount }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_vat }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_total }}</td>                                    
+                                    <td style="text-align: center;">@{{ debt.debt_amount | number:2 }}</td>
+                                    <td style="text-align: center;">@{{ debt.debt_vat | number:2 }}</td>
+                                    <td style="text-align: center;">@{{ debt.debt_total | number:2 }}</td>                                    
                                     <td style="text-align: center;">
                                         @{{ debt.debt_status }}
                                         <a  href="#"
@@ -121,6 +123,13 @@
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->
+
+                    <!-- Loading (remove the following to stop the loading)-->
+                    <div ng-show="loading" class="overlay">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <!-- end loading -->
+
 
                     <div class="box-footer clearfix">
                         <ul class="pagination pagination-sm no-margin pull-right">

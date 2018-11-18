@@ -76,12 +76,7 @@
 	<!-- AngularJS Components -->
 	<script src="{{ asset('/js/app.js') }}"></script>
 	<script src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
-	<!--<script src="{{ asset('/js/reserveCtrl.js') }}"></script>
-	<script src="{{ asset('/js/assignCtrl.js') }}"></script>
-	<script src="{{ asset('/js/maintainedCtrl.js') }}"></script>
-	<script src="{{ asset('/js/insuranceCtrl.js') }}"></script>
-	<script src="{{ asset('/js/taxCtrl.js') }}"></script>
-	<script src="{{ asset('/js/fuelCtrl.js') }}"></script>-->
+	<script src="{{ asset('/js/controllers/debtCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 	<script src="{{ asset('/js/services/report.js') }}"></script>
@@ -92,7 +87,7 @@
 	<!--<script src="{{ asset('/js/services/demo.js') }}"></script>-->
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini" ng-app="app" ng-controller="mainCtrl">
+<body class="hold-transition skin-blue  sidebar-collapse sidebar-mini" ng-app="app" ng-controller="mainCtrl">
 	<div class="wrapper">
 
 		<header class="main-header">
@@ -509,7 +504,7 @@
 
 				@yield('content')
 
-				<!-- <toaster-container></toaster-container> -->
+				<toaster-container></toaster-container>
 				
 		</div><!-- /.content-wrapper -->
 

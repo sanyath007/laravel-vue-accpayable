@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Simple Tables
-            <small>preview of simple tables</small>
+            รายการเจ้าหนี้
+            <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">ประเภทรายการหนี้</li>
+            <li class="breadcrumb-item active">รายการเจ้าหนี้</li>
         </ol>
     </section>
 
@@ -24,7 +24,7 @@
                 <div class="box">
 
                     <div class="box-header with-border">
-                        <h3 class="box-title">รายการประเภทรายการหนี้</h3>
+                        <h3 class="box-title">รายการเจ้าหนี้</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">        
@@ -71,14 +71,44 @@
                                 </a>
                             </li>
                         @endif
-                    
-                        @for($i=1; $i<=$creditors->lastPage(); $i++)
-                            <li class="{{ ($creditors->currentPage() === $i) ? 'active' : '' }}">
-                                <a href="{{ $creditors->url($i) }}">
-                                    {{ $i }}
+                        
+                        <li class="{{ ($creditors->currentPage() === 1) ? 'disabled' : '' }}">
+                            <a href="{{ $creditors->url($creditors->currentPage() - 1) }}" aria-label="Prev">
+                                <span aria-hidden="true">Prev</span>
+                            </a>
+                        </li>
+
+                        @for($i=$creditors->currentPage(); $i < $creditors->currentPage() + 10; $i++)
+                            @if ($creditors->currentPage() <= $creditors->lastPage() && ($creditors->lastPage() - $creditors->currentPage()) > 10)
+                                <li class="{{ ($creditors->currentPage() === $i) ? 'active' : '' }}">
+                                    <a href="{{ $creditors->url($i) }}">
+                                        {{ $i }}
+                                    </a>
+                                </li> 
+                            @else
+                                @if ($i <= $creditors->lastPage())
+                                    <li class="{{ ($creditors->currentPage() === $i) ? 'active' : '' }}">
+                                        <a href="{{ $creditors->url($i) }}">
+                                            {{ $i }}
+                                        </a>
+                                    </li>
+                                @endif
+                            @endif
+                        @endfor
+
+                        @if ($creditors->currentPage() < $creditors->lastPage() && ($creditors->lastPage() - $creditors->currentPage()) > 10)
+                            <li>
+                                <a href="{{ $creditors->url($creditors->currentPage() + 10) }}">
+                                    ...
                                 </a>
                             </li>
-                        @endfor
+                        @endif
+                        
+                        <li class="{{ ($creditors->currentPage() === $creditors->lastPage()) ? 'disabled' : '' }}">
+                            <a href="{{ $creditors->url($creditors->currentPage() + 1) }}" aria-label="Next">
+                                <span aria-hidden="true">Next</span>
+                            </a>
+                        </li>
 
                         @if($creditors->currentPage() !== $creditors->lastPage())
                             <li>
