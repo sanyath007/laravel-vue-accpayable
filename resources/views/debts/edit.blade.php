@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เพิ่มข้อมูล
+            แก้ไขข้อมูล
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">เพิ่มข้อมูล</li>
+            <li class="breadcrumb-item active">แก้ไขข้อมูล</li>
         </ol>
     </section>
 
@@ -23,7 +23,7 @@
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">เพิ่มข้อมูล</h3>
+                        <h3 class="box-title">แก้ไขข้อมูล : {{ $debt->debt_id }}</h3>
                     </div>
 
                     <form id="frmSearch" name="frmSearch" role="form">
@@ -43,7 +43,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>เลขที่รายการหนี้ :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
+                                    <input type="text" id="" name="" value="{{ $debt->debt_id }}" class="form-control">
                                 </div>                                
 
                                 <div class="form-group">
@@ -51,11 +51,11 @@
                                     <select id="debtType" 
                                             class="form-control select2" 
                                             style="width: 100%; font-size: 12px;">
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
+                                        <option value="">-- กรุณาเลือก --</option>
 
                                         @foreach($debttypes as $debttype)
 
-                                            <option value="{{ $debttype->debt_type_id }}">
+                                            <option value="{{ $debttype->debt_type_id }}" {{ ($debttype->debt_type_id == $debt->debt_type_id) ? 'selected' : '' }}>
                                                 {{ $debttype->debt_type_name }}
                                             </option>
 
@@ -66,17 +66,17 @@
                                 
                                 <div class="form-group">
                                     <label>เลขที่รับหนังสือ :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
+                                    <input type="text" id="" name="" value="{{ $debt->debt_doc_recno }}" class="form-control">
                                 </div>
 
                                 <div class="form-group">
                                     <label>เลขที่หนังสือ :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
+                                    <input type="text" id="" name="" value="{{ $debt->debt_doc_no }}" class="form-control">
                                 </div>
 
                                 <div class="form-group">
                                     <label>เลขที่ใบส่งของ/ใบกำกับภาษี :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
+                                    <input type="text" id="" name="" value="{{ $debt->deliver_no }}" class="form-control">
                                 </div>
                             </div>
 
@@ -88,13 +88,13 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right" id="debtDate">
+                                        <input type="text" class="form-control pull-right" id="debtDate" value="{{ $debt->debt_date }}">
                                     </div><!-- /.input group -->
                                 </div><!-- /.form group -->
 
                                 <div class="form-group">
                                     <label>รายการ :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
+                                    <input type="text" id="" name="" value="{{ $debt->debt_type_detail }}" class="form-control">
                                 </div>
 
                                 <div class="form-group">
@@ -104,7 +104,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right" id="debtDocRecDate">
+                                        <input type="text" class="form-control pull-right" id="debtDocRecDate" value="{{ $debt->debt_doc_recdate }}">
                                     </div><!-- /.input group -->
                                 </div><!-- /.form group -->
 
@@ -115,7 +115,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right" id="debtDocDate">
+                                        <input type="text" class="form-control pull-right" id="debtDocDate" value="{{ $debt->debt_doc_date }}">
                                     </div><!-- /.input group -->
                                 </div><!-- /.form group -->
 
@@ -126,7 +126,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right" id="deliverDate">
+                                        <input type="text" class="form-control pull-right" id="deliverDate" value="{{ $debt->deliver_date }}">
                                     </div><!-- /.input group -->
                                 </div><!-- /.form group -->
 
@@ -143,24 +143,24 @@
                                     <div class="col-md-6">       
                                         <div class="form-group">
                                             <label>ยอดหนี้ :</label>
-                                            <input type="text" id="debtAmount" name="debtAmount" value="" class="form-control">
+                                            <input type="text" id="debtAmount" name="debtAmount" value="{{ $debt->debt_amount }}" class="form-control">
                                         </div>
 
                                         <div class="form-group">
                                             <label>จำนวนภาษี :</label>
-                                            <input type="text" id="vatAmt" name="vatAmt" value="" class="form-control">
+                                            <input type="text" id="vatAmt" name="vatAmt" value="{{ $debt->debt_vat }}" class="form-control">
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">       
                                         <div class="form-group">
                                             <label>VAT(%) :</label>
-                                            <input type="text" id="vatRate" name="vatRate" value="" class="form-control">
+                                            <input type="text" id="vatRate" name="vatRate" value="{{ $debt->debt_vatrate }}" class="form-control">
                                         </div>
 
                                         <div class="form-group">
                                             <label>ยอดหนี้สุทธิ :</label>
-                                            <input type="text" id="debtTotale" name="debtTotale" value="" class="form-control">
+                                            <input type="text" id="debtTotale" name="debtTotale" value="{{ $debt->debt_total }}" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -177,12 +177,12 @@
                                     <div class="col-md-6">       
                                         <div class="form-group">
                                             <label>ประจำเดือน :</label>
-                                            <input type="text" id="" name="" value="" class="form-control">
+                                            <input type="text" id="" name="" value="{{ $debt->debt_month }}" class="form-control">
                                         </div>
 
                                         <div class="form-group">
                                             <label>ปีงบประมาณ :</label>
-                                            <input type="text" id="" name="" value="" class="form-control">
+                                            <input type="text" id="" name="" value="{{ $debt->debt_year }}" class="form-control">
                                         </div>
                                     </div>
 
@@ -194,23 +194,23 @@
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-clock-o"></i>
                                                 </div>
-                                                <input type="text" class="form-control pull-right" id="docReceive" value="">
+                                                <input type="text" class="form-control pull-right" id="docReceive" value="{{ $debt->doc_receive }}">
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label>หมายเหตุ :</label>
-                                            <input type="text" id="" name="" value="" class="form-control">
+                                            <input type="text" id="" name="" value="{{ $debt->debt_remark }}" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer clearfix">
-                            <button ng-click="getDebtData('/debt/rpt')" class="btn btn-success pull-right">
-                                บันทึก
+                            <button ng-click="getDebtData('/debt/rpt')" class="btn btn-warning pull-right">
+                                แก้ไข
                             </button>
                         </div><!-- /.box-footer -->
                     </form>

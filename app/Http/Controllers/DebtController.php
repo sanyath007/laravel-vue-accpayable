@@ -32,11 +32,33 @@ class DebtController extends Controller
 
     public function add($creditor)
     {
-    	$debts = Debt::paginate(20);
-
     	return view('debts.add', [
     		"creditor" => Creditor::where('supplier_id', '=', $creditor)->first(),
             "debttypes" => DebtType::all(),
     	]);
+    }
+
+    public function store(Request $req)
+    {
+
+    }
+
+    public function edit($creditor, $debtId)
+    {
+        return view('debts.edit', [
+            "creditor" => Creditor::where('supplier_id', '=', $creditor)->first(),
+            "debt" => Debt::where('debt_id', '=', $debtId)->first(),
+            "debttypes" => DebtType::all(),
+        ]);
+    }
+
+    public function update(Request $req)
+    {
+        
+    }
+
+    public function delete(Request $req)
+    {
+        
     }
 }

@@ -1,4 +1,4 @@
-app.controller('debtCtrl', function($scope, $http, toaster, CONFIG) {
+app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
@@ -28,7 +28,7 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG) {
     	}, function(err) {
     		console.log(err);
             $scope.loading = false;
-    	})
+    	});
     }
 
     $scope.addNewDebt = function(event) {
@@ -46,4 +46,31 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG) {
             window.location.href = CONFIG.BASE_URL + '/debt/add/' + creditor;
         }
     }
+
+    $scope.editDebt = function(debtId) {
+        console.log(debtId);
+        // $('#dlgEditForm').modal('show');
+
+        var creditor = $("#debtType").val();
+
+        if(creditor === '') {
+            console.log("You doesn't select creditor !!!");
+            toaster.pop('warning', "", "คุณยังไม่ได้เลือกเจ้าหนี้ !!!");
+        } else {
+            window.location.href = CONFIG.BASE_URL + '/debt/edit/' + creditor + '/' + debtId;
+        }
+    };
+
+    $scope.deleteDebt = function(debtId) {
+        console.log(debtId);
+
+        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
+            // $http.delete()
+            // .then(function(res) {
+                // console.log(res);
+            // }, function(err) {
+                // console.log(err);
+            // });
+        }
+    };
 });

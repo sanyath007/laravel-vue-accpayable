@@ -86,49 +86,175 @@
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
-                      <table class="table table-bordered" style="font-size: 12px;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 5%; text-align: center;">#</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
-                                    <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
-                                    <th style="text-align: left;">เจ้าหนี้</th>
-                                    <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
-                                    <th style="width: 8%; text-align: center;">ยอดหนี้</th>
-                                    <th style="width: 8%; text-align: center;">ภาษี</th>
-                                    <th style="width: 8%; text-align: center;">สุทธิ</th>
-                                    <th style="width: 8%; text-align: center;">สถานะ</th>
-                                    <th style="width: 5%; text-align: center;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="debt in debts">
-                                    <td style="text-align: center;">@{{ debt.debt_id }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_date }}</td>
-                                    <td style="text-align: center;">@{{ debt.deliver_no }}</td>
-                                    <td style="text-align: left;">@{{ debt.deliver_date }}</td>
-                                    <td style="text-align: left;">@{{ debt.supplier_name }}</td>
-                                    <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
-                                    <td style="text-align: right;">@{{ debt.debt_amount }}</td>
-                                    <td style="text-align: right;">@{{ debt.debt_vat }}</td>
-                                    <td style="text-align: right;">@{{ debt.debt_total }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
-                                            (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
-                                            (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
-                                    </td>             
-                                    <td style="text-align: center;">
-                                        <a href="" ng-show="(debt.debt_status==0)">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a href="" ng-show="(debt.debt_status==0)">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>             
-                                </tr>
-                            </tbody>
-                        </table>
+                        <ul  class="nav nav-tabs">
+                            <li class="active">
+                                <a  href="#1a" data-toggle="tab">รายการรอดำเนินการ</a>
+                            </li>
+                            <li>
+                                <a href="#2a" data-toggle="tab">รายหารขออนุมัติเบิก-จ่าย</a>
+                            </li>
+                            <li>
+                                <a href="#3a" data-toggle="tab">รายการชำระแล้ว</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content clearfix">
+                            <div class="tab-pane active" id="1a" style="padding: 10px;">
+                                <table class="table table-bordered" style="font-size: 12px;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%; text-align: center;">#</th>
+                                            <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
+                                            <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
+                                            <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
+                                            <th style="text-align: left;">เจ้าหนี้</th>
+                                            <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
+                                            <th style="width: 8%; text-align: center;">ยอดหนี้</th>
+                                            <th style="width: 8%; text-align: center;">ภาษี</th>
+                                            <th style="width: 8%; text-align: center;">สุทธิ</th>
+                                            <th style="width: 8%; text-align: center;">สถานะ</th>
+                                            <th style="width: 5%; text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="debt in debts">
+                                            <td style="text-align: center;">@{{ debt.debt_id }}</td>
+                                            <td style="text-align: center;">@{{ debt.debt_date }}</td>
+                                            <td style="text-align: center;">@{{ debt.deliver_no }}</td>
+                                            <td style="text-align: left;">@{{ debt.deliver_date }}</td>
+                                            <td style="text-align: left;">@{{ debt.supplier_name }}</td>
+                                            <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_amount }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_vat }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_total }}</td>
+                                            <td style="text-align: center;">
+                                                @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
+                                                    (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
+                                                    (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
+                                            </td>             
+                                            <td style="text-align: center;">
+                                                <a  href="#" 
+                                                    ng-click="editDebt(debt.debt_id)" 
+                                                    ng-show="(debt.debt_status==0)" 
+                                                    class="text-warnong">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <a  href="#" 
+                                                    ng-click="deleteDebt(debt.debt_id)" 
+                                                    ng-show="(debt.debt_status==0)" 
+                                                    class="text-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>             
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <ul class="pagination pagination-sm no-margin pull-right">
+
+                                </ul>
+                            </div>
+                            <div class="tab-pane" id="2a" style="padding: 10px;">
+                                <table class="table table-bordered" style="font-size: 12px;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%; text-align: center;">#</th>
+                                            <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
+                                            <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
+                                            <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
+                                            <th style="text-align: left;">เจ้าหนี้</th>
+                                            <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
+                                            <th style="width: 8%; text-align: center;">ยอดหนี้</th>
+                                            <th style="width: 8%; text-align: center;">ภาษี</th>
+                                            <th style="width: 8%; text-align: center;">สุทธิ</th>
+                                            <th style="width: 8%; text-align: center;">สถานะ</th>
+                                            <th style="width: 5%; text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="debt in debts">
+                                            <td style="text-align: center;">@{{ debt.debt_id }}</td>
+                                            <td style="text-align: center;">@{{ debt.debt_date }}</td>
+                                            <td style="text-align: center;">@{{ debt.deliver_no }}</td>
+                                            <td style="text-align: left;">@{{ debt.deliver_date }}</td>
+                                            <td style="text-align: left;">@{{ debt.supplier_name }}</td>
+                                            <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_amount }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_vat }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_total }}</td>
+                                            <td style="text-align: center;">
+                                                @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
+                                                    (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
+                                                    (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
+                                            </td>             
+                                            <td style="text-align: center;">
+                                                <a ng-click="editDebt(debt.debt_id)" ng-show="(debt.debt_status==0)">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <a ng-click="deleteDebt(debt.debt_id)" ng-show="(debt.debt_status==0)">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>             
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <ul class="pagination pagination-sm no-margin pull-right">
+
+                                </ul>
+                            </div>
+                            <div class="tab-pane" id="3a" style="padding: 10px;">
+                                <table class="table table-bordered" style="font-size: 12px;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%; text-align: center;">#</th>
+                                            <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
+                                            <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
+                                            <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
+                                            <th style="text-align: left;">เจ้าหนี้</th>
+                                            <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
+                                            <th style="width: 8%; text-align: center;">ยอดหนี้</th>
+                                            <th style="width: 8%; text-align: center;">ภาษี</th>
+                                            <th style="width: 8%; text-align: center;">สุทธิ</th>
+                                            <th style="width: 8%; text-align: center;">สถานะ</th>
+                                            <th style="width: 5%; text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="debt in debts">
+                                            <td style="text-align: center;">@{{ debt.debt_id }}</td>
+                                            <td style="text-align: center;">@{{ debt.debt_date }}</td>
+                                            <td style="text-align: center;">@{{ debt.deliver_no }}</td>
+                                            <td style="text-align: left;">@{{ debt.deliver_date }}</td>
+                                            <td style="text-align: left;">@{{ debt.supplier_name }}</td>
+                                            <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_amount }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_vat }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_total }}</td>
+                                            <td style="text-align: center;">
+                                                @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
+                                                    (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
+                                                    (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
+                                            </td>             
+                                            <td style="text-align: center;">
+                                                <a ng-click="editDebt(debt.debt_id)" ng-show="(debt.debt_status==0)">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <a ng-click="deleteDebt(debt.debt_id)" ng-show="(debt.debt_status==0)">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>             
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <ul class="pagination pagination-sm no-margin pull-right">
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        
                     </div><!-- /.box-body -->
 
                     <!-- Loading (remove the following to stop the loading)-->
@@ -137,15 +263,92 @@
                     </div>
                     <!-- end loading -->
 
-                    <div class="box-footer clearfix">
-                        <ul class="pagination pagination-sm no-margin pull-right">
-
-                        </ul>
-                    </div><!-- /.box-footer -->
                 </div><!-- /.box -->
 
             </div><!-- /.col -->
         </div><!-- /.row -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="dlgEditForm" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="">เพิ่มรายการสถานที่</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="">ชื่อสถานที่</label>
+                            <input type="text" id="locationName" name="locationName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">ที่อยู่</label>
+                            <input type="text" id="locationAddress" name="locationAddress" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">ถนน</label>
+                            <input type="text" id="locationRoad" name="locationRoad" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="ID">จังหวัด</label>
+                            <select 
+                                id="chw_id"
+                                name="chw_id" 
+                                class="form-control" 
+                                ng-model="selectedChangwat" 
+                                ng-change="getAmphur($event, selectedChangwat)">
+                                <option value="">-- กรุณาเลือกจังหวัด --</option>
+                                <option value="@{{ c.chw_id }}" ng-repeat="c in changwats">
+                                    @{{ c.changwat }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ID">อำเภอ</label>
+                            <select 
+                                id="amp_id"
+                                name="amp_id" 
+                                class="form-control" 
+                                ng-model="selectedAmphur"
+                                ng-change="getTambon($event, selectedAmphur)">
+                                <option value="">-- กรุณาเลือกอำเภอ --</option>
+                                <option value="@{{ a.id }}" ng-repeat="a in amphurs">
+                                    @{{ a.amphur }}
+                                </option>
+                            </select>
+                        </div>                    
+
+                        <div class="form-group">
+                            <label for="ID">ตำบล</label>                    
+                            <select 
+                                id="tam_id"
+                                name="tam_id" 
+                                class="form-control" 
+                                ng-model="selectedTambon">
+                                <option value="">-- กรุณาเลือกตำบล --</option>
+                                <option value="@{{ t.id }}" ng-repeat="t in tambons">
+                                    @{{ t.tambon }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">รหัสไปรษณี</label>
+                            <input type="text" id="locationPostcode" name="locationPostcode" class="form-control">
+                        </div>              
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" ng-click="addNewLocation($event)">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
 
     </section>
 
