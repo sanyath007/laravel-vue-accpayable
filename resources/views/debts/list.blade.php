@@ -98,6 +98,7 @@
                             </li>
                         </ul>
 
+                        <!-- รายการรอดำเนินการ -->
                         <div class="tab-content clearfix">
                             <div class="tab-pane active" id="1a" style="padding: 10px;">
                                 <table class="table table-bordered" style="font-size: 12px;">
@@ -124,9 +125,9 @@
                                             <td style="text-align: left;">@{{ debt.deliver_date }}</td>
                                             <td style="text-align: left;">@{{ debt.supplier_name }}</td>
                                             <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_amount }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_vat }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_total }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_vat | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_total | number: 2 }}</td>
                                             <td style="text-align: center;">
                                                 @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
                                                     (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
@@ -154,8 +155,10 @@
 
                                 </ul>
                             </div>
+
+                            <!-- รายหารขออนุมัติเบิก-จ่าย -->
                             <div class="tab-pane" id="2a" style="padding: 10px;">
-                                <table class="table table-bordered" style="font-size: 12px;">
+                                <!-- <table class="table table-bordered" style="font-size: 12px;">
                                     <thead>
                                         <tr>
                                             <th style="width: 5%; text-align: center;">#</th>
@@ -179,9 +182,9 @@
                                             <td style="text-align: left;">@{{ debt.deliver_date }}</td>
                                             <td style="text-align: left;">@{{ debt.supplier_name }}</td>
                                             <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_amount }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_vat }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_total }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_vat | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_total | number: 2 }}</td>
                                             <td style="text-align: center;">
                                                 @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
                                                     (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
@@ -201,10 +204,12 @@
 
                                 <ul class="pagination pagination-sm no-margin pull-right">
 
-                                </ul>
+                                </ul> -->
                             </div>
+
+                            <!-- รายการชำระแล้ว -->
                             <div class="tab-pane" id="3a" style="padding: 10px;">
-                                <table class="table table-bordered" style="font-size: 12px;">
+                                <!-- <table class="table table-bordered" style="font-size: 12px;">
                                     <thead>
                                         <tr>
                                             <th style="width: 5%; text-align: center;">#</th>
@@ -228,9 +233,9 @@
                                             <td style="text-align: left;">@{{ debt.deliver_date }}</td>
                                             <td style="text-align: left;">@{{ debt.supplier_name }}</td>
                                             <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_amount }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_vat }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_total }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_vat | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ debt.debt_total | number: 2 }}</td>
                                             <td style="text-align: center;">
                                                 @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
                                                     (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
@@ -250,7 +255,7 @@
 
                                 <ul class="pagination pagination-sm no-margin pull-right">
 
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
 

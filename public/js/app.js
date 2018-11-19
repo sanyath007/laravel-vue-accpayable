@@ -4,7 +4,8 @@ app.constant('CONFIG', {
     'APP_NAME' : 'Car Service',
     'APP_VERSION' : '1.0.0',
     'GOOGLE_ANALYTICS_ID' : '',
-    'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public',
+    // 'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public', // use domain name
+    'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public/laravel-accpayable/public', // use localhost
     'SYSTEM_LANGUAGE' : 'TH'
 });
 
