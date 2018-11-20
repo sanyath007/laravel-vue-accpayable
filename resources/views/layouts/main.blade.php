@@ -443,7 +443,7 @@
 						</a>
 						<ul class="treeview-menu">
 							<li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> แยกประเภท</a></li>
-							<li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> ค้างจ่ายรายเดือน</a></li>
+							<li><a href="{{ url('/account/arrear') }}"><i class="fa fa-circle-o"></i> ค้างจ่ายรายเดือน</a></li>
 						</ul>
 					</li>
 					<!-- <li class="treeview">
