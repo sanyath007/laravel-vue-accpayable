@@ -61,4 +61,19 @@ class DebtController extends Controller
     {
         
     }
+
+    public function setZero(Request $req)
+    {
+        if(Debt::where('debt_id', '=', $req['debt_id'])->update(['debt_status' => '4']) <> 0) {
+            return [
+                'status' => 'success',
+                'message' => 'Updated id ' . $req['debt_id'] . 'is successed.',
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Updated id ' . $req['debt_id'] . 'is failed.',
+            ];
+        }
+    }
 }

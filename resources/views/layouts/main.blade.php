@@ -77,6 +77,7 @@
 	<script src="{{ asset('/js/app.js') }}"></script>
 	<script src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/debtCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/accountCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 	<script src="{{ asset('/js/services/report.js') }}"></script>

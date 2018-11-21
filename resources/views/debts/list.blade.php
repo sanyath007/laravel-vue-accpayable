@@ -135,15 +135,24 @@
                                             </td>             
                                             <td style="text-align: center;">
                                                 <a  href="#" 
+                                                    ng-click="zeroDebt(debt.debt_id)" 
+                                                    ng-show="(debt.debt_status==0)" 
+                                                    class="text-warnong" 
+                                                    title="ลดหนี้ศูนย์">
+                                                    <i class="fa fa-credit-card"></i>
+                                                </a>
+                                                <a  href="#" 
                                                     ng-click="editDebt(debt.debt_id)" 
                                                     ng-show="(debt.debt_status==0)" 
-                                                    class="text-warnong">
+                                                    class="text-warnong"
+                                                    title="แก้ไขรายการ">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                                 <a  href="#" 
                                                     ng-click="deleteDebt(debt.debt_id)" 
                                                     ng-show="(debt.debt_status==0)" 
-                                                    class="text-danger">
+                                                    class="text-danger"
+                                                    title="ลบรายการ">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </td>             

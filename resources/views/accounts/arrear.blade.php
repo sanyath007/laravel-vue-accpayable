@@ -5,18 +5,18 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            รายการรับหนี้
+            ค้างจ่ายรายเดือน
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">รายการรับหนี้</li>
+            <li class="breadcrumb-item active">ค้างจ่ายรายเดือน</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="debtCtrl">
+    <section class="content" ng-controller="accountCtrl">
 
         <div class="row">
             <div class="col-md-12">
@@ -29,21 +29,7 @@
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>เจ้าหนี้</label>
-                                    <select id="debtType" class="form-control select2" style="width: 100%; font-size: 12px;">
-
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        @foreach($creditors as $creditor)
-
-                                            <option value="{{ $creditor->supplier_id }}">
-                                                {{ $creditor->supplier_name }}
-                                            </option>
-
-                                        @endforeach
-                                        
-                                    </select>
-                                </div>
+                                
                                 <div class="form-group">
                                     <label>ประเภทหนี้</label>
                                     <select id="debtType" class="form-control select2" style="width: 100%; font-size: 12px;">
@@ -53,6 +39,21 @@
 
                                             <option value="{{ $debttype->debt_type_id }}">
                                                 {{ $debttype->debt_type_name }}
+                                            </option>
+
+                                        @endforeach
+                                        
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>เจ้าหนี้</label>
+                                    <select id="creditor" class="form-control select2" style="width: 100%; font-size: 12px;">
+
+                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
+                                        @foreach($creditors as $creditor)
+
+                                            <option value="{{ $creditor->supplier_id }}">
+                                                {{ $creditor->supplier_name }}
                                             </option>
 
                                         @endforeach
@@ -83,7 +84,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getDebtData('/debt/rpt')" class="btn btn-info">
+                            <button ng-click="getDebtData('/account-arrear/rpt')" class="btn btn-info">
                                 ค้นหา
                             </button>
                         </div>
@@ -92,7 +93,7 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                      <h3 class="box-title">รายการรับหนี้</h3>
+                      <h3 class="box-title">ค้างจ่ายรายเดือน</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">

@@ -73,4 +73,24 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
             // });
         }
     };
+
+    $scope.zeroDebt = function(debtId) {
+        console.log(debtId);
+
+        if(confirm("คุณต้องลดหนี้เป็นศูนย์รายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
+            $http.post(CONFIG.BASE_URL + '/debt/setzero', { debt_id: debtId })
+            .then(function(res) {
+                console.log(res);
+                if(res.data.status == 'success') {
+                    toaster.pop('success', "ระบบทำการงลดหนี้เป็นศูนย์สำเร็จแล้ว", "");
+                } else { 
+                    toaster.pop('error', "พบข้อผิดพลาดในระหว่างการดำเนินการ !!!", "");
+                }
+            }, function(err) {
+                console.log(err);
+
+                toaster.pop('error', "พบข้อผิดพลาดในระหว่างการดำเนินการ !!!", "");
+            });
+        }
+    };
 });
