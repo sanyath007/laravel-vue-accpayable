@@ -68,4 +68,9 @@ LEFT JOIN nrhosp_acc_payment p ON (pd.payment_id=p.payment_id)) AS pa ON (b.debt
 
         return \DB::select($sql);
     }
+
+    public function excel()
+    {
+        return view('reports.excel');
+    }
 }

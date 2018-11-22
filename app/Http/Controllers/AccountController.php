@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Debt;
 use App\Models\DebtType;
 use App\Models\Creditor;
+use App\Exports\ArrearExport;
 
 class AccountController extends Controller
 {
     public function arrear()
     {
-    	$debts = Debt::with('debttype')->paginate(20);
-    	// dd($creditors);
+    	// dd(Debt::with('debttype')->paginate(20));
 
     	return view('accounts.arrear', [
             "creditors" => Creditor::all(),
@@ -78,5 +78,19 @@ class AccountController extends Controller
             "debts"     => $debts,
             "totalDebt" => $totalDebt,
         ];
+    }
+
+    public function arrearExcel($debttype, $creditor, $sdate, $edate, $showall)
+    {
+        $fileName = 'arrear-' . date('YmdHis') . '.xlsx';
+        return (new ArrearExport($debttype, $creditor, $sdate, $edate, $showall))->download($fileName);
+    }
+
+    public function creditorPaid()
+    {
+        return view('accounts.creditor-paid', [
+            "creditors" => Creditor::all(),
+            "debttypes" => DebtType::all(),
+        ]);
     }
 }

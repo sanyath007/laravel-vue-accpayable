@@ -38,16 +38,23 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('debt-type/add', 'DebtTypeController@add');
 
     Route::get('debt/list', 'DebtController@list');
-    Route::get('debt/rpt/{creditor}/{sdate}/{edate}/{showAll}', 'DebtController@debtRpt');
+    Route::get('debt/rpt/{creditor}/{sdate}/{edate}/{showall}', 'DebtController@debtRpt');
     Route::get('debt/add/{creditor}', 'DebtController@add');
     Route::get('debt/edit/{creditor}/{debtId}', 'DebtController@edit');
     Route::post('debt/setzero', 'DebtController@setZero');
 
     Route::get('debt-creditor/list', 'ReportController@debtCreditor');    
-    Route::get('debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showAll}', 'ReportController@debtCreditorRpt');    
+    Route::get('debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');    
     Route::get('debt-debttype/list', 'ReportController@debtDebttype');    
-    Route::get('debt-debttype/rpt/{debtType}/{sdate}/{edate}/{showAll}', 'ReportController@debtDebttypeRpt');  
+    Route::get('debt-debttype/rpt/{debtType}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeRpt');  
+    Route::get('report/excel', 'ReportController@excel');     
 
     Route::get('account/arrear', 'AccountController@arrear');    
-    Route::get('account-arrear/rpt/{debttypes}/{creditor}/{sdate}/{edate}/{showAll}', 'AccountController@arrearRpt');     
+    Route::get('account-arrear/rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearRpt');     
+    Route::get('account-arrear/excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearExcel'); 
+
+    Route::get('account/creditor-paid', 'AccountController@creditorPaid');    
+    Route::get('account-creditor-paid/rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
+    Route::get('account-creditor-paid/excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');     
+
 });

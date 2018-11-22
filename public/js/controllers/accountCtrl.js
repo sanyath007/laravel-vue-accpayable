@@ -4,31 +4,74 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     let baseUrl = CONFIG.BASE_URL;
 
     $scope.debts = [];
+    $scope.pager = [];
     $scope.totalDebt = 0.00;
     $scope.loading = false;
 
     $scope.getDebtData = function(URL) {
         $scope.debts = [];
-        $scope.loading = true;
+        $scope.pager = [];
         
-        var debtDate = ($("#debtDate").val()).split(",");
-        var sDate = debtDate[0].trim();
-        var eDate = debtDate[1].trim();
-        var debtType = ($("#debtType").val() == '') ? '0' : $("#debtType").val();
-        var creditor = ($("#creditor").val() == '') ? '0' : $("#creditor").val();
-        var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
-        console.log(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll);
-        
-    	$http.get(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll)
-    	.then(function(res) {
-    		console.log(res);
+        if($("#showall:checked").val() != 'on' && ($("#debtType").val() == '' && $("#creditor").val() == '')) {
+            toaster.pop('warning', "", "กรุณาเลือกเจ้าหนี้หรือประเภทหนี้ก่อน !!!");
+        } else {
+            $scope.loading = true;
+
+            var debtDate = ($("#debtDate").val()).split(",");
+            var sDate = debtDate[0].trim();
+            var eDate = debtDate[1].trim();
+            var debtType = ($("#debtType").val() == '') ? '0' : $("#debtType").val();
+            var creditor = ($("#creditor").val() == '') ? '0' : $("#creditor").val();
+            var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+            
+            $http.get(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll)
+            .then(function(res) {
+                console.log(res);
+                $scope.debts = res.data.debts.data;
+                $scope.pager = res.data.debts;
+                $scope.totalDebt = res.data.totalDebt;
+
+                $scope.loading = false;
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        }
+    };
+
+    $scope.getDebt = function(URL) {
+        $scope.debts = [];
+        $scope.pager = [];
+        console.log(URL);
+            
+        $http.get(URL)
+        .then(function(res) {
+            console.log(res);
             $scope.debts = res.data.debts.data;
-    		$scope.totalDebt = res.data.totalDebt;
+            $scope.pager = res.data.debts;
+            $scope.totalDebt = res.data.totalDebt;
 
             $scope.loading = false;
-    	}, function(err) {
-    		console.log(err);
+        }, function(err) {
+            console.log(err);
             $scope.loading = false;
-    	});
+        });
+    };
+
+    $scope.excel = function(URL) {
+        console.log($scope.debts);
+
+        if($scope.debts.length == 0) {
+            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
+        } else {
+            var debtDate = ($("#debtDate").val()).split(",");
+            var sDate = debtDate[0].trim();
+            var eDate = debtDate[1].trim();
+            var debtType = ($("#debtType").val() == '') ? '0' : $("#debtType").val();
+            var creditor = ($("#creditor").val() == '') ? '0' : $("#creditor").val();
+            var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+
+            window.location.href = CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll;
+        }
     }
 });
