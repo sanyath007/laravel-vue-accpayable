@@ -20,7 +20,7 @@ class AccountController extends Controller
     	]);
     }
 
-    public function arrearRpt($debttypes, $creditor, $sdate, $edate, $showall)
+    public function arrearRpt($debttype, $creditor, $sdate, $edate, $showall)
     {
         $debts = [];
 
@@ -91,5 +91,39 @@ class AccountController extends Controller
         return view('accounts.creditor-paid', [
             "creditors" => Creditor::all(),
         ]);
+    }
+
+    public function creditorPaidRpt($creditor, $sdate, $edate, $showall)
+    {
+        $debts = [];
+
+        if($showall == 1) {
+            $debts = Debt::whereIn('debt_status', [2,4])
+                            ->with('debttype')
+                            ->paginate(20);
+
+            $totalDebt = Debt::whereIn('debt_status', [2,4])
+                                ->sum('debt_total');
+        } else {
+            if($creditor != 0) {
+                /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
+                
+                $debts = Debt::whereIn('debt_status', [2,4])
+                                ->where('supplier_id', '=', $creditor)
+                                ->whereBetween('debt_date', [$sdate, $edate])
+                                ->with('debttype')
+                                ->paginate(20);
+
+                $totalDebt = Debt::whereIn('debt_status', [2,4])
+                                ->where('supplier_id', '=', $creditor)
+                                ->whereBetween('debt_date', [$sdate, $edate])
+                                ->sum('debt_total');
+            }
+        }
+        
+        return [
+            "debts"     => $debts,
+            "totalDebt" => $totalDebt,
+        ];
     }
 }

@@ -79,7 +79,7 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         $scope.debts = [];
         $scope.pager = [];
         
-        if($("#showall:checked").val() != 'on' && $("#creditor").val() == '')) {
+        if($("#showall:checked").val() != 'on' && $("#creditor").val() == '') {
             toaster.pop('warning', "", "กรุณาเลือกเจ้าหนี้ก่อน !!!");
         } else {
             $scope.loading = true;

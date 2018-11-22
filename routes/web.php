@@ -54,7 +54,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('account-arrear/excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearExcel'); 
 
     Route::get('account/creditor-paid', 'AccountController@creditorPaid');    
-    Route::get('account-creditor-paid/rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
-    Route::get('account-creditor-paid/excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');     
+    Route::get('account-creditor-paid/rpt/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
+    Route::get('account-creditor-paid/excel/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');     
 
 });
