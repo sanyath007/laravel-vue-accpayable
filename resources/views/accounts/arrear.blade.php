@@ -84,7 +84,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getDebtData('/account-arrear/rpt')" class="btn btn-info">
+                            <button ng-click="getArrearData('/account-arrear/rpt')" class="btn btn-info">
                                 ค้นหา
                             </button>
                         </div>
@@ -144,32 +144,32 @@
 
                     <div class="box-footer clearfix">
                         <a  ng-show="debts.length"
-                            ng-click="excel('/account-arrear/excel')"
+                            ng-click="arrearToExcel('/account-arrear/excel')"
                             class="btn btn-success">
                             Excel
                         </a>
 
                         <ul ng-show="debts.length" class="pagination pagination-sm no-margin pull-right">                            
                             <li ng-if="pager.current_page !== 1">
-                                <a ng-click="getDebt(pager.first_page_url)" aria-label="First">
+                                <a ng-click="getArrearWithURL(pager.first_page_url)" aria-label="First">
                                     <span aria-hidden="true">First</span>
                                 </a>
                             </li>                            
 
                             <li ng-class="{'disabled': (pager.current_page==1)}">
-                                <a ng-click="getDebt(pager.prev_page_url)" aria-label="Prev">
+                                <a ng-click="getArrearWithURL(pager.prev_page_url)" aria-label="Prev">
                                     <span aria-hidden="true">Prev</span>
                                 </a>
                             </li>
                             
                             <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
-                                <a ng-click="getDebt(pager.next_page_url)" aria-label="Next">
+                                <a ng-click="getArrearWithURL(pager.next_page_url)" aria-label="Next">
                                     <span aria-hidden="true">Next</span>
                                 </a>
                             </li>
 
                             <li ng-if="pager.current_page !== pager.last_page">
-                                <a ng-click="getDebt(pager.last_page_url)" aria-label="Last">
+                                <a ng-click="getArrearWithURL(pager.last_page_url)" aria-label="Last">
                                     <span aria-hidden="true">Last</span>
                                 </a>
                             </li>

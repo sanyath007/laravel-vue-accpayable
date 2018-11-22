@@ -8,7 +8,7 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     $scope.totalDebt = 0.00;
     $scope.loading = false;
 
-    $scope.getDebtData = function(URL) {
+    $scope.getArrearData = function(URL) {
         $scope.debts = [];
         $scope.pager = [];
         
@@ -39,7 +39,7 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         }
     };
 
-    $scope.getDebt = function(URL) {
+    $scope.getArrearWithURL = function(URL) {
         $scope.debts = [];
         $scope.pager = [];
         console.log(URL);
@@ -58,7 +58,7 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         });
     };
 
-    $scope.excel = function(URL) {
+    $scope.arrearToExcel = function(URL) {
         console.log($scope.debts);
 
         if($scope.debts.length == 0) {
@@ -74,4 +74,53 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
             window.location.href = CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll;
         }
     }
+
+    $scope.getCreditorPaidData = function(URL) {
+        $scope.debts = [];
+        $scope.pager = [];
+        
+        if($("#showall:checked").val() != 'on' && $("#creditor").val() == '')) {
+            toaster.pop('warning', "", "กรุณาเลือกเจ้าหนี้ก่อน !!!");
+        } else {
+            $scope.loading = true;
+
+            var debtDate = ($("#debtDate").val()).split(",");
+            var sDate = debtDate[0].trim();
+            var eDate = debtDate[1].trim();
+            var creditor = ($("#creditor").val() == '') ? '0' : $("#creditor").val();
+            var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+            
+            $http.get(CONFIG.BASE_URL +URL+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll)
+            .then(function(res) {
+                console.log(res);
+                $scope.debts = res.data.debts.data;
+                $scope.pager = res.data.debts;
+                $scope.totalDebt = res.data.totalDebt;
+
+                $scope.loading = false;
+            }, function(err) {
+                console.log(err);
+                $scope.loading = false;
+            });
+        }
+    };
+
+    $scope.getCreditorPaidWithURL = function(URL) {
+        $scope.debts = [];
+        $scope.pager = [];
+        console.log(URL);
+            
+        $http.get(URL)
+        .then(function(res) {
+            console.log(res);
+            $scope.debts = res.data.debts.data;
+            $scope.pager = res.data.debts;
+            $scope.totalDebt = res.data.totalDebt;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    };
 });

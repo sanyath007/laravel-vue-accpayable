@@ -90,7 +90,6 @@ class AccountController extends Controller
     {
         return view('accounts.creditor-paid', [
             "creditors" => Creditor::all(),
-            "debttypes" => DebtType::all(),
         ]);
     }
 }

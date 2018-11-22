@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            ยอดหนี้ค้างจ่าย
+            ทะเบียนเจ้าหนี้จ่ายชำระหนี้
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">ยอดหนี้ค้างจ่าย</li>
+            <li class="breadcrumb-item active">ทะเบียนเจ้าหนี้จ่ายชำระหนี้</li>
         </ol>
     </section>
 
@@ -29,22 +29,6 @@
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="col-md-12">
-                                
-                                <div class="form-group">
-                                    <label>ประเภทหนี้</label>
-                                    <select id="debtType" class="form-control select2" style="width: 100%; font-size: 12px;">
-
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
-                                        @foreach($debttypes as $debttype)
-
-                                            <option value="{{ $debttype->debt_type_id }}">
-                                                {{ $debttype->debt_type_name }}
-                                            </option>
-
-                                        @endforeach
-                                        
-                                    </select>
-                                </div>
                                 <div class="form-group">
                                     <label>เจ้าหนี้</label>
                                     <select id="creditor" class="form-control select2" style="width: 100%; font-size: 12px;">
@@ -93,7 +77,7 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                      <h3 class="box-title">ยอดหนี้ค้างจ่าย</h3>
+                      <h3 class="box-title">ทะเบียนเจ้าหนี้จ่ายชำระหนี้</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
