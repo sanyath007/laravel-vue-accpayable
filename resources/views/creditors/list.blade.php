@@ -16,7 +16,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" ng-controller="creditorCtrl">
 
         <div class="row">
             <div class="col-md-12">
@@ -27,7 +27,10 @@
                         <h3 class="box-title">รายการเจ้าหนี้</h3>
                     </div><!-- /.box-header -->
 
-                    <div class="box-body">        
+                    <div class="box-body">  
+
+                        <a href="{{ url('/creditor/add') }}" class="btn btn-primary"> เพิ่มเจ้าหนี้</a>
+
                         <table class="table table-bordered">
                             <thead>
                                 <tr>

@@ -40,6 +40,11 @@
 	<!-- Fonts -->
 	<!-- <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Roboto:400,300' type='text/css'> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style type="text/css">
+		.has-error .select2-selection {
+		    border-color: rgb(185, 74, 72) !important;
+		}
+	</style>
 	
 	<!-- Scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -77,13 +82,14 @@
 	<script src="{{ asset('/js/app.js') }}"></script>
 	<script src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/debtCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/creditorCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/accountCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 	<script src="{{ asset('/js/services/report.js') }}"></script>
 
 	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-	<script src="{{ asset('/js/services/dashboard.js') }}"></script>
+	<!--<script src="{{ asset('/js/services/dashboard.js') }}"></script>-->
 	<!-- AdminLTE for demo purposes -->
 	<!--<script src="{{ asset('/js/services/demo.js') }}"></script>-->
 

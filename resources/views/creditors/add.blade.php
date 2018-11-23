@@ -16,7 +16,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="debtCtrl">
+    <section class="content" ng-controller="creditorCtrl">
 
         <div class="row">
             <div class="col-md-12">
@@ -26,181 +26,191 @@
                         <h3 class="box-title">เพิ่มข้อมูล</h3>
                     </div>
 
-                    <form id="frmSearch" name="frmSearch" role="form">
+                    <form id="frmNewCreditor" name="frmNewCreditor" role="form">
                         <div class="box-body">
 
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>เจ้าหนี้ :</label>
-                                    <input  type="text" 
-                                            id="{{ $creditor->supplier_id }}" 
-                                            name="{{ $creditor->supplier_id }}" 
-                                            value="{{ $creditor->supplier_name }}" 
-                                            class="form-control">
-                                </div>
-                            </div>
+                            <ul  class="nav nav-tabs">
+                                <li class="active">
+                                    <a  href="#1a" data-toggle="tab">ข้อมูลทั่วไป</a>
+                                </li>
+                                <li>
+                                    <a href="#2a" data-toggle="tab">ข้อมูลเพิ่มเติม</a>
+                                </li>
+                            </ul>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>เลขที่รายการหนี้ :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
-                                </div>                                
+                            <!-- ข้อมูลทั่วไป -->
+                            <div class="tab-content clearfix">
+                                <div class="tab-pane active" id="1a" style="padding: 10px;">
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_prefix.$invalid}">
+                                            <label class="control-label">คำนำหน้า :</label>
+                                            <select id="supplier_prefix"
+                                                    name="supplier_prefix"
+                                                    ng-model="creditor.supplier_prefix"
+                                                    class="form-control select2" 
+                                                    style="width: 100%; font-size: 12px;" required>
+                                                <option value="" selected="selected">-- กรุณาเลือก --</option>
 
-                                <div class="form-group">
-                                    <label>ประเภทหนี้ :</label>
-                                    <select id="debtType" 
-                                            class="form-control select2" 
-                                            style="width: 100%; font-size: 12px;">
-                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
+                                                @foreach($prefixs as $prefix)
 
-                                        @foreach($debttypes as $debttype)
+                                                    <option value="{{ $prefix->prename_id }}">
+                                                        {{ $prefix->prename_name }}
+                                                    </option>
 
-                                            <option value="{{ $debttype->debt_type_id }}">
-                                                {{ $debttype->debt_type_name }}
-                                            </option>
-
-                                        @endforeach
+                                                @endforeach
+                                                
+                                            </select>
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_prefix.$error.required">
+                                                กรุณาเลือกคำนำหน้า
+                                            </div>
+                                        </div>
                                         
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>เลขที่รับหนังสือ :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>เลขที่หนังสือ :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>เลขที่ใบส่งของ/ใบกำกับภาษี :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">                                
-                                <div class="form-group">
-                                    <label>วันที่ลงบัญชี :</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input type="text" class="form-control pull-right" id="debtDate">
-                                    </div><!-- /.input group -->
-                                </div><!-- /.form group -->
-
-                                <div class="form-group">
-                                    <label>รายการ :</label>
-                                    <input type="text" id="" name="" value="" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>วันที่รับหนังสือ :</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input type="text" class="form-control pull-right" id="debtDocRecDate">
-                                    </div><!-- /.input group -->
-                                </div><!-- /.form group -->
-
-                                <div class="form-group">
-                                    <label>วันที่หนังสือ :</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input type="text" class="form-control pull-right" id="debtDocDate">
-                                    </div><!-- /.input group -->
-                                </div><!-- /.form group -->
-
-                                <div class="form-group">
-                                    <label>วันที่ใบส่งของ/ใบกำกับภาษี :</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input type="text" class="form-control pull-right" id="deliverDate">
-                                    </div><!-- /.input group -->
-                                </div><!-- /.form group -->
-
-                            </div>
-
-                            <ul  class="nav nav-tabs">
-                                <li class="active">
-                                    <a  href="#1a" data-toggle="tab">ยอดหนี้</a>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content clearfix">
-                                <div class="tab-pane active" id="1a" style="padding: 10px;">
-                                    <div class="col-md-6">       
-                                        <div class="form-group">
-                                            <label>ยอดหนี้ :</label>
-                                            <input type="text" id="debtAmount" name="debtAmount" value="" class="form-control">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>จำนวนภาษี :</label>
-                                            <input type="text" id="vatAmt" name="vatAmt" value="" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">       
-                                        <div class="form-group">
-                                            <label>VAT(%) :</label>
-                                            <input type="text" id="vatRate" name="vatRate" value="" class="form-control">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>ยอดหนี้สุทธิ :</label>
-                                            <input type="text" id="debtTotale" name="debtTotale" value="" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <ul  class="nav nav-tabs">
-                                <li class="active">
-                                    <a  href="#1a" data-toggle="tab">เพิ่มเติม</a>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content clearfix">
-                                <div class="tab-pane active" id="1a" style="padding: 10px;">
-                                    <div class="col-md-6">       
-                                        <div class="form-group">
-                                            <label>ประจำเดือน :</label>
-                                            <input type="text" id="" name="" value="" class="form-control">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>ปีงบประมาณ :</label>
-                                            <input type="text" id="" name="" value="" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">       
-                                        <div class="form-group">
-                                            <label>วันที่รับเอกสาร :</label>
-
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-clock-o"></i>
-                                                </div>
-                                                <input type="text" class="form-control pull-right" id="docReceive" value="">
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_address1.$invalid}">
+                                            <label class="control-label">ที่อยู่เลขที่ :</label>
+                                            <input type="text" id="supplier_address1" name="supplier_address1" ng-model="creditor.supplier_address1" class="form-control" required>
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_address1.$error.required">
+                                                กรุณากรอกที่อยู่ก่อน
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label>หมายเหตุ :</label>
-                                            <input type="text" id="" name="" value="" class="form-control">
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_address3.$invalid}">
+                                            <label class="control-label">ที่อยู่ (จ.) :</label>
+                                            <input type="text" id="supplier_address3" name="supplier_address3" ng-model="creditor.supplier_address3" class="form-control" required>
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_address3.$error.required">
+                                                กรุณากรอกที่อยู่ (จ.) ก่อน
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_phone.$invalid}">
+                                            <label class="control-label">โทรศัพท์ :</label>
+                                            <input type="text" id="supplier_phone" name="supplier_phone" ng-model="creditor.supplier_phone" class="form-control">
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_phone.$error.required">
+                                                กรุณากรอกเบอร์โทรศัพท์ก่อน
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_email.$invalid}">
+                                            <label class="control-label">E-mail :</label>
+                                            <input type="text" id="supplier_email" name="supplier_email" ng-model="creditor.supplier_email" class="form-control">
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_email.$error.required">
+                                                กรุณากรอกที่อยู่อีเมล์ก่อน
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_taxid.$invalid}">
+                                            <label class="control-label">เลขที่ประจำตัวผู้เสียภาษี :</label>
+                                            <input type="text" id="supplier_taxid" name="supplier_taxid" ng-model="creditor.supplier_taxid" class="form-control" required>
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_taxid.$error.required">
+                                                กรุณากรอกเลขที่ประจำตัวผู้เสียภาษีก่อน
+                                            </div>
+                                        </div><!-- /.form group -->
+                                    </div>
+
+                                    <div class="col-md-6">                                
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_name.$invalid}">
+                                            <label class="control-label">ชื่อเจ้าหนี้ :</label>
+                                            <input type="text" id="supplier_name" name="supplier_name" ng-model="creditor.supplier_name" class="form-control" required>
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_name.$error.required">
+                                                กรุณากรอกชื่อเจ้าหนี้ก่อน
+                                            </div>
+                                        </div>    
+
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_address2.$invalid}">
+                                            <label class="control-label">ที่อยู่ (ต.และ อ.) :</label>
+                                            <input type="text" id="supplier_address2" name="supplier_address2" ng-model="creditor.supplier_address2" class="form-control" required>
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_address2.$error.required">
+                                                กรุณากรอกที่อยู่ (ต.และ อ.) ก่อน
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_zipcode.$invalid}">
+                                            <label class="control-label">รหัสไปรษณีย์ :</label>
+                                            <input type="text" id="supplier_zipcode" name="supplier_zipcode" ng-model="creditor.supplier_zipcode" class="form-control" required>
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_zipcode.$error.required">
+                                                กรุณากรอกรหัสไปรษณีย์ก่อน
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_fax.$invalid}">
+                                            <label class="control-label">แฟกซ์ :</label>
+                                            <input type="text" id="supplier_fax" name="supplier_fax" ng-model="creditor.supplier_fax" class="form-control">
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_fax.$error.required">
+                                                กรุณากรอกบอร์แฟกซ์ก่อน
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_back_acc.$invalid}">
+                                            <label class="control-label">เลขที่บัญชี :</label>
+                                            <input type="text" id="supplier_back_acc" name="supplier_back_acc" ng-model="creditor.supplier_back_acc" class="form-control">
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_back_acc.$error.required">
+                                                กรุณากรอกเลขที่บัญชีก่อน
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_note.$invalid}">
+                                            <label class="control-label">หมายเหตุ :</label>
+                                            <input type="text" id="supplier_note" name="supplier_note" ng-model="creditor.supplier_note" class="form-control">
+                                            <div class="help-block" ng-show="frmNewCreditor.supplier_note.$error.required">
+                                                กรุณากรอกหมายเหตุก่อน
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>                            
+
+                                <!-- ข้อมูลเพิ่มเติม -->
+                                <div class="tab-pane" id="2a" style="padding: 10px;">
+                                    <div class="row">
+                                        <div class="col-md-6">       
+                                            <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_credit.$invalid}">
+                                                <label class="control-label">เครดิต (วัน) :</label>
+                                                <input type="text" id="supplier_credit" name="supplier_credit" ng-model="creditor.supplier_credit" class="form-control" required>
+                                                <div class="help-block" ng-show="frmNewCreditor.supplier_credit.$error.required">
+                                                    กรุณากรอกจำนวนวันเครดิตก่อน
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">       
+                                            <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_taxrate.$invalid}">
+                                                <label class="control-label">อัตราภาษีที่หัก (%) :</label>
+                                                <input type="text" id="supplier_taxrate" name="supplier_taxrate" ng-model="creditor.supplier_taxrate" class="form-control" required>
+                                                <div class="help-block" ng-show="frmNewCreditor.supplier_taxrate.$error.required">
+                                                    กรุณากรอกอัตราภาษีที่หักก่อน
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-md-6">       
+                                            <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_agent_name.$invalid}">
+                                                <label class="control-label">ชื่อผู้ติดต่อ :</label>
+                                                <input type="text" id="supplier_agent_name" name="supplier_agent_name" ng-model="creditor.supplier_agent_name" class="form-control">
+                                                <div class="help-block" ng-show="frmNewCreditor.supplier_agent_name.$error.required">
+                                                    กรุณากรอกชื่อผู้ติดต่อก่อน
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_agent_email.$invalid}">
+                                                <label class="control-label">อีเมล์ผู้ติดต่อ :</label>
+                                                <input type="text" id="supplier_agent_email" name="supplier_agent_email" ng-model="creditor.supplier_agent_email" class="form-control">
+                                                <div class="help-block" ng-show="frmNewCreditor.supplier_agent_email.$error.required">
+                                                    กรุณากรอกอีเมล์ผู้ติดต่อก่อน
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">       
+                                            <div class="form-group" ng-class="{ 'has-error' : frmNewCreditor.supplier_agent_contact.$invalid}">
+                                                <label class="control-label">เบอร์ผู้ติดต่อ :</label>
+                                                <input type="text" id="supplier_agent_contact" name="supplier_agent_contact" ng-model="creditor.supplier_agent_contact" class="form-control">
+                                                <div class="help-block" ng-show="frmNewCreditor.supplier_agent_contact.$error.required">
+                                                    กรุณากรอกเบอร์ผู้ติดต่อก่อน
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -209,7 +219,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer clearfix">
-                            <button ng-click="getDebtData('/debt/rpt')" class="btn btn-success pull-right">
+                            <button ng-click="add($event, frmNewCreditor)" class="btn btn-success pull-right">
                                 บันทึก
                             </button>
                         </div><!-- /.box-footer -->
@@ -226,41 +236,6 @@
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()
-
-            $('#debtDate').datepicker({
-                autoclose: true,
-                locale: {
-                    format: 'YYYY-MM-DD'
-                }
-            });
-
-            $('#debtDocRecDate').datepicker({
-                autoclose: true,
-                locale: {
-                    format: 'YYYY-MM-DD'
-                }
-            });
-
-            $('#debtDocDate').datepicker({
-                autoclose: true,
-                locale: {
-                    format: 'YYYY-MM-DD'
-                }
-            });
-
-            $('#deliverDate').datepicker({
-                autoclose: true,
-                locale: {
-                    format: 'YYYY-MM-DD'
-                }
-            });
-
-            $('#docReceive').datepicker({
-                autoclose: true,
-                locale: {
-                    format: 'YYYY-MM-DD'
-                }
-            });
         });
     </script>
 
