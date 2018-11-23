@@ -68,7 +68,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getCreditorPaidData('/account-creditor-paid/rpt')" class="btn btn-info">
+                            <button ng-click="getCreditorPaidData('/account/creditor-paid-rpt')" class="btn btn-info">
                                 ค้นหา
                             </button>
                         </div>
@@ -84,36 +84,36 @@
                         <table class="table table-bordered" style="font-size: 12px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 5%; text-align: center;">#</th>
+                                    <th style="width: 3%; text-align: center;">#</th>
                                     <th style="width: 5%; text-align: center;">รหัสรายการ</th>
-                                    <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
-                                    <th style="width: 15%; text-align: left;">รายการ</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
-                                    <th style="width: 8%; text-align: center;">วันที่ตรวจรับ</th>
+                                    <th style="width: 5%; text-align: center;">วันที่ชำระ</th>
+                                    <th style="width: 5%; text-align: center;">เลขที่เช็ค</th>
+                                    <th style="width: 5%; text-align: center;">เลขที่เอกสาร</th>
+                                    <th style="width: 12%; text-align: left;">ประเภทหนี้</th>
+                                    <th style="width: 12%; text-align: left;">รายการ</th>
                                     <th style="text-align: left;">บริษัท</th>
-                                    <th style="width: 8%; text-align: center;">เลขที่เอกสาร</th>
-                                    <th style="width: 8%; text-align: center;">ยอดหนี้สุทธิ</th>
-                                    <th style="width: 8%; text-align: center;">วันที่รับเอกสาร (ชุดเบิก-จ่าย)</th>
-                                    <th style="width: 8%; text-align: center;">สถานะ</th>
+                                    <th style="width: 5%; text-align: center;">ยอดหนี้สุทธิ</th>
+                                    <th style="width: 5%; text-align: center;">ยอดหนี้</th>
+                                    <th style="width: 5%; text-align: center;">VAT1%</th>
+                                    <th style="width: 5%; text-align: center;">ยอดจ่ายเช็ค</th>
+                                    <th style="width: 8%; text-align: center;">ธนาคาร</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(index, debt) in debts">
+                                <tr ng-repeat="(index, payment) in payments">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_id }}</td>
-                                    <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
-                                    <td style="text-align: left;">@{{ debt.debt_type_detail }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_date }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_doc_recdate }}</td>
-                                    <td style="text-align: left;">@{{ debt.supplier_name }}</td>
-                                    <td style="text-align: center;">@{{ debt.deliver_no }}</td>
-                                    <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
-                                    <td style="text-align: center;">@{{ '0000-00-00' }}</td>
-                                    <td style="text-align: center;">
-                                        @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
-                                            (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
-                                            (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
-                                    </td>       
+                                    <td style="text-align: center;">@{{ payment.debt_id }}</td>
+                                    <td style="text-align: center;">@{{ payment.paid_date }}</td>
+                                    <td style="text-align: center;">@{{ payment.cheque_no }}</td>
+                                    <td style="text-align: center;">@{{ payment.deliver_no }}</td>
+                                    <td style="text-align: left;">@{{ payment.debt_type_name }}</td>
+                                    <td style="text-align: left;">@{{ payment.debt_type_detail }}</td>
+                                    <td style="text-align: left;">@{{ payment.pay_to }}</td>
+                                    <td style="text-align: right;">@{{ payment.debt_total | number: 2 }}</td>
+                                    <td style="text-align: right;">@{{ payment.total | number: 2 }}</td>
+                                    <td style="text-align: right;">@{{ payment.net_amt | number: 2 }}</td>
+                                    <td style="text-align: right;">@{{ payment.paid_amt | number: 2 }}</td>
+                                    <td style="text-align: left;">@{{ payment.bank_name+ '(' +payment.bank_acc_no+ ')' }}</td>       
                                 </tr>
                             </tbody>
                         </table>                        
@@ -127,13 +127,13 @@
                     <!-- end loading -->
 
                     <div class="box-footer clearfix">
-                        <a  ng-show="debts.length"
-                            ng-click="excel('/account-creditor-paid/excel')"
+                        <a  ng-show="payments.length"
+                            ng-click="creditorPaidToExcel('/account/creditor-paid-excel')"
                             class="btn btn-success">
                             Excel
                         </a>
 
-                        <ul ng-show="debts.length" class="pagination pagination-sm no-margin pull-right">                            
+                        <ul ng-show="payments.length" class="pagination pagination-sm no-margin pull-right">                            
                             <li ng-if="pager.current_page !== 1">
                                 <a ng-click="getCreditorPaidWithURL(pager.first_page_url)" aria-label="First">
                                     <span aria-hidden="true">First</span>

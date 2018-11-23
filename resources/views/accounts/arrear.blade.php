@@ -84,7 +84,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getArrearData('/account-arrear/rpt')" class="btn btn-info">
+                            <button ng-click="getArrearData('/account/arrear-rpt')" class="btn btn-info">
                                 ค้นหา
                             </button>
                         </div>
@@ -144,7 +144,7 @@
 
                     <div class="box-footer clearfix">
                         <a  ng-show="debts.length"
-                            ng-click="arrearToExcel('/account-arrear/excel')"
+                            ng-click="arrearToExcel('/account/arrear-excel')"
                             class="btn btn-success">
                             Excel
                         </a>

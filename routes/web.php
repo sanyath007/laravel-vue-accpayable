@@ -50,11 +50,10 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('report/excel', 'ReportController@excel');     
 
     Route::get('account/arrear', 'AccountController@arrear');    
-    Route::get('account-arrear/rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearRpt');     
-    Route::get('account-arrear/excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearExcel'); 
-
+    Route::get('account/arrear-rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearRpt');     
+    Route::get('account/arrear-excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearExcel'); 
     Route::get('account/creditor-paid', 'AccountController@creditorPaid');    
-    Route::get('account-creditor-paid/rpt/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
-    Route::get('account-creditor-paid/excel/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');     
+    Route::get('account/creditor-paid-rpt/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
+    Route::get('account/creditor-paid-excel/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');     
 
 });

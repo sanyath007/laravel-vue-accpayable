@@ -4,6 +4,7 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     let baseUrl = CONFIG.BASE_URL;
 
     $scope.debts = [];
+    $scope.payments = [];
     $scope.pager = [];
     $scope.totalDebt = 0.00;
     $scope.loading = false;
@@ -42,7 +43,6 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     $scope.getArrearWithURL = function(URL) {
         $scope.debts = [];
         $scope.pager = [];
-        console.log(URL);
             
         $http.get(URL)
         .then(function(res) {
@@ -73,10 +73,10 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
             window.location.href = CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll;
         }
-    }
+    };
 
     $scope.getCreditorPaidData = function(URL) {
-        $scope.debts = [];
+        $scope.payments = [];
         $scope.pager = [];
         
         if($("#showall:checked").val() != 'on' && $("#creditor").val() == '') {
@@ -93,8 +93,8 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
             $http.get(CONFIG.BASE_URL +URL+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll)
             .then(function(res) {
                 console.log(res);
-                $scope.debts = res.data.debts.data;
-                $scope.pager = res.data.debts;
+                $scope.payments = res.data.payments.data;
+                $scope.pager = res.data.payments;
                 $scope.totalDebt = res.data.totalDebt;
 
                 $scope.loading = false;
@@ -106,15 +106,14 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     };
 
     $scope.getCreditorPaidWithURL = function(URL) {
-        $scope.debts = [];
+        $scope.payments = [];
         $scope.pager = [];
-        console.log(URL);
             
         $http.get(URL)
         .then(function(res) {
             console.log(res);
-            $scope.debts = res.data.debts.data;
-            $scope.pager = res.data.debts;
+            $scope.payments = res.data.payments.data;
+            $scope.pager = res.data.payments;
             $scope.totalDebt = res.data.totalDebt;
 
             $scope.loading = false;
@@ -122,5 +121,21 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
             console.log(err);
             $scope.loading = false;
         });
+    };
+
+    $scope.creditorPaidToExcel = function(URL) {
+        console.log($scope.payments);
+
+        if($scope.payments.length == 0) {
+            toaster.pop('warning', "", "ไม่พบข้อมูล !!!");
+        } else {
+            var debtDate = ($("#debtDate").val()).split(",");
+            var sDate = debtDate[0].trim();
+            var eDate = debtDate[1].trim();
+            var creditor = ($("#creditor").val() == '') ? '0' : $("#creditor").val();
+            var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+
+            window.location.href = CONFIG.BASE_URL +URL+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll;
+        }
     };
 });
