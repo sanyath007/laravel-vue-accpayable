@@ -42,7 +42,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<style type="text/css">
 		.has-error .select2-selection {
-		    border-color: rgb(185, 74, 72) !important;
+		    border-color:#a94442;
+		    -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+		    box-shadow:inset 0 1px 1px rgba(0,0,0,.075)
 		}
 	</style>
 	

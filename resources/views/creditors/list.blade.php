@@ -16,10 +16,33 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="creditorCtrl">
+    <section class="content" ng-controller="creditorCtrl" ng-init="getData()">
 
         <div class="row">
             <div class="col-md-12">
+
+                <div class="box box-primary">
+
+                    <div class="box-header">
+                        <h3 class="box-title">ค้นหาข้อมูล</h3>
+                    </div>
+
+                    <form id="frmSearch" name="frmSearch" role="form">
+                        <div class="box-body">
+                            <div class="col-md-12">                                
+                                <div class="form-group">
+                                    <label>ค้นหาชื่อเจ้าหนี้</label>
+                                    <input type="text" id="searchKey" ng-keyup="getData($event)" class="form-control">
+                                </div><!-- /.form group -->
+                            </div>
+
+                        </div><!-- /.box-body -->
+                  
+                        <div class="box-footer">
+                            <a href="{{ url('/creditor/add') }}" class="btn btn-primary"> เพิ่มเจ้าหนี้</a>
+                        </div>
+                    </form>
+                </div><!-- /.box -->
 
                 <div class="box">
 
@@ -27,10 +50,7 @@
                         <h3 class="box-title">รายการเจ้าหนี้</h3>
                     </div><!-- /.box-header -->
 
-                    <div class="box-body">  
-
-                        <a href="{{ url('/creditor/add') }}" class="btn btn-primary"> เพิ่มเจ้าหนี้</a>
-
+                    <div class="box-body">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -39,27 +59,21 @@
                                     <th style="text-align: center;">ที่อยู่</th>
                                     <th style="width: 10%; text-align: center;">ผู้ติดต่อ</th>
                                     <th style="width: 15%; text-align: center;">เลขประจำตัวผู้เสียภาษี</th>
-                                    <th style="width: 10%; text-align: center;">Actions</th>
+                                    <th style="width: 8%; text-align: center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-                                @foreach($creditors as $creditor)
-
-                                    <tr>
-                                        <td style="text-align: center;">{{ $creditor->supplier_id }}</td>
-                                        <td>{{ $creditor->supplier_name }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td style="text-align: center;">{{ $creditor->supplier_taxid }}</td>
-                                        <td style="text-align: center;">
-                                            <a href=""><i class="fa fa-edit"></i></a>
-                                            <a href=""><i class="fa fa-trash"></i></a>
-                                        </td>
-                                    </tr>
-
-                                @endforeach
-
+                                <tr ng-repeat="creditor in creditors">
+                                    <td style="text-align: center;">@{{ creditor.supplier_id }}</td>
+                                    <td>@{{ creditor.supplier_name }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align: center;">@{{ creditor.supplier_taxid }}</td>
+                                    <td style="text-align: center;">
+                                        <a ng-click="edit(creditor.supplier_id)" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
+                                        <a ng-click="delete(creditor.supplier_id)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div><!-- /.box-body -->
@@ -67,59 +81,35 @@
                     <div class="box-footer clearfix">
                         <ul class="pagination pagination-sm no-margin pull-right">
 
-                        @if($creditors->currentPage() !== 1)
-                            <li>
-                                <a href="{{ $creditors->url($creditors->url(1)) }}" aria-label="Previous">
+                            <li ng-if="pager.current_page !== 1">
+                                <a ng-click="getDataWithURL(pager.first_page_url)" aria-label="Previous">
                                     <span aria-hidden="true">First</span>
                                 </a>
                             </li>
-                        @endif
                         
-                        <li class="{{ ($creditors->currentPage() === 1) ? 'disabled' : '' }}">
-                            <a href="{{ $creditors->url($creditors->currentPage() - 1) }}" aria-label="Prev">
-                                <span aria-hidden="true">Prev</span>
-                            </a>
-                        </li>
-
-                        @for($i=$creditors->currentPage(); $i < $creditors->currentPage() + 10; $i++)
-                            @if ($creditors->currentPage() <= $creditors->lastPage() && ($creditors->lastPage() - $creditors->currentPage()) > 10)
-                                <li class="{{ ($creditors->currentPage() === $i) ? 'active' : '' }}">
-                                    <a href="{{ $creditors->url($i) }}">
-                                        {{ $i }}
-                                    </a>
-                                </li> 
-                            @else
-                                @if ($i <= $creditors->lastPage())
-                                    <li class="{{ ($creditors->currentPage() === $i) ? 'active' : '' }}">
-                                        <a href="{{ $creditors->url($i) }}">
-                                            {{ $i }}
-                                        </a>
-                                    </li>
-                                @endif
-                            @endif
-                        @endfor
-
-                        @if ($creditors->currentPage() < $creditors->lastPage() && ($creditors->lastPage() - $creditors->currentPage()) > 10)
-                            <li>
-                                <a href="{{ $creditors->url($creditors->currentPage() + 10) }}">
+                            <li ng-class="{'disabled': (pager.current_page==1)}">
+                                <a ng-click="getDataWithURL(pager.first_page_url)" aria-label="Prev">
+                                    <span aria-hidden="true">Prev</span>
+                                </a>
+                            </li>
+                           
+                            <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
+                                <a href="@{{ pager.url(pager.current_page + 10) }}">
                                     ...
                                 </a>
                             </li>
-                        @endif
                         
-                        <li class="{{ ($creditors->currentPage() === $creditors->lastPage()) ? 'disabled' : '' }}">
-                            <a href="{{ $creditors->url($creditors->currentPage() + 1) }}" aria-label="Next">
-                                <span aria-hidden="true">Next</span>
-                            </a>
-                        </li>
+                            <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
+                                <a ng-click="getDataWithURL(pager.next_page_url)" aria-label="Next">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
 
-                        @if($creditors->currentPage() !== $creditors->lastPage())
-                            <li>
-                                <a href="{{ $creditors->url($creditors->lastPage()) }}" aria-label="Previous">
+                            <li ng-if="pager.current_page !== pager.last_page">
+                                <a ng-click="getDataWithURL(pager.last_page_url)" aria-label="Previous">
                                     <span aria-hidden="true">Last</span>
                                 </a>
                             </li>
-                        @endif
 
                         </ul>
                     </div><!-- /.box-footer -->

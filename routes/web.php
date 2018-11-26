@@ -32,7 +32,12 @@ Route::group(['middleware' => 'web'], function() {
 
 Route::group(['middleware' => ['web','auth']], function () {
     Route::get('/creditor/list', 'CreditorController@list');
+    Route::get('/creditor/search/{searchKey}', 'CreditorController@search');
+    Route::get('/creditor/get-creditor/{creditorId}', 'CreditorController@getById');
     Route::get('/creditor/add', 'CreditorController@add');
+    Route::post('/creditor/store', 'CreditorController@store');
+    Route::get('/creditor/edit/{creditorId}', 'CreditorController@edit');
+    Route::put('/creditor/update', 'CreditorController@update');
 
     Route::get('debt-type/list', 'DebtTypeController@list');
     Route::get('debt-type/add', 'DebtTypeController@add');
