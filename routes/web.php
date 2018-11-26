@@ -40,8 +40,14 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::put('/creditor/update', 'CreditorController@update');
     Route::delete('/creditor/delete/{creditorId}', 'CreditorController@delete');
 
-    Route::get('debt-type/list', 'DebtTypeController@list');
-    Route::get('debt-type/add', 'DebtTypeController@add');
+    Route::get('debttype/list', 'DebtTypeController@list');
+	Route::get('/debttype/search/{searchKey}', 'DebttypeController@search');
+    Route::get('/debttype/get-debttype/{debttypeId}', 'DebttypeController@getById');
+    Route::get('debttype/add', 'DebtTypeController@add');
+    Route::post('/debttype/store', 'DebttypeController@store');
+    Route::get('/debttype/edit/{debttypeId}', 'DebttypeController@edit');
+    Route::put('/debttype/update', 'DebttypeController@update');
+    Route::delete('/debttype/delete/{debttypeId}', 'DebttypeController@delete');
 
     Route::get('debt/list', 'DebtController@list');
     Route::get('debt/rpt/{creditor}/{sdate}/{edate}/{showall}', 'DebtController@debtRpt');

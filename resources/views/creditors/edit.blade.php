@@ -5,7 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แก้ไขข้อมูล
+            แก้ไขข้อมูล : {{ $creditor->supplier_id }}
             <!-- <small>preview of simple tables</small> -->
         </h1>
 

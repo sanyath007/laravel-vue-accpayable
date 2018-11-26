@@ -85,6 +85,7 @@
 	<script src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/debtCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/creditorCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/debttypeCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/accountCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
@@ -501,7 +502,7 @@
 						</a>
 						<ul class="treeview-menu">
 							<li><a href="{{ url('/creditor/list') }}"><i class="fa fa-circle-o"></i> เจ้าหนี้</a></li>
-							<li><a href="{{ url('/debt-type/list') }}"><i class="fa fa-circle-o"></i> ประเภทรายการหนี้</a></li>
+							<li><a href="{{ url('/debttype/list') }}"><i class="fa fa-circle-o"></i> ประเภทหนี้</a></li>
 						</ul>
 					</li>													
 				</ul>
