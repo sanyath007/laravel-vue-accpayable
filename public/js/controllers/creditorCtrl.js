@@ -26,7 +26,6 @@ app.controller('creditorCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         supplier_agent_contact: ''
     };
 
-
     $scope.getData = function(event) {
         console.log(event);
         $scope.creditors = [];
@@ -92,7 +91,6 @@ app.controller('creditorCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         .then(function(res) {
             console.log(res);
             $scope.creditor = res.data.creditor;
-            // $("#prename_id").val($scope.creditor.prename_id).change();
         }, function(err) {
             console.log(err);
         });
@@ -112,8 +110,10 @@ app.controller('creditorCtrl', function($scope, $http, toaster, CONFIG, ModalSer
             $http.put(CONFIG.BASE_URL + '/creditor/update/', $scope.creditor)
             .then(function(res) {
                 console.log(res);
+                toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
             }, function(err) {
                 console.log(err);
+                toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
             });
         }
     };
@@ -122,12 +122,15 @@ app.controller('creditorCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         console.log(creditorId);
 
         if(confirm("คุณต้องลบรายการหนี้เลขที่ " + creditorId + " ใช่หรือไม่?")) {
-            // $http.delete()
-            // .then(function(res) {
-                // console.log(res);
-            // }, function(err) {
-                // console.log(err);
-            // });
+            $http.delete(CONFIG.BASE_URL + '/creditor/delete/' +creditorId)
+            .then(function(res) {
+                console.log(res);
+                toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');
+                $scope.getData();
+            }, function(err) {
+                console.log(err);
+                toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+            });
         }
     };
 });

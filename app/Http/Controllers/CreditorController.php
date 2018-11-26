@@ -127,12 +127,29 @@ class CreditorController extends Controller
         if($creditor->save()) {
             return [
                 "status" => "success",
-                "message" => "Insert success.",
+                "message" => "Update success.",
             ];
         } else {
             return [
                 "status" => "error",
-                "message" => "Insert failed.",
+                "message" => "Update failed.",
+            ];
+        }
+    }
+
+    public function delete($creditorId)
+    {
+        $creditor = Creditor::find($creditorId);
+
+        if($creditor->delete()) {
+            return [
+                "status" => "success",
+                "message" => "Delete success.",
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "Delete failed.",
             ];
         }
     }

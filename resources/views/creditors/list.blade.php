@@ -55,6 +55,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%; text-align: center;">#</th>
+                                    <th style="width: 5%; text-align: center;">รหัส</th>
                                     <th style="width: 25%; text-align: center;">ชื่อ</th>
                                     <th style="text-align: center;">ที่อยู่</th>
                                     <th style="width: 10%; text-align: center;">ผู้ติดต่อ</th>
@@ -63,15 +64,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="creditor in creditors">
+                                <tr ng-repeat="(index, creditor) in creditors">
+                                    <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ creditor.supplier_id }}</td>
                                     <td>@{{ creditor.supplier_name }}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td style="text-align: center;">@{{ creditor.supplier_taxid }}</td>
+                                    <td>
+                                        @{{ ((creditor.supplier_address1) ? creditor.supplier_address1 : '')+ ' ' 
+                                            +((creditor.supplier_address2) ? creditor.supplier_address2 : '')+ ' ' 
+                                            +((creditor.supplier_address3) ? creditor.supplier_address3 : '') }}
+                                    </td>
+                                    <td style="text-align: center;">@{{ (creditor.supplier_agent_name) ? creditor.supplier_agent_name : '' }}</td>
+                                    <td style="text-align: center;">@{{ (creditor.supplier_taxid) ? creditor.supplier_taxid : '' }}</td>
                                     <td style="text-align: center;">
                                         <a ng-click="edit(creditor.supplier_id)" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                                        <a ng-click="delete(creditor.supplier_id)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+
+                                        @if(Auth::user()->person_id == '1300200009261')
+
+                                            <a ng-click="delete(creditor.supplier_id)" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+
+                                        @endif
+                                        
                                     </td>
                                 </tr>
                             </tbody>

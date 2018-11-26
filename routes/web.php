@@ -38,6 +38,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('/creditor/store', 'CreditorController@store');
     Route::get('/creditor/edit/{creditorId}', 'CreditorController@edit');
     Route::put('/creditor/update', 'CreditorController@update');
+    Route::delete('/creditor/delete/{creditorId}', 'CreditorController@delete');
 
     Route::get('debt-type/list', 'DebtTypeController@list');
     Route::get('debt-type/add', 'DebtTypeController@add');
