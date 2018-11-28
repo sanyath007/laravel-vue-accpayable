@@ -104,7 +104,8 @@
                                 <table class="table table-bordered" style="font-size: 12px;">
                                     <thead>
                                         <tr>
-                                            <th style="width: 5%; text-align: center;">#</th>
+                                            <th style="width: 3%; text-align: center;">#</th>
+                                            <th style="width: 5%; text-align: center;">รหัสรายการหนี้</th>
                                             <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
                                             <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
                                             <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
@@ -118,7 +119,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="debt in debts">
+                                        <tr ng-repeat="(index, debt) in debts">
+                                            <td style="text-align: center;">@{{ index+debtPager.from }}</td>
                                             <td style="text-align: center;">@{{ debt.debt_id }}</td>
                                             <td style="text-align: center;">@{{ debt.debt_date }}</td>
                                             <td style="text-align: center;">@{{ debt.deliver_no }}</td>
@@ -161,16 +163,45 @@
                                 </table>
 
                                 <ul class="pagination pagination-sm no-margin pull-right">
+                                    <li ng-if="debtPager.current_page !== 1">
+                                        <a ng-click="getDebtWithURL(debtPager.first_page_url)" aria-label="Previous">
+                                            <span aria-hidden="true">First</span>
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (debtPager.current_page==1)}">
+                                        <a ng-click="getDebtWithURL(debtPager.first_page_url)" aria-label="Prev">
+                                            <span aria-hidden="true">Prev</span>
+                                        </a>
+                                    </li>
+                                   
+                                    <li ng-if="debtPager.current_page < debtPager.last_page && (debtPager.last_page - debtPager.current_page) > 10">
+                                        <a href="@{{ debtPager.url(debtPager.current_page + 10) }}">
+                                            ...
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (debtPager.current_page==debtPager.last_page)}">
+                                        <a ng-click="getDebtWithURL(debtPager.next_page_url)" aria-label="Next">
+                                            <span aria-hidden="true">Next</span>
+                                        </a>
+                                    </li>
 
+                                    <li ng-if="debtPager.current_page !== debtPager.last_page">
+                                        <a ng-click="getDebtWithURL(debtPager.last_page_url)" aria-label="Previous">
+                                            <span aria-hidden="true">Last</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
 
                             <!-- รายหารขออนุมัติเบิก-จ่าย -->
                             <div class="tab-pane" id="2a" style="padding: 10px;">
-                                <!-- <table class="table table-bordered" style="font-size: 12px;">
+                                <table class="table table-bordered" style="font-size: 12px;">
                                     <thead>
                                         <tr>
-                                            <th style="width: 5%; text-align: center;">#</th>
+                                            <th style="width: 3%; text-align: center;">#</th>
+                                            <th style="width: 5%; text-align: center;">รหัสรายการ</th>
                                             <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
                                             <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
                                             <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
@@ -180,48 +211,69 @@
                                             <th style="width: 8%; text-align: center;">ภาษี</th>
                                             <th style="width: 8%; text-align: center;">สุทธิ</th>
                                             <th style="width: 8%; text-align: center;">สถานะ</th>
-                                            <th style="width: 5%; text-align: center;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="debt in debts">
-                                            <td style="text-align: center;">@{{ debt.debt_id }}</td>
-                                            <td style="text-align: center;">@{{ debt.debt_date }}</td>
-                                            <td style="text-align: center;">@{{ debt.deliver_no }}</td>
-                                            <td style="text-align: left;">@{{ debt.deliver_date }}</td>
-                                            <td style="text-align: left;">@{{ debt.supplier_name }}</td>
-                                            <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_vat | number: 2 }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_total | number: 2 }}</td>
+                                        <tr ng-repeat="(index, app) in apps">
+                                            <td style="text-align: center;">@{{ index+appPager.from }}</td>
+                                            <td style="text-align: center;">@{{ app.debt_id }}</td>
+                                            <td style="text-align: center;">@{{ app.debt_date }}</td>
+                                            <td style="text-align: center;">@{{ app.deliver_no }}</td>
+                                            <td style="text-align: left;">@{{ app.deliver_date }}</td>
+                                            <td style="text-align: left;">@{{ app.supplier_name }}</td>
+                                            <td style="text-align: left;">@{{ app.debttype.debt_type_name }}</td>
+                                            <td style="text-align: right;">@{{ app.debt_amount | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ app.debt_vat | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ app.debt_total | number: 2 }}</td>
                                             <td style="text-align: center;">
-                                                @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
-                                                    (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
-                                                    (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
-                                            </td>             
-                                            <td style="text-align: center;">
-                                                <a ng-click="editDebt(debt.debt_id)" ng-show="(debt.debt_status==0)">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <a ng-click="deleteDebt(debt.debt_id)" ng-show="(debt.debt_status==0)">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>             
+                                                @{{ (app.debt_status==1) ? 'ขออนุมัติ' : 
+                                                    (app.debt_status==2) ? 'ชำระเงินแล้ว' : 
+                                                    (app.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
+                                            </td>            
                                         </tr>
                                     </tbody>
                                 </table>
 
                                 <ul class="pagination pagination-sm no-margin pull-right">
+                                    <li ng-if="appPager.current_page !== 1">
+                                        <a ng-click="getAppWithURL(appPager.first_page_url)" aria-label="Previous">
+                                            <span aria-hidden="true">First</span>
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (appPager.current_page==1)}">
+                                        <a ng-click="getAppWithURL(appPager.first_page_url)" aria-label="Prev">
+                                            <span aria-hidden="true">Prev</span>
+                                        </a>
+                                    </li>
+                                   
+                                    <li ng-if="appPager.current_page < appPager.last_page && (appPager.last_page - appPager.current_page) > 10">
+                                        <a href="@{{ appPager.url(appPager.current_page + 10) }}">
+                                            ...
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (appPager.current_page==appPager.last_page)}">
+                                        <a ng-click="getAppWithURL(appPager.next_page_url)" aria-label="Next">
+                                            <span aria-hidden="true">Next</span>
+                                        </a>
+                                    </li>
 
-                                </ul> -->
+                                    <li ng-if="appPager.current_page !== appPager.last_page">
+                                        <a ng-click="getAppWithURL(appPager.last_page_url)" aria-label="Previous">
+                                            <span aria-hidden="true">Last</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
 
                             <!-- รายการชำระแล้ว -->
                             <div class="tab-pane" id="3a" style="padding: 10px;">
-                                <!-- <table class="table table-bordered" style="font-size: 12px;">
+                                <table class="table table-bordered" style="font-size: 12px;">
                                     <thead>
                                         <tr>
-                                            <th style="width: 5%; text-align: center;">#</th>
+                                            <th style="width: 3%; text-align: center;">#</th>
+                                            <th style="width: 5%; text-align: center;">รหัสรายการหนี้</th>
                                             <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
                                             <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
                                             <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
@@ -231,40 +283,60 @@
                                             <th style="width: 8%; text-align: center;">ภาษี</th>
                                             <th style="width: 8%; text-align: center;">สุทธิ</th>
                                             <th style="width: 8%; text-align: center;">สถานะ</th>
-                                            <th style="width: 5%; text-align: center;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="debt in debts">
-                                            <td style="text-align: center;">@{{ debt.debt_id }}</td>
-                                            <td style="text-align: center;">@{{ debt.debt_date }}</td>
-                                            <td style="text-align: center;">@{{ debt.deliver_no }}</td>
-                                            <td style="text-align: left;">@{{ debt.deliver_date }}</td>
-                                            <td style="text-align: left;">@{{ debt.supplier_name }}</td>
-                                            <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_vat | number: 2 }}</td>
-                                            <td style="text-align: right;">@{{ debt.debt_total | number: 2 }}</td>
+                                        <tr ng-repeat="(index, paid) in paids">
+                                            <td style="text-align: center;">@{{ index+paidPager.from }}</td>
+                                            <td style="text-align: center;">@{{ paid.debt_id }}</td>
+                                            <td style="text-align: center;">@{{ paid.debt_date }}</td>
+                                            <td style="text-align: center;">@{{ paid.deliver_no }}</td>
+                                            <td style="text-align: left;">@{{ paid.deliver_date }}</td>
+                                            <td style="text-align: left;">@{{ paid.supplier_name }}</td>
+                                            <td style="text-align: left;">@{{ paid.debttype.debt_type_name }}</td>
+                                            <td style="text-align: right;">@{{ paid.debt_amount | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ paid.debt_vat | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ paid.debt_total | number: 2 }}</td>
                                             <td style="text-align: center;">
-                                                @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
-                                                    (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
-                                                    (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
-                                            </td>             
-                                            <td style="text-align: center;">
-                                                <a ng-click="editDebt(debt.debt_id)" ng-show="(debt.debt_status==0)">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <a ng-click="deleteDebt(debt.debt_id)" ng-show="(debt.debt_status==0)">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>             
+                                                @{{ (paid.debt_status==1) ? 'ขออนุมัติ' : 
+                                                    (paid.debt_status==2) ? 'ชำระเงินแล้ว' : 
+                                                    (paid.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
+                                            </td>      
                                         </tr>
                                     </tbody>
                                 </table>
 
                                 <ul class="pagination pagination-sm no-margin pull-right">
+                                    <li ng-if="paidPager.current_page !== 1">
+                                        <a ng-click="getPaidWithURL(paidPager.first_page_url)" aria-label="Previous">
+                                            <span aria-hidden="true">First</span>
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (paidPager.current_page==1)}">
+                                        <a ng-click="getPaidWithURL(paidPager.first_page_url)" aria-label="Prev">
+                                            <span aria-hidden="true">Prev</span>
+                                        </a>
+                                    </li>
+                                   
+                                    <li ng-if="paidPager.current_page < paidPager.last_page && (paidPager.last_page - paidPager.current_page) > 10">
+                                        <a href="@{{ paidPager.url(paidPager.current_page + 10) }}">
+                                            ...
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (paidPager.current_page==paidPager.last_page)}">
+                                        <a ng-click="getPaidWithURL(paidPager.next_page_url)" aria-label="Next">
+                                            <span aria-hidden="true">Next</span>
+                                        </a>
+                                    </li>
 
-                                </ul> -->
+                                    <li ng-if="paidPager.current_page !== paidPager.last_page">
+                                        <a ng-click="getPaidWithURL(paidPager.last_page_url)" aria-label="Previous">
+                                            <span aria-hidden="true">Last</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 

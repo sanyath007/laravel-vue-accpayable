@@ -25,7 +25,18 @@ class DebtController extends Controller
         $totalDebt = Debt::where('supplier_id', '=', $creditor)->sum('debt_total');
         
         return [
-            "debts"     => Debt::where('supplier_id', '=', $creditor)->with('debttype')->paginate(20),
+            "debts"     => Debt::where('supplier_id', '=', $creditor)
+                                ->where('debt_status', '=', '0')
+                                ->with('debttype')
+                                ->paginate(20),
+            "apps"     => Debt::where('supplier_id', '=', $creditor)
+                                ->where('debt_status', '=', '1')
+                                ->with('debttype')
+                                ->paginate(20),
+            "paids"     => Debt::where('supplier_id', '=', $creditor)
+                                ->whereIn('debt_status', [2,4])
+                                ->with('debttype')
+                                ->paginate(20),
             "totalDebt" => $totalDebt,
         ];
     }

@@ -124,7 +124,6 @@
                                     <span aria-hidden="true">Last</span>
                                 </a>
                             </li>
-
                         </ul>
                     </div><!-- /.box-footer -->
 

@@ -3,9 +3,17 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
 
-    $scope.debts = [];
-    $scope.totalDebt = 0.00;
     $scope.loading = false;
+
+    $scope.debtPager = [];
+    $scope.appPager = [];
+    $scope.paidPager = [];
+
+    $scope.debts = [];
+    $scope.apps = [];
+    $scope.paids = [];
+    
+    $scope.totalDebt = 0.00;
 
     $scope.getDebtData = function(URL) {
         $scope.debts = [];
@@ -22,6 +30,14 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
     	.then(function(res) {
     		console.log(res);
             $scope.debts = res.data.debts.data;
+            $scope.debtPager = res.data.debts;
+
+            $scope.apps = res.data.apps.data;
+            $scope.appPager = res.data.apps;
+
+            $scope.paids = res.data.paids.data;
+            $scope.paidPager = res.data.paids;
+
     		$scope.totalDebt = res.data.totalDebt;
 
             $scope.loading = false;
@@ -29,6 +45,60 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
     		console.log(err);
             $scope.loading = false;
     	});
+    }
+
+    $scope.getDebtWithURL = function(URL) {
+        console.log(URL);
+        $scope.debts = [];
+        $scope.loading = true;
+
+        $http.get(URL)
+        .then(function(res) {
+            console.log(res);
+            $scope.debts = res.data.debts.data;
+            $scope.debtPager = res.data.debts;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    }
+
+    $scope.getAppWithURL = function(URL) {
+        console.log(URL);
+        $scope.apps = [];
+        $scope.loading = true;
+
+        $http.get(URL)
+        .then(function(res) {
+            console.log(res);
+            $scope.apps = res.data.apps.data;
+            $scope.appPager = res.data.apps;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    }
+
+    $scope.getPaidWithURL = function(URL) {
+        console.log(URL);
+        $scope.paids = [];
+        $scope.loading = true;
+
+        $http.get(URL)
+        .then(function(res) {
+            console.log(res);
+            $scope.paids = res.data.paids.data;
+            $scope.paidPager = res.data.paids;
+
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
     }
 
     $scope.addNewDebt = function(event) {
