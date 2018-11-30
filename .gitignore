@@ -1,8 +1,8 @@
 /node_modules
 /public/bower/*
-/public/js/app.js
 /public/files
 /public/hot
+/public/js/app.js
 /public/storage
 /public/uploads/*
 /storage/*.key
