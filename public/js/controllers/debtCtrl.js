@@ -16,16 +16,23 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
     $scope.totalDebt = 0.00;
 
     $scope.debt = {
-        debt_id: '',
+        debt_id: 'NEW',
         debt_date: '',
-        
-        supplier_id: '',
+        debt_doc_recno: '',
+        debt_doc_recdate: '',
+        debt_doc_no: '',
+        debt_doc_date: '',
         debt_type_id: '',
         debt_type_detail: '',
-        debt_id: '',
-        debt_id: '',
-        debt_id: '',
-        debt_id: '',
+        supplier_id: '',
+        supplier_name: '',
+        doc_receive: '',
+        debt_year: '',
+        debt_amount: '',
+        debt_vatrate: '',
+        debt_vat: '',
+        debt_total: '',
+        debt_remark: '',
     };
 
     $scope.getDebtData = function(URL) {
@@ -128,6 +135,28 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
             console.log(CONFIG.BASE_URL + '/debt/add/' + creditor);
             window.location.href = CONFIG.BASE_URL + '/debt/add/' + creditor;
         }
+    }
+
+    $scope.store = function(event, form) {
+        console.log(event);
+        event.preventDefault();
+
+        if (form.$invalid) {
+            toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
+            return;
+        } else {
+            console.log($scope.debt);
+            // $http.post(CONFIG.BASE_URL + '/debt/store', $scope.debt)
+            // .then(function(res) {
+            //     console.log(res);
+            //     toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
+            // }, function(err) {
+            //     console.log(err);
+            //     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+            // });            
+        }
+
+        document.getElementById('frmNewDebt').reset();
     }
 
     $scope.editDebt = function(debtId) {
