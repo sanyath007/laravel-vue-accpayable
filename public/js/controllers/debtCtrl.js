@@ -15,6 +15,19 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
     
     $scope.totalDebt = 0.00;
 
+    $scope.debt = {
+        debt_id: '',
+        debt_date: '',
+        
+        supplier_id: '',
+        debt_type_id: '',
+        debt_type_detail: '',
+        debt_id: '',
+        debt_id: '',
+        debt_id: '',
+        debt_id: '',
+    };
+
     $scope.getDebtData = function(URL) {
         $scope.debts = [];
         $scope.loading = true;

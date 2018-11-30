@@ -36,34 +36,34 @@ class AccountController extends Controller
             $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
                                 ->sum('debt_total');
         } else {
-            if($debttypes != 0 && $creditor != 0) {
+            if($debttype != 0 && $creditor != 0) {
                 /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
                 
                 $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                                ->where('debt_type_id', '=', $debttypes)
+                                ->where('debt_type_id', '=', $debttype)
                                 ->where('supplier_id', '=', $creditor)
                                 ->whereBetween('debt_date', [$sdate, $edate])
                                 ->with('debttype')
                                 ->paginate(20);
 
                 $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
-                                ->where('debt_type_id', '=', $debttypes)
+                                ->where('debt_type_id', '=', $debttype)
                                 ->where('supplier_id', '=', $creditor)
                                 ->whereBetween('debt_date', [$sdate, $edate])
                                 ->sum('debt_total');
             } else {
-                if($debttypes != 0 && $creditor == 0) {
+                if($debttype != 0 && $creditor == 0) {
                     $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                                    ->where('debt_type_id', '=', $debttypes)
+                                    ->where('debt_type_id', '=', $debttype)
                                     ->whereBetween('debt_date', [$sdate, $edate])
                                     ->with('debttype')
                                     ->paginate(20);
 
                     $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
-                                    ->where('debt_type_id', '=', $debttypes)
+                                    ->where('debt_type_id', '=', $debttype)
                                     ->whereBetween('debt_date', [$sdate, $edate])
                                     ->sum('debt_total');
-                } else if($debttypes == 0 && $creditor != 0) {
+                } else if($debttype == 0 && $creditor != 0) {
                     $debts = Debt::whereNotIn('debt_status', [2,3,4])
                                     ->where('supplier_id', '=', $creditor)
                                     ->whereBetween('debt_date', [$sdate, $edate])
