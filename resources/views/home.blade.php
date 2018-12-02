@@ -15,7 +15,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" ng-controller="homeCtrl">
         <!-- Small boxes (Stat box) -->
         <div class="row">
             <div class="col-lg-3 col-xs-6">

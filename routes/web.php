@@ -31,26 +31,27 @@ Route::group(['middleware' => 'web'], function() {
 });
 
 Route::group(['middleware' => ['web','auth']], function () {
-    Route::get('/creditor/list', 'CreditorController@list');
-    Route::get('/creditor/search/{searchKey}', 'CreditorController@search');
-    Route::get('/creditor/get-creditor/{creditorId}', 'CreditorController@getById');
-    Route::get('/creditor/add', 'CreditorController@add');
-    Route::post('/creditor/store', 'CreditorController@store');
-    Route::get('/creditor/edit/{creditorId}', 'CreditorController@edit');
-    Route::put('/creditor/update', 'CreditorController@update');
-    Route::delete('/creditor/delete/{creditorId}', 'CreditorController@delete');
+    Route::get('creditor/list', 'CreditorController@list');
+    Route::get('creditor/search/{searchKey}', 'CreditorController@search');
+    Route::get('creditor/get-creditor/{creditorId}', 'CreditorController@getById');
+    Route::get('creditor/add', 'CreditorController@add');
+    Route::post('creditor/store', 'CreditorController@store');
+    Route::get('creditor/edit/{creditorId}', 'CreditorController@edit');
+    Route::put('creditor/update', 'CreditorController@update');
+    Route::delete('creditor/delete/{creditorId}', 'CreditorController@delete');
 
     Route::get('debttype/list', 'DebtTypeController@list');
-	Route::get('/debttype/search/{searchKey}', 'DebttypeController@search');
-    Route::get('/debttype/get-debttype/{debttypeId}', 'DebttypeController@getById');
+	Route::get('debttype/search/{searchKey}', 'DebttypeController@search');
+    Route::get('debttype/get-debttype/{debttypeId}', 'DebttypeController@getById');
     Route::get('debttype/add', 'DebtTypeController@add');
-    Route::post('/debttype/store', 'DebttypeController@store');
-    Route::get('/debttype/edit/{debttypeId}', 'DebttypeController@edit');
-    Route::put('/debttype/update', 'DebttypeController@update');
-    Route::delete('/debttype/delete/{debttypeId}', 'DebttypeController@delete');
+    Route::post('debttype/store', 'DebttypeController@store');
+    Route::get('debttype/edit/{debttypeId}', 'DebttypeController@edit');
+    Route::put('debttype/update', 'DebttypeController@update');
+    Route::delete('debttype/delete/{debttypeId}', 'DebttypeController@delete');
 
     Route::get('debt/list', 'DebtController@list');
     Route::get('debt/rpt/{creditor}/{sdate}/{edate}/{showall}', 'DebtController@debtRpt');
+    Route::get('debt/get-debt/{debtId}', 'DebtController@getById');
     Route::get('debt/add/{creditor}', 'DebtController@add');
     Route::get('debt/edit/{creditor}/{debtId}', 'DebtController@edit');
     Route::post('debt/setzero', 'DebtController@setZero');

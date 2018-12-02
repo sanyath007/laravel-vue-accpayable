@@ -1,9 +1,10 @@
-app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
+app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
 
     $scope.loading = false;
+    $scope.cboDebtType = "";
 
     $scope.debtPager = [];
     $scope.appPager = [];
@@ -16,7 +17,7 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
     $scope.totalDebt = 0.00;
 
     $scope.debt = {
-        debt_id: 'NEW',
+        debt_id: '',
         debt_date: '',
         debt_doc_recno: '',
         debt_doc_recdate: '',
@@ -44,11 +45,11 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
         var eDate = debtDate[1].trim();
         var debtType = $("#debtType").val();
         var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+		console.log(CONFIG.BASE_URL +URL+ '/' +$scope.cboDebtType+ '/' +sDate+ '/' +eDate+ '/' +showAll);
 
-
-    	$http.get(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/1')
-    	.then(function(res) {
-    		console.log(res);
+        $http.get(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' +showAll)
+        .then(function(res) {
+            console.log(res);
             $scope.debts = res.data.debts.data;
             $scope.debtPager = res.data.debts;
 
@@ -121,7 +122,7 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
         });
     }
 
-    $scope.addNewDebt = function(event) {
+    $scope.add = function(event) {
         console.log(event);
         event.preventDefault();
 
@@ -159,7 +160,18 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
         document.getElementById('frmNewDebt').reset();
     }
 
-    $scope.editDebt = function(debtId) {
+    $scope.getDebt = function(debtId) {
+        $http.get(CONFIG.BASE_URL + '/debt/get-debt/' +debtId)
+        .then(function(res) {
+            console.log(res);
+            $scope.debt = res.data.debt;
+            $scope.debt.debt_date = StringFormatService.convFromDbDate($scope.debt.debt_date);
+        }, function(err) {
+            console.log(err);
+        });
+    }
+
+    $scope.edit = function(debtId) {
         console.log(debtId);
         // $('#dlgEditForm').modal('show');
 
@@ -173,7 +185,25 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
         }
     };
 
-    $scope.deleteDebt = function(debtId) {
+    $scope.update = function(event, form, debtId) {
+        console.log(debtId);
+        event.preventDefault();
+
+        $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
+        console.log($scope.debt);
+        // if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
+        //     $http.put(CONFIG.BASE_URL + '/debt/update/', $scope.debt)
+        //     .then(function(res) {
+        //         console.log(res);
+        //         toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
+        //     }, function(err) {
+        //         console.log(err);
+        //         toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+        //     });
+        // }
+    };
+
+    $scope.delete = function(debtId) {
         console.log(debtId);
 
         if(confirm("คุณต้องลบรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
@@ -186,7 +216,7 @@ app.controller('debtCtrl', function($scope, $http, toaster, CONFIG, ModalService
         }
     };
 
-    $scope.zeroDebt = function(debtId) {
+    $scope.setzero = function(debtId) {
         console.log(debtId);
 
         if(confirm("คุณต้องลดหนี้เป็นศูนย์รายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {

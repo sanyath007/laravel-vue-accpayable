@@ -71,6 +71,8 @@
 	<script src="{{ asset('/js/select2.full.min.js') }}"></script>
 	<script src="{{ asset('/js/daterangepicker.js') }}"></script>
 	<script src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ asset('/js/bootstrap-datepicker-custom.js') }}"></script>
+	<script src="{{ asset('/js/locales/bootstrap-datepicker.th.js') }}"></script>
 	<script src="{{ asset('/js/jquery.knob.min.js') }}"></script>
 	<script src="{{ asset('/js/fastclick.js') }}"></script>
 
@@ -90,6 +92,7 @@
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 	<script src="{{ asset('/js/services/report.js') }}"></script>
+	<script src="{{ asset('/js/services/stringFormat.js') }}"></script>
 
 	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 	<!--<script src="{{ asset('/js/services/dashboard.js') }}"></script>-->

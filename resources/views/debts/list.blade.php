@@ -29,9 +29,31 @@
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
                             <div class="col-md-8">
+                                <!-- Date and time range -->
+                                <div class="form-group">
+                                    <label>ระหว่างวันที่-วันที่:</label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="debtDate">
+                                    </div><!-- /.input group -->
+                                </div><!-- /.form group -->
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="showall" name="showall"> แสดงทั้งหมด
+                                    </label>
+                                </div>
+                                
                                 <div class="form-group">
                                     <label>เจ้าหนี้</label>
-                                    <select id="debtType" class="form-control select2" style="width: 100%; font-size: 12px;">
+                                    <select id="debtType"
+                                            ng-model="cboDebtType"
+                                            ng-change="getDebtData('/debt/rpt')"
+                                            class="form-control select2"
+                                            style="width: 100%; font-size: 12px;">
 
                                         <option value="" selected="selected">-- กรุณาเลือก --</option>
                                         @foreach($creditors as $creditor)
@@ -44,20 +66,12 @@
                                         
                                     </select>
                                 </div>
-                                <!-- Date and time range -->
-                                <div class="form-group">
-                                    <label>ระหว่างวันที่-วันที่:</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input type="text" class="form-control pull-right" id="debtDate">
-                                    </div><!-- /.input group -->
-                                </div><!-- /.form group -->
                             </div>
 
                             <div class="col-md-4">
+
+                                <!-- <div id="pieContainer" style="width: 800px; height: 400px; margin: 0 auto; margin-top: 20px;"></div> -->
+                                
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">ยอดหนี้ทั้งหมด</div>
                                     <div class="panel-body" style="height: 90px; text-align: right;">
@@ -66,14 +80,12 @@
                                         </h2>
                                     </div>
                                 </div>
+
                             </div>                        
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getDebtData('/debt/rpt')" class="btn btn-info">
-                                ค้นหา
-                            </button>
-                            <a ng-click="addNewDebt($event)" class="btn btn-primary">
+                            <a ng-click="add($event)" class="btn btn-primary">
                                 เพิ่มรายการ
                             </a>
                         </div>
@@ -101,7 +113,7 @@
                         <!-- รายการรอดำเนินการ -->
                         <div class="tab-content clearfix">
                             <div class="tab-pane active" id="1a" style="padding: 10px;">
-                                <table class="table table-bordered" style="font-size: 12px;">
+                                <table class="table table-bordered table-striped" style="font-size: 12px;">
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center;">#</th>
@@ -109,23 +121,23 @@
                                             <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
                                             <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
                                             <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
-                                            <th style="text-align: left;">เจ้าหนี้</th>
+                                            <!-- <th style="text-align: left;">เจ้าหนี้</th> -->
                                             <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
                                             <th style="width: 8%; text-align: center;">ยอดหนี้</th>
                                             <th style="width: 8%; text-align: center;">ภาษี</th>
                                             <th style="width: 8%; text-align: center;">สุทธิ</th>
                                             <th style="width: 8%; text-align: center;">สถานะ</th>
-                                            <th style="width: 5%; text-align: center;">Actions</th>
+                                            <th style="width: 8%; text-align: center;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="(index, debt) in debts">
                                             <td style="text-align: center;">@{{ index+debtPager.from }}</td>
                                             <td style="text-align: center;">@{{ debt.debt_id }}</td>
-                                            <td style="text-align: center;">@{{ debt.debt_date }}</td>
+                                            <td style="text-align: center;">@{{ debt.debt_date | thdate }}</td>
                                             <td style="text-align: center;">@{{ debt.deliver_no }}</td>
-                                            <td style="text-align: left;">@{{ debt.deliver_date }}</td>
-                                            <td style="text-align: left;">@{{ debt.supplier_name }}</td>
+                                            <td style="text-align: left;">@{{ debt.deliver_date | thdate }}</td>
+                                            <!-- <td style="text-align: left;">@{{ debt.supplier_name }}</td> -->
                                             <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
                                             <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
                                             <td style="text-align: right;">@{{ debt.debt_vat | number: 2 }}</td>
@@ -136,24 +148,21 @@
                                                     (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
                                             </td>             
                                             <td style="text-align: center;">
-                                                <a  href="#" 
-                                                    ng-click="zeroDebt(debt.debt_id)" 
+                                                <a  ng-click="setzero(debt.debt_id)" 
                                                     ng-show="(debt.debt_status==0)" 
-                                                    class="text-warnong" 
+                                                    class="btn btn-primary btn-xs" 
                                                     title="ลดหนี้ศูนย์">
                                                     <i class="fa fa-credit-card"></i>
                                                 </a>
-                                                <a  href="#" 
-                                                    ng-click="editDebt(debt.debt_id)" 
+                                                <a  ng-click="edit(debt.debt_id)" 
                                                     ng-show="(debt.debt_status==0)" 
-                                                    class="text-warnong"
+                                                    class="btn btn-warning btn-xs"
                                                     title="แก้ไขรายการ">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                                <a  href="#" 
-                                                    ng-click="deleteDebt(debt.debt_id)" 
+                                                <a  ng-click="delete(debt.debt_id)" 
                                                     ng-show="(debt.debt_status==0)" 
-                                                    class="text-danger"
+                                                    class="btn btn-danger btn-xs"
                                                     title="ลบรายการ">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
@@ -197,7 +206,7 @@
 
                             <!-- รายหารขออนุมัติเบิก-จ่าย -->
                             <div class="tab-pane" id="2a" style="padding: 10px;">
-                                <table class="table table-bordered" style="font-size: 12px;">
+                                <table class="table table-bordered table-striped" style="font-size: 12px;">
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center;">#</th>
@@ -217,9 +226,9 @@
                                         <tr ng-repeat="(index, app) in apps">
                                             <td style="text-align: center;">@{{ index+appPager.from }}</td>
                                             <td style="text-align: center;">@{{ app.debt_id }}</td>
-                                            <td style="text-align: center;">@{{ app.debt_date }}</td>
+                                            <td style="text-align: center;">@{{ app.debt_date | thdate }}</td>
                                             <td style="text-align: center;">@{{ app.deliver_no }}</td>
-                                            <td style="text-align: left;">@{{ app.deliver_date }}</td>
+                                            <td style="text-align: left;">@{{ app.deliver_date | thdate }}</td>
                                             <td style="text-align: left;">@{{ app.supplier_name }}</td>
                                             <td style="text-align: left;">@{{ app.debttype.debt_type_name }}</td>
                                             <td style="text-align: right;">@{{ app.debt_amount | number: 2 }}</td>
@@ -269,7 +278,7 @@
 
                             <!-- รายการชำระแล้ว -->
                             <div class="tab-pane" id="3a" style="padding: 10px;">
-                                <table class="table table-bordered" style="font-size: 12px;">
+                                <table class="table table-bordered table-striped" style="font-size: 12px;">
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center;">#</th>
@@ -282,25 +291,34 @@
                                             <th style="width: 8%; text-align: center;">ยอดหนี้</th>
                                             <th style="width: 8%; text-align: center;">ภาษี</th>
                                             <th style="width: 8%; text-align: center;">สุทธิ</th>
-                                            <th style="width: 8%; text-align: center;">สถานะ</th>
+                                            <th style="width: 5%; text-align: center;">สถานะ</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="(index, paid) in paids">
                                             <td style="text-align: center;">@{{ index+paidPager.from }}</td>
                                             <td style="text-align: center;">@{{ paid.debt_id }}</td>
-                                            <td style="text-align: center;">@{{ paid.debt_date }}</td>
+                                            <td style="text-align: center;">@{{ paid.debt_date | thdate }}</td>
                                             <td style="text-align: center;">@{{ paid.deliver_no }}</td>
-                                            <td style="text-align: left;">@{{ paid.deliver_date }}</td>
+                                            <td style="text-align: left;">@{{ paid.deliver_date | thdate }}</td>
                                             <td style="text-align: left;">@{{ paid.supplier_name }}</td>
                                             <td style="text-align: left;">@{{ paid.debttype.debt_type_name }}</td>
                                             <td style="text-align: right;">@{{ paid.debt_amount | number: 2 }}</td>
                                             <td style="text-align: right;">@{{ paid.debt_vat | number: 2 }}</td>
                                             <td style="text-align: right;">@{{ paid.debt_total | number: 2 }}</td>
                                             <td style="text-align: center;">
-                                                @{{ (paid.debt_status==1) ? 'ขออนุมัติ' : 
-                                                    (paid.debt_status==2) ? 'ชำระเงินแล้ว' : 
-                                                    (paid.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
+                                                <span class="label label-warning" ng-show="paid.debt_status==4">
+                                                    @{{ (paid.debt_status==4) ? 'ลดหนี้ศูนย์' : '' }}
+                                                </span>
+
+                                                <span class="label label-success" ng-show="paid.debt_status!=4">
+                                                    @{{ 
+                                                        (paid.debt_status==0) ? 'รอดำเนินการ' :
+                                                        (paid.debt_status==1) ? 'ขออนุมัติ' : 
+                                                        (paid.debt_status==2) ? 'ชำระเงินแล้ว' : 
+                                                        (paid.debt_status==3) ? 'ยกเลิก' : 'ลดหนี้ศูนย์'
+                                                    }}
+                                                </span>
                                             </td>      
                                         </tr>
                                     </tbody>
@@ -450,6 +468,8 @@
                     format: 'YYYY-MM-DD',
                     separator: " , ",
                 }
+            }, function(e) {
+                console.log(e);
             });
         });
     </script>

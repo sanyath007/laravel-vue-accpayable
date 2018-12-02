@@ -106,7 +106,7 @@ app.controller('creditorCtrl', function($scope, $http, toaster, CONFIG, ModalSer
         console.log(creditorId);
         event.preventDefault();
 
-        if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + creditorId + " ใช่หรือไม่?")) {
+        if(confirm("คุณต้องแก้ไขเจ้าหนี้เลขที่ " + creditorId + " ใช่หรือไม่?")) {
             $http.put(CONFIG.BASE_URL + '/creditor/update/', $scope.creditor)
             .then(function(res) {
                 console.log(res);
@@ -121,7 +121,7 @@ app.controller('creditorCtrl', function($scope, $http, toaster, CONFIG, ModalSer
     $scope.delete = function(creditorId) {
         console.log(creditorId);
 
-        if(confirm("คุณต้องลบรายการหนี้เลขที่ " + creditorId + " ใช่หรือไม่?")) {
+        if(confirm("คุณต้องลบเจ้าหนี้เลขที่ " + creditorId + " ใช่หรือไม่?")) {
             $http.delete(CONFIG.BASE_URL + '/creditor/delete/' +creditorId)
             .then(function(res) {
                 console.log(res);
