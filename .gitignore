@@ -2,7 +2,6 @@
 /public/bower/*
 /public/files
 /public/hot
-/public/js/app.js
 /public/storage
 /public/uploads/*
 /storage/*.key

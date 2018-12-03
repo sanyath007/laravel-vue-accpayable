@@ -16,7 +16,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="debtCtrl">
+    <section class="content" ng-controller="debtCtrl" ng-init="getDebtChart()">
 
         <div class="row">
             <div class="col-md-12">
@@ -28,7 +28,7 @@
 
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <!-- Date and time range -->
                                 <div class="form-group">
                                     <label>ระหว่างวันที่-วันที่:</label>
@@ -68,18 +68,18 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-6">
 
-                                <!-- <div id="pieContainer" style="width: 800px; height: 400px; margin: 0 auto; margin-top: 20px;"></div> -->
-                                
-                                <div class="panel panel-primary">
+                                <div id="barContainer" style="width: 100%; height: 200px; margin: 0 auto; margin-top: 20px;"></div>
+
+                                <!-- <div class="panel panel-primary">
                                     <div class="panel-heading">ยอดหนี้ทั้งหมด</div>
                                     <div class="panel-body" style="height: 90px; text-align: right;">
                                         <h2 style="color: red;">
                                             @{{ totalDebt | number: 2 }} 
                                         </h2>
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>                        
                         </div><!-- /.box-body -->

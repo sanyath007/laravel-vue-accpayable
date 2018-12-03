@@ -1,4 +1,4 @@
-app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService) {
+app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, ReportService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
@@ -34,6 +34,35 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         debt_vat: '',
         debt_total: '',
         debt_remark: '',
+    };
+
+    $scope.barOptions = {};
+
+    $scope.getDebtChart = function () {
+        ReportService.getSeriesData('/report/debt-chart/','2018-10')
+        .then(function(res) {
+            var debtSeries = [];
+            var paidSeries = [];
+
+            angular.forEach(res.data, function(value, key) {
+                debtSeries.push(value.request);
+                paidSeries.push(value.service);
+            });
+
+            var categories = ['ยอดหนี้']
+            $scope.barOptions = ReportService.initBarChart("barContainer", "", categories, 'จำนวน');
+            $scope.barOptions.series.push({
+                name: 'หนี้คงเหลือ',
+                data: [4945713.15]
+            }, {
+                name: 'ตัดจ่าย',
+                data: [72596483.07]
+            });
+
+            var chart = new Highcharts.Chart($scope.barOptions);
+        }, function(err) {
+            console.log(err);
+        });
     };
 
     $scope.getDebtData = function(URL) {

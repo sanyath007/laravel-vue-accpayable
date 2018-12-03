@@ -73,4 +73,15 @@ LEFT JOIN nrhosp_acc_payment p ON (pd.payment_id=p.payment_id)) AS pa ON (b.debt
     {
         return view('reports.excel');
     }
+
+    public function debtChart($month)
+    {
+        $sql = "SELECT
+                SUM(CASE WHEN (debt_status IN ('0','1')) THEN debt_total END) as debt, 
+                SUM(CASE WHEN (debt_status IN ('2','4')) THEN debt_total END) as paid
+                FROM nrhosp_acc_debt
+                WHERE (supplier_id='00058') ";
+
+        return \DB::select($sql);
+    }
 }
