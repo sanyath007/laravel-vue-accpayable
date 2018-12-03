@@ -16,7 +16,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="debtCtrl" ng-init="getDebtChart()">
+    <section class="content" ng-controller="debtCtrl">
 
         <div class="row">
             <div class="col-md-12">
@@ -51,7 +51,7 @@
                                     <label>เจ้าหนี้</label>
                                     <select id="debtType"
                                             ng-model="cboDebtType"
-                                            ng-change="getDebtData('/debt/rpt')"
+                                            ng-change="getDebtData('/debt/rpt'); getDebtChart(cboDebtType)"
                                             class="form-control select2"
                                             style="width: 100%; font-size: 12px;">
 
@@ -127,7 +127,7 @@
                                             <th style="width: 8%; text-align: center;">ภาษี</th>
                                             <th style="width: 8%; text-align: center;">สุทธิ</th>
                                             <th style="width: 8%; text-align: center;">สถานะ</th>
-                                            <th style="width: 8%; text-align: center;">Actions</th>
+                                            <th style="width: 6%; text-align: center;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

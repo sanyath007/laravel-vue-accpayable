@@ -16,8 +16,6 @@ class AccountController extends Controller
 {
     public function arrear()
     {
-    	// dd(Debt::with('debttype')->paginate(20));
-
     	return view('accounts.arrear', [
             "creditors" => Creditor::all(),
             "debttypes" => DebtType::all(),

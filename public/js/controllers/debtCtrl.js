@@ -17,7 +17,6 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
     $scope.totalDebt = 0.00;
 
     $scope.debt = {
-        debt_id: '',
         debt_date: '',
         debt_doc_recno: '',
         debt_doc_recdate: '',
@@ -38,25 +37,26 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
 
     $scope.barOptions = {};
 
-    $scope.getDebtChart = function () {
-        ReportService.getSeriesData('/report/debt-chart/','2018-10')
+    $scope.getDebtChart = function (creditorId) {
+        ReportService.getSeriesData('/report/debt-chart/', creditorId)
         .then(function(res) {
+            console.log(res);
             var debtSeries = [];
             var paidSeries = [];
 
             angular.forEach(res.data, function(value, key) {
-                debtSeries.push(value.request);
-                paidSeries.push(value.service);
+                debtSeries.push(parseFloat(value.debt.toFixed(2)));
+                paidSeries.push(parseFloat(value.paid.toFixed(2)));
             });
 
             var categories = ['ยอดหนี้']
             $scope.barOptions = ReportService.initBarChart("barContainer", "", categories, 'จำนวน');
             $scope.barOptions.series.push({
                 name: 'หนี้คงเหลือ',
-                data: [4945713.15]
+                data: debtSeries
             }, {
-                name: 'ตัดจ่าย',
-                data: [72596483.07]
+                name: 'ตัดจ่ายแล้ว',
+                data: paidSeries
             });
 
             var chart = new Highcharts.Chart($scope.barOptions);
@@ -162,7 +162,6 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             console.log("You doesn't select creditor !!!");
             toaster.pop('warning', "", "คุณยังไม่ได้เลือกเจ้าหนี้ !!!");
         } else {
-            console.log(CONFIG.BASE_URL + '/debt/add/' + creditor);
             window.location.href = CONFIG.BASE_URL + '/debt/add/' + creditor;
         }
     }
@@ -172,18 +171,20 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         event.preventDefault();
 
         if (form.$invalid) {
+            console.log(form);
+            console.log(form.$invalid);
             toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
             return;
         } else {
             console.log($scope.debt);
-            // $http.post(CONFIG.BASE_URL + '/debt/store', $scope.debt)
-            // .then(function(res) {
-            //     console.log(res);
-            //     toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
-            // }, function(err) {
-            //     console.log(err);
-            //     toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
-            // });            
+            $http.post(CONFIG.BASE_URL + '/debt/store', $scope.debt)
+            .then(function(res) {
+                console.log(res);
+                // toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
+            }, function(err) {
+                console.log(err);
+                // toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+            });            
         }
 
         document.getElementById('frmNewDebt').reset();

@@ -60,7 +60,7 @@
                                         <input  type="text" 
                                                 id="debt_id" 
                                                 name="debt_id" 
-                                                ng-model="debt.debt_id" 
+                                                value="DB62-NEW" 
                                                 class="form-control" readonly required>
                                         <div class="help-block" ng-show="frmNewDebt.debt_id.$error.required">
                                             กรุณาเลือกคำนำหน้า
@@ -73,8 +73,7 @@
                                                 name="debt_type_id"
                                                 ng-model="debt.debt_type_id" 
                                                 class="form-control select2" 
-                                                style="width: 100%; font-size: 12px;"
-                                                required>
+                                                style="width: 100%; font-size: 12px;" required>
                                             <option value="" selected="selected">-- กรุณาเลือก --</option>
 
                                             @foreach($debttypes as $debttype)
@@ -97,15 +96,16 @@
                                                 id="debt_doc_recno" .
                                                 name="debt_doc_recno" 
                                                 ng-model="debt.debt_doc_recno" 
-                                                class="form-control" required>
-                                        <div class="help-block" ng-show="frmNewDebt.debt_doc_recno.$error.required">
-                                            กรุณาเลือกคำนำหน้า
-                                        </div>
+                                                class="form-control">
                                     </div>
 
                                     <div class="form-group">
                                         <label>เลขที่หนังสือ :</label>
-                                        <input type="text" id="debt_doc_no" name="debt_doc_no" ng-model="debt.debt_doc_no" class="form-control">
+                                        <input  type="text" 
+                                                id="debt_doc_no" 
+                                                name="debt_doc_no" 
+                                                ng-model="debt.debt_doc_no" 
+                                                class="form-control">
                                     </div>
 
                                     <div class="form-group" ng-class="{ 'has-error': frmNewDebt.deliver_no.$error.required }">

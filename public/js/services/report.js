@@ -110,7 +110,7 @@ app.service('ReportService', function(CONFIG, $http) {
         };
     };
 
-	this.getSeriesData = function (url, month) {
-		return $http.get(CONFIG.BASE_URL + url + month);
+	this.getSeriesData = function (url, data) {
+		return $http.get(CONFIG.BASE_URL + url + data);
 	}
 });

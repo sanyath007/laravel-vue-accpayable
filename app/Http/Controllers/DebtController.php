@@ -19,6 +19,7 @@ class DebtController extends Controller
 
     public function debtRpt($creditor, $sdate, $edate, $showall)
     {
+        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
         if($showall == 1) {
             $debts = Debt::where('supplier_id', '=', $creditor)
                             ->where('debt_status', '=', '0')
@@ -62,13 +63,14 @@ class DebtController extends Controller
 
     private function generateAutoId()
     {
-        $supplier = \DB::table('stock_supplier')
-                        ->select('supplier_id')
-                        ->orderBy('supplier_id', 'DESC')
+        $debt = \DB::table('nrhosp_acc_debt')
+                        ->select('debt_id')
+                        ->orderBy('debt_id', 'DESC')
                         ->first();
 
-        $tmpLastId =  ((int)($supplier->supplier_id)) + 1;
-        $lastId = sprintf("%'.05d", $tmpLastId);
+        $startId = 'DB'.substr((date('Y') + 543), 2);
+        $tmpLastId =  ((int)(substr($debt->debt_id, 4))) + 1;
+        $lastId = $startId.sprintf("%'.07d", $tmpLastId);
 
         return $lastId;
     }
@@ -83,7 +85,38 @@ class DebtController extends Controller
 
     public function store(Request $req)
     {
+        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
+        $debt = new Debt();
+        $debt->debt_id = $this->generateAutoId();
+        $debt->debt_date = $req['debt_date'];
+        $debt->debt_doc_recno = $req['debt_doc_recno'];
+        $debt->debt_doc_recdate = $req['debt_doc_recdate'];
+        $debt->debt_doc_no = $req['debt_doc_no'];
+        $debt->debt_doc_date = $req['debt_doc_date'];
+        $debt->debt_type_id = $req['debt_type_id'];
+        $debt->debt_type_detail = $req['debt_type_detail'];
+        $debt->supplier_id = $req['supplier_id'];
+        $debt->supplier_name = $req['supplier_name'];
+        $debt->doc_receive = $req['doc_receive'];
+        $debt->debt_year = $req['debt_year'];
+        $debt->debt_amount = $req['debt_amount'];
+        $debt->debt_vatrate = $req['debt_vatrate'];
+        $debt->debt_vat = $req['debt_vat'];
+        $debt->debt_total = $req['debt_total'];
+        $debt->debt_remark = $req['debt_remark'];
+        $debt->debt_status = '0';
 
+        if($debt->save()) {
+            return [
+                "status" => "success",
+                "message" => "Insert success.",
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "Insert failed.",
+            ];
+        }
     }
 
     public function getById($debtId)
@@ -104,7 +137,37 @@ class DebtController extends Controller
 
     public function update(Request $req)
     {
-        
+        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
+        $debt = Debt::find($req['debt_id']);
+        $debt->debt_date = $req['debt_date'];
+        $debt->debt_doc_recno = $req['debt_doc_recno'];
+        $debt->debt_doc_recdate = $req['debt_doc_recdate'];
+        $debt->debt_doc_no = $req['debt_doc_no'];
+        $debt->debt_doc_date = $req['debt_doc_date'];
+        $debt->debt_type_id = $req['debt_type_id'];
+        $debt->debt_type_detail = $req['debt_type_detail'];
+        $debt->supplier_id = $req['supplier_id'];
+        $debt->supplier_name = $req['supplier_name'];
+        $debt->doc_receive = $req['doc_receive'];
+        $debt->debt_year = $req['debt_year'];
+        $debt->debt_amount = $req['debt_amount'];
+        $debt->debt_vatrate = $req['debt_vatrate'];
+        $debt->debt_vat = $req['debt_vat'];
+        $debt->debt_total = $req['debt_total'];
+        $debt->debt_remark = $req['debt_remark'];
+
+        if($debt->save()) {
+            return [
+                "status" => "success",
+                "message" => "Insert success.",
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "Insert failed.",
+            ];
+        }
+
     }
 
     public function delete(Request $req)
