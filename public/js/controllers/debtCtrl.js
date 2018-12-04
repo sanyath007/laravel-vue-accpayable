@@ -20,6 +20,8 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         debt_date: '',
         debt_doc_recno: '',
         debt_doc_recdate: '',
+        deliver_no: '',
+        deliver_date: '',
         debt_doc_no: '',
         debt_doc_date: '',
         debt_type_id: '',
@@ -171,12 +173,18 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         event.preventDefault();
 
         if (form.$invalid) {
-            console.log(form);
-            console.log(form.$invalid);
+            console.log(form.$error);
             toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
             return;
         } else {
+            // Convert thai date to db date.
+            $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
+            $scope.debt.debt_doc_recdate = StringFormatService.convToDbDate($scope.debt.debt_doc_recdate);
+            $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
+            $scope.debt.debt_doc_date = StringFormatService.convToDbDate($scope.debt.debt_doc_date);
+            $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
             console.log($scope.debt);
+
             $http.post(CONFIG.BASE_URL + '/debt/store', $scope.debt)
             .then(function(res) {
                 console.log(res);
@@ -219,18 +227,29 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         console.log(debtId);
         event.preventDefault();
 
-        $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
-        console.log($scope.debt);
-        // if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
-        //     $http.put(CONFIG.BASE_URL + '/debt/update/', $scope.debt)
-        //     .then(function(res) {
-        //         console.log(res);
-        //         toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
-        //     }, function(err) {
-        //         console.log(err);
-        //         toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
-        //     });
-        // }
+        if (form.$invalid) {
+            toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
+            return;
+        } else {
+            // Convert thai date to db date.
+            $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
+            $scope.debt.debt_doc_recdate = StringFormatService.convToDbDate($scope.debt.debt_doc_recdate);
+            $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
+            $scope.debt.debt_doc_date = StringFormatService.convToDbDate($scope.debt.debt_doc_date);
+            $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
+            console.log($scope.debt);
+
+            if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
+            //     $http.put(CONFIG.BASE_URL + '/debt/update/', $scope.debt)
+            //     .then(function(res) {
+            //         console.log(res);
+            //         toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
+            //     }, function(err) {
+            //         console.log(err);
+            //         toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+            //     });
+            }
+        }
     };
 
     $scope.delete = function(debtId) {

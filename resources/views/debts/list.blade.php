@@ -43,7 +43,7 @@
 
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="showall" name="showall"> แสดงทั้งหมด
+                                        <input type="checkbox" id="showall" name="showall" ng-click="getDebtData('/debt/rpt')"> แสดงทั้งหมด
                                     </label>
                                 </div>
                                 
@@ -117,17 +117,17 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center;">#</th>
-                                            <th style="width: 5%; text-align: center;">รหัสรายการหนี้</th>
-                                            <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
+                                            <th style="width: 6%; text-align: center;">รหัสรายการ</th>
+                                            <th style="width: 7%; text-align: center;">วันที่ลงบัญชี</th>
                                             <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
-                                            <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
+                                            <th style="width: 7%; text-align: center;">วันที่ใบส่งของ</th>
                                             <!-- <th style="text-align: left;">เจ้าหนี้</th> -->
-                                            <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
-                                            <th style="width: 8%; text-align: center;">ยอดหนี้</th>
-                                            <th style="width: 8%; text-align: center;">ภาษี</th>
-                                            <th style="width: 8%; text-align: center;">สุทธิ</th>
-                                            <th style="width: 8%; text-align: center;">สถานะ</th>
-                                            <th style="width: 6%; text-align: center;">Actions</th>
+                                            <th style="text-align: left;">ประเภทหนี้</th>
+                                            <th style="width: 7%; text-align: center;">ยอดหนี้</th>
+                                            <th style="width: 7%; text-align: center;">ภาษี</th>
+                                            <th style="width: 7%; text-align: center;">สุทธิ</th>
+                                            <th style="width: 6%; text-align: center;">สถานะ</th>
+                                            <th style="width: 8%; text-align: center;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -136,16 +136,18 @@
                                             <td style="text-align: center;">@{{ debt.debt_id }}</td>
                                             <td style="text-align: center;">@{{ debt.debt_date | thdate }}</td>
                                             <td style="text-align: center;">@{{ debt.deliver_no }}</td>
-                                            <td style="text-align: left;">@{{ debt.deliver_date | thdate }}</td>
+                                            <td style="text-align: center;">@{{ debt.deliver_date | thdate }}</td>
                                             <!-- <td style="text-align: left;">@{{ debt.supplier_name }}</td> -->
                                             <td style="text-align: left;">@{{ debt.debttype.debt_type_name }}</td>
                                             <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
                                             <td style="text-align: right;">@{{ debt.debt_vat | number: 2 }}</td>
                                             <td style="text-align: right;">@{{ debt.debt_total | number: 2 }}</td>
                                             <td style="text-align: center;">
-                                                @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
-                                                    (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
-                                                    (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
+                                                <span class="label label-info" ng-show="paid.debt_status!=0">
+                                                    @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
+                                                        (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 
+                                                        (debt.debt_status==3) ? 'ยกเลิก' : 'รอดำเนินการ' }}
+                                                </span>
                                             </td>             
                                             <td style="text-align: center;">
                                                 <a  ng-click="setzero(debt.debt_id)" 
@@ -210,16 +212,16 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center;">#</th>
-                                            <th style="width: 5%; text-align: center;">รหัสรายการ</th>
-                                            <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
+                                            <th style="width: 6%; text-align: center;">รหัสรายการ</th>
+                                            <th style="width: 7%; text-align: center;">วันที่ลงบัญชี</th>
                                             <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
-                                            <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
-                                            <th style="text-align: left;">เจ้าหนี้</th>
-                                            <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
-                                            <th style="width: 8%; text-align: center;">ยอดหนี้</th>
-                                            <th style="width: 8%; text-align: center;">ภาษี</th>
-                                            <th style="width: 8%; text-align: center;">สุทธิ</th>
-                                            <th style="width: 8%; text-align: center;">สถานะ</th>
+                                            <th style="width: 7%; text-align: center;">วันที่ใบส่งของ</th>
+                                            <!-- <th style="text-align: left;">เจ้าหนี้</th> -->
+                                            <th style="text-align: left;">ประเภทหนี้</th>
+                                            <th style="width: 7%; text-align: center;">ยอดหนี้</th>
+                                            <th style="width: 7%; text-align: center;">ภาษี</th>
+                                            <th style="width: 7%; text-align: center;">สุทธิ</th>
+                                            <th style="width: 6%; text-align: center;">สถานะ</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -228,8 +230,8 @@
                                             <td style="text-align: center;">@{{ app.debt_id }}</td>
                                             <td style="text-align: center;">@{{ app.debt_date | thdate }}</td>
                                             <td style="text-align: center;">@{{ app.deliver_no }}</td>
-                                            <td style="text-align: left;">@{{ app.deliver_date | thdate }}</td>
-                                            <td style="text-align: left;">@{{ app.supplier_name }}</td>
+                                            <td style="text-align: center;">@{{ app.deliver_date | thdate }}</td>
+                                            <!-- <td style="text-align: left;">@{{ app.supplier_name }}</td> -->
                                             <td style="text-align: left;">@{{ app.debttype.debt_type_name }}</td>
                                             <td style="text-align: right;">@{{ app.debt_amount | number: 2 }}</td>
                                             <td style="text-align: right;">@{{ app.debt_vat | number: 2 }}</td>
@@ -282,16 +284,16 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 3%; text-align: center;">#</th>
-                                            <th style="width: 5%; text-align: center;">รหัสรายการหนี้</th>
-                                            <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
+                                            <th style="width: 6%; text-align: center;">รหัสรายการ</th>
+                                            <th style="width: 7%; text-align: center;">วันที่ลงบัญชี</th>
                                             <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
-                                            <th style="width: 8%; text-align: center;">วันที่ใบส่งของ</th>
-                                            <th style="text-align: left;">เจ้าหนี้</th>
-                                            <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
-                                            <th style="width: 8%; text-align: center;">ยอดหนี้</th>
-                                            <th style="width: 8%; text-align: center;">ภาษี</th>
-                                            <th style="width: 8%; text-align: center;">สุทธิ</th>
-                                            <th style="width: 5%; text-align: center;">สถานะ</th>
+                                            <th style="width: 7%; text-align: center;">วันที่ใบส่งของ</th>
+                                            <!-- <th style="text-align: left;">เจ้าหนี้</th> -->
+                                            <th style="text-align: left;">ประเภทหนี้</th>
+                                            <th style="width: 7%; text-align: center;">ยอดหนี้</th>
+                                            <th style="width: 7%; text-align: center;">ภาษี</th>
+                                            <th style="width: 7%; text-align: center;">สุทธิ</th>
+                                            <th style="width: 6%; text-align: center;">สถานะ</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -300,8 +302,8 @@
                                             <td style="text-align: center;">@{{ paid.debt_id }}</td>
                                             <td style="text-align: center;">@{{ paid.debt_date | thdate }}</td>
                                             <td style="text-align: center;">@{{ paid.deliver_no }}</td>
-                                            <td style="text-align: left;">@{{ paid.deliver_date | thdate }}</td>
-                                            <td style="text-align: left;">@{{ paid.supplier_name }}</td>
+                                            <td style="text-align: center;">@{{ paid.deliver_date | thdate }}</td>
+                                            <!-- <td style="text-align: left;">@{{ paid.supplier_name }}</td> -->
                                             <td style="text-align: left;">@{{ paid.debttype.debt_type_name }}</td>
                                             <td style="text-align: right;">@{{ paid.debt_amount | number: 2 }}</td>
                                             <td style="text-align: right;">@{{ paid.debt_vat | number: 2 }}</td>

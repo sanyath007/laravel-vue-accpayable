@@ -219,7 +219,8 @@
                                             <input  type="text" 
                                                     id="debt_amount" 
                                                     name="debt_amount" 
-                                                    ng-model="debt.debt_amount" 
+                                                    ng-model="debt.debt_amount"
+                                                    pattern="[0-9]"
                                                     class="form-control" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_amount.$error.required">
                                                 กรุณาเลือกคำนำหน้า
@@ -232,6 +233,7 @@
                                                     id="debt_vat" 
                                                     name="debt_vat" 
                                                     ng-model="debt.debt_vat" 
+                                                    pattern="[0-9]"
                                                     class="form-control" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_vat.$error.required">
                                                 กรุณาระบุจำนวนภาษี
@@ -245,7 +247,8 @@
                                             <input  type="text" 
                                                     id="debt_vatrate" 
                                                     name="debt_vatrate" 
-                                                    ng-model="debt.debt_vatrate" 
+                                                    ng-model="debt.debt_vatrate"
+                                                    pattern="[0-9]"
                                                     class="form-control" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_vatrate.$error.required">
                                                 กรุณาระบุอัตราภาษี (%)
@@ -257,7 +260,8 @@
                                             <input  type="text" 
                                                     id="debt_total" 
                                                     name="debt_total" 
-                                                    ng-model="debt.debt_total" 
+                                                    ng-model="debt.debt_total"
+                                                    pattern="[0-9]"
                                                     class="form-control" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_total.$error.required">
                                                 กรุณาระบุยอดหนี้สุทธิ
