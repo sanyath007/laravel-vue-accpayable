@@ -41,12 +41,16 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         ReportService.getSeriesData('/report/debt-chart/', creditorId)
         .then(function(res) {
             console.log(res);
+
             var debtSeries = [];
             var paidSeries = [];
 
             angular.forEach(res.data, function(value, key) {
-                debtSeries.push(parseFloat(value.debt.toFixed(2)));
-                paidSeries.push(parseFloat(value.paid.toFixed(2)));
+                let debt = (value.debt) ? parseFloat(value.debt.toFixed(2)) : 0;
+                let paid = (value.paid) ? parseFloat(value.paid.toFixed(2)) : 0;
+                
+                debtSeries.push(debt);
+                paidSeries.push(paid);
             });
 
             var categories = ['ยอดหนี้']
