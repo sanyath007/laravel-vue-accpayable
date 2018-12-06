@@ -42,6 +42,32 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
 
     $scope.barOptions = {};
 
+    $scope.clearDebtObj = function() {
+        $scope.debt = {
+            debt_date: '',
+            debt_doc_recno: '',
+            debt_doc_recdate: '',
+            deliver_no: '',
+            deliver_date: '',
+            debt_doc_no: '',
+            debt_doc_date: '',
+            debt_type_id: '',
+            debt_type_detail: '',
+            debt_month: '',
+            debt_year: '',
+            supplier_id: '',
+            supplier_name: '',
+            doc_receive: '',
+            debt_amount: '',
+            debt_vatrate: '',
+            debt_vat: '',
+            debt_total: '',
+            debt_remark: '',
+            debt_creby: '',
+            debt_userid: ''
+        };
+    };
+
     $scope.getDebtChart = function (creditorId) {
         ReportService.getSeriesData('/report/debt-chart/', creditorId)
         .then(function(res) {
@@ -81,9 +107,9 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         var debtDate = ($("#debtDate").val()).split(",");
         var sDate = debtDate[0].trim();
         var eDate = debtDate[1].trim();
-        var debtType = $("#debtType").val();
+        var debtType = ($("#debtType").val() != '') ? $("#debtType").val() : 0;
         var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
-		console.log(CONFIG.BASE_URL +URL+ '/' +$scope.cboDebtType+ '/' +sDate+ '/' +eDate+ '/' +showAll);
+		console.log(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' +showAll);
 
         $http.get(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' +showAll)
         .then(function(res) {
@@ -161,8 +187,8 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
     }
 
     $scope.calculateVat = function(amount, vatRate) {
-        $scope.debt.debt_vat = (amount * vatRate) / 100;
-        $scope.debt.debt_total = parseFloat(amount) + parseFloat($scope.debt.debt_vat);
+        $scope.debt.debt_vat = ((amount * vatRate) / 100).toFixed(2);
+        $scope.debt.debt_total = (parseFloat(amount) + parseFloat($scope.debt.debt_vat)).toFixed(2);
     }
 
     $scope.add = function(event) {
@@ -214,6 +240,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         }
 
         document.getElementById('frmNewDebt').reset();
+        $scope.clearDebtObj();
     }
 
     $scope.getDebt = function(debtId) {
@@ -255,21 +282,26 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
             $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convToDbDate($scope.debt.debt_doc_date) : '';
             $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
+            // Get supplier data
+            $scope.debt.supplier_id = $("#supplier_id").val();
+            $scope.debt.supplier_name = $("#supplier_name").val();
             // Get user id
             $scope.debt.debt_creby = $("#user").val();
             $scope.debt.debt_userid = $("#user").val();
             console.log($scope.debt);
 
-            if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
+            // if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
             //     $http.put(CONFIG.BASE_URL + '/debt/update/', $scope.debt)
             //     .then(function(res) {
             //         console.log(res);
-            //         toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
+                    toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
             //     }, function(err) {
             //         console.log(err);
             //         toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
             //     });
-            }
+            // }
+
+            window.location.href = CONFIG.BASE_URL + '/debt/list';
         }
     };
 
