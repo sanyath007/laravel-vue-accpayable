@@ -91,19 +91,26 @@ class DebtController extends Controller
         $debt->debt_date = $req['debt_date'];
         $debt->debt_doc_recno = $req['debt_doc_recno'];
         $debt->debt_doc_recdate = $req['debt_doc_recdate'];
+        $debt->deliver_no = $req['deliver_no'];
+        $debt->deliver_date = $req['deliver_date'];
         $debt->debt_doc_no = $req['debt_doc_no'];
         $debt->debt_doc_date = $req['debt_doc_date'];
         $debt->debt_type_id = $req['debt_type_id'];
         $debt->debt_type_detail = $req['debt_type_detail'];
+        $debt->debt_month = $req['debt_month'];
+        $debt->debt_year = $req['debt_year'];
         $debt->supplier_id = $req['supplier_id'];
         $debt->supplier_name = $req['supplier_name'];
         $debt->doc_receive = $req['doc_receive'];
-        $debt->debt_year = $req['debt_year'];
         $debt->debt_amount = $req['debt_amount'];
         $debt->debt_vatrate = $req['debt_vatrate'];
         $debt->debt_vat = $req['debt_vat'];
         $debt->debt_total = $req['debt_total'];
         $debt->debt_remark = $req['debt_remark'];
+        $debt->debt_creby = $req['debt_creby'];
+        $debt->debt_credate = date("Y-m-d H:i:s");
+        $debt->debt_userid = $req['debt_userid'];
+        $debt->debt_chgdate = date("Y-m-d H:i:s");
         $debt->debt_status = '0';
 
         if($debt->save()) {
@@ -141,7 +148,9 @@ class DebtController extends Controller
         $debt = Debt::find($req['debt_id']);
         $debt->debt_date = $req['debt_date'];
         $debt->debt_doc_recno = $req['debt_doc_recno'];
-        $debt->debt_doc_recdate = $req['debt_doc_recdate'];
+        $debt->debt_doc_recdate = $req['debt_doc_recdate'];        
+        $debt->deliver_no = $req['deliver_no'];
+        $debt->deliver_date = $req['deliver_date'];
         $debt->debt_doc_no = $req['debt_doc_no'];
         $debt->debt_doc_date = $req['debt_doc_date'];
         $debt->debt_type_id = $req['debt_type_id'];
@@ -155,6 +164,10 @@ class DebtController extends Controller
         $debt->debt_vat = $req['debt_vat'];
         $debt->debt_total = $req['debt_total'];
         $debt->debt_remark = $req['debt_remark'];
+        $debt->debt_creby = $req['debt_creby'];
+        $debt->debt_credate = date("Y-m-d H:i:s");
+        $debt->debt_userid = $req['debt_userid'];
+        $debt->debt_chgdate = date("Y-m-d H:i:s");
 
         if($debt->save()) {
             return [

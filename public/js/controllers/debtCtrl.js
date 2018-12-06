@@ -26,15 +26,18 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         debt_doc_date: '',
         debt_type_id: '',
         debt_type_detail: '',
+        debt_month: '',
+        debt_year: '',
         supplier_id: '',
         supplier_name: '',
         doc_receive: '',
-        debt_year: '',
         debt_amount: '',
         debt_vatrate: '',
         debt_vat: '',
         debt_total: '',
         debt_remark: '',
+        debt_creby: '',
+        debt_userid: ''
     };
 
     $scope.barOptions = {};
@@ -157,6 +160,11 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         });
     }
 
+    $scope.calculateVat = function(amount, vatRate) {
+        $scope.debt.debt_vat = (amount * vatRate) / 100;
+        $scope.debt.debt_total = parseFloat(amount) + parseFloat($scope.debt.debt_vat);
+    }
+
     $scope.add = function(event) {
         console.log(event);
         event.preventDefault();
@@ -185,17 +193,23 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
             $scope.debt.debt_doc_recdate = StringFormatService.convToDbDate($scope.debt.debt_doc_recdate);
             $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
-            $scope.debt.debt_doc_date = StringFormatService.convToDbDate($scope.debt.debt_doc_date);
+            $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convToDbDate($scope.debt.debt_doc_date) : '';
             $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
+            // Get supplier data
+            $scope.debt.supplier_id = $("#supplier_id").val();
+            $scope.debt.supplier_name = $("#supplier_name").val();
+            // Get user id
+            $scope.debt.debt_creby = $("#user").val();
+            $scope.debt.debt_userid = $("#user").val();
             console.log($scope.debt);
 
             $http.post(CONFIG.BASE_URL + '/debt/store', $scope.debt)
             .then(function(res) {
                 console.log(res);
-                // toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
+                toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
             }, function(err) {
                 console.log(err);
-                // toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+                toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
             });            
         }
 
@@ -239,8 +253,11 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
             $scope.debt.debt_doc_recdate = StringFormatService.convToDbDate($scope.debt.debt_doc_recdate);
             $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
-            $scope.debt.debt_doc_date = StringFormatService.convToDbDate($scope.debt.debt_doc_date);
+            $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convToDbDate($scope.debt.debt_doc_date) : '';
             $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
+            // Get user id
+            $scope.debt.debt_creby = $("#user").val();
+            $scope.debt.debt_userid = $("#user").val();
             console.log($scope.debt);
 
             if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {

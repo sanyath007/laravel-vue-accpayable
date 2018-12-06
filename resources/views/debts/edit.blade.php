@@ -28,11 +28,20 @@
 
                     <form id="frmNewDebt" name="frmNewDebt" method="post" action="{{ url('/debt/store') }}" role="form">
                         <input type="hidden" id="user" name="user" value="{{ Auth::user()->person_id }}">
+                        <input type="hidden" id="debt_id" name="debt_id" ng-model="debt.debt_id">
                         {{ csrf_field() }}
                     
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
+
+                                    
+
+                                </div><!-- /.col -->
+                            </div><!-- /.row -->
+
+                            <div class="row">
+                                <div class="col-md-6">
 
                                     <div class="form-group">
                                         <label class="control-label">เจ้าหนี้ :</label>
@@ -47,24 +56,6 @@
                                                 name="supplier_id" 
                                                 value="{{ $creditor->supplier_id }}" 
                                                 class="form-control">
-                                    </div>
-
-                                </div><!-- /.col -->
-                            </div><!-- /.row -->
-
-                            <div class="row">
-                                <div class="col-md-6">
-
-                                    <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_id.$error.required }">
-                                        <label>เลขที่รายการหนี้ :</label>
-                                        <input  type="text" 
-                                                id="debt_id" 
-                                                name="debt_id"
-                                                ng-model="debt.debt_id"
-                                                class="form-control" readonly required>
-                                        <div class="help-block" ng-show="frmNewDebt.debt_id.$error.required">
-                                            กรุณาเลือกคำนำหน้า
-                                        </div>
                                     </div>                                
 
                                     <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_type_id.$error.required }">
@@ -86,7 +77,7 @@
                                             
                                         </select>
                                         <div class="help-block" ng-show="frmNewDebt.debt_type_id.$error.required">
-                                            กรุณาเลือกคำนำหน้า
+                                            กรุณาเลือกประเภทหนี้
                                         </div>
                                     </div>
                                     
@@ -209,53 +200,70 @@
                             <div class="tab-content clearfix">
                                 <div class="tab-pane active" id="1a" style="padding: 10px;">
                                     <div class="col-md-6">       
-                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_amount.$error.required }">
+                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_amount.$error.required || frmNewDebt.debt_amount.$error.pattern }">
                                             <label>ยอดหนี้ :</label>
                                             <input  type="text" 
                                                     id="debt_amount" 
                                                     name="debt_amount" 
                                                     ng-model="debt.debt_amount" 
-                                                    class="form-control" required>
+                                                    class="form-control"
+                                                    pattern="[0-9]*" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_amount.$error.required">
-                                                กรุณาเลือกคำนำหน้า
+                                                กรุณาระบุยอดหนี้
+                                            </div>
+                                            <div class="help-block" ng-show="frmNewDebt.debt_amount.$error.pattern">
+                                                กรุณาระบุยอดหนี้เป็นตัวเลข
                                             </div>
                                         </div>
 
-                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_vat.$error.required }">
+                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_vat.$error.required || frmNewDebt.debt_vat.$error.pattern }">
                                             <label>จำนวนภาษี :</label>
                                             <input  type="text" 
                                                     id="debt_vat" 
                                                     name="debt_vat" 
                                                     ng-model="debt.debt_vat" 
-                                                    class="form-control" required>
+                                                    class="form-control"
+                                                    pattern="[0-9]*" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_vat.$error.required">
                                                 กรุณาระบุจำนวนภาษี
+                                            </div>
+                                            <div class="help-block" ng-show="frmNewDebt.debt_vat.$error.pattern">
+                                                กรุณาระบุจำนวนภาษีเป็นตัวเลข
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">       
-                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_vatrate.$error.required }">
+                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_vatrate.$error.required || frmNewDebt.debt_vatrate.$error.pattern }">
                                             <label>VAT(%) :</label>
                                             <input  type="text" 
                                                     id="debt_vatrate" 
                                                     name="debt_vatrate" 
-                                                    ng-model="debt.debt_vatrate" 
-                                                    class="form-control" required>
+                                                    ng-model="debt.debt_vatrate"
+                                                    ng-keyup="calculateVat(debt.debt_amount, debt.debt_vatrate)"
+                                                    class="form-control"
+                                                    pattern="[0-9]*" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_vatrate.$error.required">
                                                 กรุณาระบุอัตราภาษี (%)
                                             </div>
+                                            <div class="help-block" ng-show="frmNewDebt.debt_vatrate.$error.pattern">
+                                                กรุณาระบุอัตราภาษี (%) เป็นตัวเลข
+                                            </div>
                                         </div>
 
-                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_total.$error.required }">
+                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_total.$error.required || frmNewDebt.debt_total.$error.pattern }">
                                             <label>ยอดหนี้สุทธิ :</label>
                                             <input  type="text" 
                                                     id="debt_total" 
                                                     name="debt_total" 
                                                     ng-model="debt.debt_total" 
-                                                    class="form-control" required>
+                                                    class="form-control"
+                                                    pattern="[0-9]*" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_total.$error.required">
                                                 กรุณาระบุยอดหนี้สุทธิ
+                                            </div>
+                                            <div class="help-block" ng-show="frmNewDebt.debt_total.$error.pattern">
+                                                กรุณาระบุยอดหนี้สุทธิเป็นตัวเลข
                                             </div>
                                         </div>
                                     </div>
@@ -276,15 +284,19 @@
                                             <input type="text" id="" name="" class="form-control">
                                         </div>
 
-                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_year.$error.required }">
-                                            <label>ปีงบประมาณ :</label>
+                                        <div class="form-group" ng-class="{ 'has-error': frmNewDebt.debt_year.$error.required || frmNewDebt.debt_year.$error.pattern }">
+                                            <label>ปีงบประมาณ (พ.ศ.) :</label>
                                             <input  type="text" 
                                                     id="debt_year" 
                                                     name="debt_year" 
                                                     ng-model="debt.debt_year" 
-                                                    class="form-control" required>
+                                                    class="form-control"
+                                                    pattern="[0-9]{4}" required>
                                             <div class="help-block" ng-show="frmNewDebt.debt_year.$error.required">
                                                 กรุณาระบุปีงบประมาณ
+                                            </div>
+                                            <div class="help-block" ng-show="frmNewDebt.debt_year.$error.pattern">
+                                                กรุณาระบุปีงบประมาณเป็นตัวเลข 4 หลัก
                                             </div>
                                         </div>
                                     </div>
@@ -304,7 +316,7 @@
                                                         class="form-control pull-right" required>
                                             </div>
                                             <div class="help-block" ng-show="frmNewDebt.doc_receive.$error.required">
-                                                กรุณาระบุปีงบประมาณ
+                                                กรุณาเลือกวันที่รับเอกสาร
                                             </div>
                                         </div>
 
