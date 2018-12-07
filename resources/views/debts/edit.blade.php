@@ -335,7 +335,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer clearfix">
-                            <button ng-click="update($event, frmEditDebt)" class="btn btn-warning pull-right">
+                            <button ng-click="update($event, frmEditDebt, '{{ $debt->debt_id }}')" class="btn btn-warning pull-right">
                                 แก้ไข
                             </button>
                         </div><!-- /.box-footer -->

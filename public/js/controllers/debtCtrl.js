@@ -290,18 +290,18 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             $scope.debt.debt_userid = $("#user").val();
             console.log($scope.debt);
 
-            // if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
-            //     $http.put(CONFIG.BASE_URL + '/debt/update/', $scope.debt)
-            //     .then(function(res) {
-            //         console.log(res);
+            if(confirm("คุณต้องแก้ไขรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
+                $http.put(CONFIG.BASE_URL + '/debt/update/', $scope.debt)
+                .then(function(res) {
+                    console.log(res);
                     toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
-            //     }, function(err) {
-            //         console.log(err);
-            //         toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
-            //     });
-            // }
+                }, function(err) {
+                    console.log(err);
+                    toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+                });
+            }
 
-            window.location.href = CONFIG.BASE_URL + '/debt/list';
+            // window.location.href = CONFIG.BASE_URL + '/debt/list';
         }
     };
 

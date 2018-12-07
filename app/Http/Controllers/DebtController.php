@@ -107,6 +107,7 @@ class DebtController extends Controller
         $debt->debt_vat = $req['debt_vat'];
         $debt->debt_total = $req['debt_total'];
         $debt->debt_remark = $req['debt_remark'];
+        
         $debt->debt_creby = $req['debt_creby'];
         $debt->debt_credate = date("Y-m-d H:i:s");
         $debt->debt_userid = $req['debt_userid'];
@@ -164,6 +165,7 @@ class DebtController extends Controller
         $debt->debt_vat = $req['debt_vat'];
         $debt->debt_total = $req['debt_total'];
         $debt->debt_remark = $req['debt_remark'];
+
         $debt->debt_creby = $req['debt_creby'];
         $debt->debt_credate = date("Y-m-d H:i:s");
         $debt->debt_userid = $req['debt_userid'];
