@@ -4,8 +4,9 @@ app.constant('CONFIG', {
     'APP_NAME' : 'Accounts Payable System',
     'APP_VERSION' : '1.0.0',
     'GOOGLE_ANALYTICS_ID' : '',
-    // 'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public',
-    'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public/laravel-accpayable/public',
+    // 'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public', //NB dev env
+    'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public/laravel-accpayable/public', //เครื่องกบ รพ.
+    // 'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/accpayable/public', //เครื่องพี่เจมส์
     'SYSTEM_LANGUAGE' : 'TH'
 });
 
