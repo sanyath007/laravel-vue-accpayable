@@ -103,7 +103,7 @@
                                 <tr ng-repeat="(index, payment) in payments">
                                     <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ payment.debt_id }}</td>
-                                    <td style="text-align: center;">@{{ payment.paid_date }}</td>
+                                    <td style="text-align: center;">@{{ payment.paid_date | thdate }}</td>
                                     <td style="text-align: center;">@{{ payment.cheque_no }}</td>
                                     <td style="text-align: center;">@{{ payment.deliver_no }}</td>
                                     <td style="text-align: left;">@{{ payment.debt_type_name }}</td>

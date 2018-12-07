@@ -102,23 +102,14 @@
                             <tbody>
                                 <tr ng-repeat="debt in debts">
                                     <td style="text-align: center;">@{{ debt.debt_id }}</td>
-                                    <td style="text-align: left;">@{{ debt.debt_date }}</td>
+                                    <td style="text-align: left;">@{{ debt.debt_date | thdate }}</td>
                                     <td style="text-align: center;">@{{ debt.deliver_no }}</td>
                                     <td style="text-align: left;">@{{ debt.debt_type_name }}</td>
                                     <td style="text-align: left;">@{{ debt.supplier_name }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_amount | number:2 }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_vat | number:2 }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_total | number:2 }}</td>                                    
-                                    <td style="text-align: center;">
-                                        @{{ debt.debt_status }}
-                                        <a  href="#"
-                                            class="label label-info"
-                                            data-balloon-length="small" 
-                                            data-balloon="วันที่ชำระ : @{{ debt.paid_date }}" 
-                                            data-balloon-pos="up">
-                                            <i class="fa fa-info"></i>
-                                        </a>
-                                    </td>             
+                                    <td style="text-align: center;">@{{ debt.debt_status }}</td>             
                                 </tr>
                             </tbody>
                         </table>

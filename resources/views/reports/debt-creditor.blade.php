@@ -100,7 +100,7 @@
                             <tbody>
                                 <tr ng-repeat="debt in debts">
                                     <td style="text-align: center;">@{{ debt.debt_id }}</td>
-                                    <td style="text-align: left;">@{{ debt.debt_date }}</td>
+                                    <td style="text-align: left;">@{{ debt.debt_date | thdate }}</td>
                                     <td style="text-align: center;">@{{ debt.deliver_no }}</td>
                                     <td style="text-align: left;">@{{ debt.debt_type_name }}</td>
                                     <td style="text-align: left;">@{{ debt.supplier_name }}</td>
