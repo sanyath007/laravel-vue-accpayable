@@ -100,13 +100,16 @@
                     <div class="box-body">
                         <ul  class="nav nav-tabs">
                             <li class="active">
-                                <a  href="#1a" data-toggle="tab">รายการรอดำเนินการ</a>
+                                <a href="#1a" data-toggle="tab">รายการรอดำเนินการ</a>
                             </li>
                             <li>
                                 <a href="#2a" data-toggle="tab">รายหารขออนุมัติเบิก-จ่าย</a>
                             </li>
                             <li>
                                 <a href="#3a" data-toggle="tab">รายการชำระแล้ว</a>
+                            </li>
+                            <li>
+                                <a href="#4a" data-toggle="tab">รายการลดหนี้ศูนย์</a>
                             </li>
                         </ul>
 
@@ -358,8 +361,89 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
 
+                            <!-- รายการลดหนี้ศูนย์ -->
+                            <div class="tab-pane" id="4a" style="padding: 10px;">
+                                <table class="table table-bordered table-striped" style="font-size: 12px;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 3%; text-align: center;">#</th>
+                                            <th style="width: 6%; text-align: center;">รหัสรายการ</th>
+                                            <th style="width: 7%; text-align: center;">วันที่ลงบัญชี</th>
+                                            <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
+                                            <th style="width: 7%; text-align: center;">วันที่ใบส่งของ</th>
+                                            <!-- <th style="text-align: left;">เจ้าหนี้</th> -->
+                                            <th style="text-align: left;">ประเภทหนี้</th>
+                                            <th style="width: 7%; text-align: center;">ยอดหนี้</th>
+                                            <th style="width: 7%; text-align: center;">ภาษี</th>
+                                            <th style="width: 7%; text-align: center;">สุทธิ</th>
+                                            <th style="width: 6%; text-align: center;">สถานะ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="(index, setzero) in setzeros">
+                                            <td style="text-align: center;">@{{ index+setzeroPager.from }}</td>
+                                            <td style="text-align: center;">@{{ setzero.debt_id }}</td>
+                                            <td style="text-align: center;">@{{ setzero.debt_date | thdate }}</td>
+                                            <td style="text-align: center;">@{{ setzero.deliver_no }}</td>
+                                            <td style="text-align: center;">@{{ setzero.deliver_date | thdate }}</td>
+                                            <!-- <td style="text-align: left;">@{{ setzero.supplier_name }}</td> -->
+                                            <td style="text-align: left;">@{{ setzero.debttype.debt_type_name }}</td>
+                                            <td style="text-align: right;">@{{ setzero.debt_amount | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ setzero.debt_vat | number: 2 }}</td>
+                                            <td style="text-align: right;">@{{ setzero.debt_total | number: 2 }}</td>
+                                            <td style="text-align: center;">
+                                                <span class="label label-warning" ng-show="setzero.debt_status==4">
+                                                    @{{ (setzero.debt_status==4) ? 'ลดหนี้ศูนย์' : '' }}
+                                                </span>
+
+                                                <span class="label label-success" ng-show="setzero.debt_status!=4">
+                                                    @{{ 
+                                                        (setzero.debt_status==0) ? 'รอดำเนินการ' :
+                                                        (setzero.debt_status==1) ? 'ขออนุมัติ' : 
+                                                        (setzero.debt_status==2) ? 'ชำระเงินแล้ว' : 
+                                                        (setzero.debt_status==3) ? 'ยกเลิก' : 'ลดหนี้ศูนย์'
+                                                    }}
+                                                </span>
+                                            </td>      
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <ul class="pagination pagination-sm no-margin pull-right">
+                                    <li ng-if="setzeroPager.current_page !== 1">
+                                        <a ng-click="getPaidWithURL(setzeroPager.first_page_url)" aria-label="Previous">
+                                            <span aria-hidden="true">First</span>
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (setzeroPager.current_page==1)}">
+                                        <a ng-click="getPaidWithURL(setzeroPager.first_page_url)" aria-label="Prev">
+                                            <span aria-hidden="true">Prev</span>
+                                        </a>
+                                    </li>
+                                   
+                                    <li ng-if="setzeroPager.current_page < setzeroPager.last_page && (setzeroPager.last_page - setzeroPager.current_page) > 10">
+                                        <a href="@{{ setzeroPager.url(setzeroPager.current_page + 10) }}">
+                                            ...
+                                        </a>
+                                    </li>
+                                
+                                    <li ng-class="{'disabled': (setzeroPager.current_page==setzeroPager.last_page)}">
+                                        <a ng-click="getPaidWithURL(setzeroPager.next_page_url)" aria-label="Next">
+                                            <span aria-hidden="true">Next</span>
+                                        </a>
+                                    </li>
+
+                                    <li ng-if="setzeroPager.current_page !== setzeroPager.last_page">
+                                        <a ng-click="getPaidWithURL(setzeroPager.last_page_url)" aria-label="Previous">
+                                            <span aria-hidden="true">Last</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
                         
                     </div><!-- /.box-body -->
 

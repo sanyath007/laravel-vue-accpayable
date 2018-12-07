@@ -4,8 +4,8 @@ app.constant('CONFIG', {
     'APP_NAME' : 'Accounts Payable System',
     'APP_VERSION' : '1.0.0',
     'GOOGLE_ANALYTICS_ID' : '',
-    'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public',
-    // 'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public/laravel-accpayable/public',
+    // 'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public',
+    'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public/laravel-accpayable/public',
     'SYSTEM_LANGUAGE' : 'TH'
 });
 

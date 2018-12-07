@@ -9,10 +9,12 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
     $scope.debtPager = [];
     $scope.appPager = [];
     $scope.paidPager = [];
+    $scope.setzeroPager = [];
 
     $scope.debts = [];
     $scope.apps = [];
     $scope.paids = [];
+    $scope.setzeros = [];
     
     $scope.totalDebt = 0.00;
 
@@ -75,13 +77,16 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
 
             var debtSeries = [];
             var paidSeries = [];
+            var setzeroSeries = [];
 
             angular.forEach(res.data, function(value, key) {
                 let debt = (value.debt) ? parseFloat(value.debt.toFixed(2)) : 0;
                 let paid = (value.paid) ? parseFloat(value.paid.toFixed(2)) : 0;
+                let setzero = (value.setzero) ? parseFloat(value.setzero.toFixed(2)) : 0;
                 
                 debtSeries.push(debt);
                 paidSeries.push(paid);
+                setzeroSeries.push(setzero);
             });
 
             var categories = ['ยอดหนี้']
@@ -92,6 +97,9 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             }, {
                 name: 'ตัดจ่ายแล้ว',
                 data: paidSeries
+            }, {
+                name: 'ลดหนี้ศูนย์',
+                data: setzeroSeries
             });
 
             var chart = new Highcharts.Chart($scope.barOptions);
@@ -248,7 +256,13 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         .then(function(res) {
             console.log(res);
             $scope.debt = res.data.debt;
+
+            // Convert thai date to db date.
             $scope.debt.debt_date = StringFormatService.convFromDbDate($scope.debt.debt_date);
+            $scope.debt.debt_doc_recdate = StringFormatService.convFromDbDate($scope.debt.debt_doc_recdate);
+            $scope.debt.deliver_date = StringFormatService.convFromDbDate($scope.debt.deliver_date);
+            $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convFromDbDate($scope.debt.debt_doc_date) : '';
+            $scope.debt.doc_receive = StringFormatService.convFromDbDate($scope.debt.doc_receive);
         }, function(err) {
             console.log(err);
         });
