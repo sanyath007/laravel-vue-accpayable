@@ -33,7 +33,7 @@
                                     <label>เจ้าหนี้</label>
                                     <select id="debtType" class="form-control select2" style="width: 100%; font-size: 12px;">
 
-                                        <option selected="selected">-- กรุณาเลือก --</option>
+                                        <option value="" selected="selected">-- กรุณาเลือก --</option>
                                         @foreach($creditors as $creditor)
 
                                             <option value="{{ $creditor->supplier_id }}">
@@ -71,7 +71,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getDebtData('/debt-creditor/rpt')" class="btn btn-primary">ค้นหา</button>
+                            <button ng-click="getDebtData('/report/debt-creditor/rpt')" class="btn btn-primary">ค้นหา</button>
                         </div>
                     </form>
                 </div><!-- /.box -->

@@ -56,12 +56,13 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('debt/store', 'DebtController@store');
     Route::get('debt/edit/{creditor}/{debtId}', 'DebtController@edit');
     Route::put('debt/update', 'DebtController@update');
+    Route::delete('debt/delete/{debtId}', 'DebtController@delete');
     Route::post('debt/setzero', 'DebtController@setZero');
 
-    Route::get('debt-creditor/list', 'ReportController@debtCreditor');    
-    Route::get('debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');    
-    Route::get('debt-debttype/list', 'ReportController@debtDebttype');    
-    Route::get('debt-debttype/rpt/{debtType}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeRpt');  
+    Route::get('report/debt-creditor/list', 'ReportController@debtCreditor');    
+    Route::get('report/debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');    
+    Route::get('report/debt-debttype/list', 'ReportController@debtDebttype');    
+    Route::get('report/debt-debttype/rpt/{debtType}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeRpt');  
     Route::get('report/excel', 'ReportController@excel');     
     Route::get('report/debt-chart/{creditorId}', 'ReportController@debtChart');     
 

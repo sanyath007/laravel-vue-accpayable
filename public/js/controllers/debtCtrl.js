@@ -308,10 +308,8 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
                 $http.put(CONFIG.BASE_URL + '/debt/update/', $scope.debt)
                 .then(function(res) {
                     console.log(res);
-                    toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
                 }, function(err) {
                     console.log(err);
-                    toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
                 });
             }
 
@@ -323,13 +321,18 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         console.log(debtId);
 
         if(confirm("คุณต้องลบรายการหนี้เลขที่ " + debtId + " ใช่หรือไม่?")) {
-            // $http.delete()
-            // .then(function(res) {
-                // console.log(res);
-            // }, function(err) {
-                // console.log(err);
-            // });
+            $http.delete(CONFIG.BASE_URL + '/debt/delete/' +debtId)
+            .then(function(res) {
+                console.log(res);
+                toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');
+            }, function(err) {
+                console.log(err);
+                toaster.pop('error', "", 'พบข้อผิดพลาด !!!');
+            });
         }
+
+        $scope.getDebtData('/debt/rpt'); 
+        $scope.getDebtChart($scope.cboDebtType);
     };
 
     $scope.setzero = function(debtId) {
@@ -350,5 +353,8 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
                 toaster.pop('error', "พบข้อผิดพลาดในระหว่างการดำเนินการ !!!", "");
             });
         }
+
+        $scope.getDebtData('/debt/rpt'); 
+        $scope.getDebtChart($scope.cboDebtType);
     };
 });

@@ -483,12 +483,12 @@
 						</a>
 						<ul class="treeview-menu">
 							<li>
-								<a href="{{ url('/debt-creditor/list') }}">
+								<a href="{{ url('/report/debt-creditor/list') }}">
 									<i class="fa fa-circle-o"></i> ยอดหนี้รายเจ้าหนี้
 								</a>
 							</li>
 							<li>
-								<a href="{{ url('/debt-debttype/list') }}">
+								<a href="{{ url('/report/debt-debttype/list') }}">
 									<i class="fa fa-circle-o"></i> ยอดหนี้รายประเภทหนี้
 								</a>
 							</li>

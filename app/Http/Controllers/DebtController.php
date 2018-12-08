@@ -185,9 +185,21 @@ class DebtController extends Controller
 
     }
 
-    public function delete(Request $req)
+    public function delete($debtId)
     {
-        
+        $debt = Debt::find($debtId);
+
+        if($debt->delete()) {
+            return [
+                "status" => "success",
+                "message" => "Delete success.",
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "Delete failed.",
+            ];
+        }   
     }
 
     public function setZero(Request $req)
