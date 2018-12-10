@@ -1,4 +1,4 @@
-app.service('StringFormatService', function(CONFIG, $http) {
+app.service('PaginationService', function(CONFIG, $http) {
 	this.convToDbDate = function (date) {
 		arrDate = date.split('/');
 

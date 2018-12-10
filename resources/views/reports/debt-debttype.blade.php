@@ -126,7 +126,7 @@
 
                     <div class="box-footer clearfix">
                         <a  ng-show="debts.length"
-                            ng-click="arrearToExcel('/account/arrear-excel')"
+                            ng-click="debttypeToExcel('/report/debt-debttype-excel')"
                             class="btn btn-success">
                             Excel
                         </a>

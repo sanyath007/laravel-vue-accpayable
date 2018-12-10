@@ -72,6 +72,7 @@ class ReportController extends Controller
     {
     	// $sdate = $month . '-01';
      	// $edate = date("Y-m-t", strtotime($sdate));
+
         $perpage = 10;
         $page = (isset($req['page'])) ? $req['page'] : 1;
         $offset = ($page * $perpage) - $perpage;

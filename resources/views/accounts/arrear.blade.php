@@ -28,7 +28,7 @@
 
                     <form id="frmSearch" name="frmSearch" role="form">
                         <div class="box-body">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 
                                 <div class="form-group">
                                     <label>ประเภทหนี้</label>
@@ -45,6 +45,9 @@
                                         
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>เจ้าหนี้</label>
                                     <select id="creditor" class="form-control select2" style="width: 100%; font-size: 12px;">
@@ -59,7 +62,10 @@
                                         @endforeach
                                         
                                     </select>
-                                </div>
+                                </div>                                
+                            </div>
+
+                            <div class="col-md-12">
                                 <!-- Date and time range -->
                                 <div class="form-group">
                                     <label>ระหว่างวันที่-วันที่:</label>
@@ -124,7 +130,7 @@
                                     <td style="text-align: left;">@{{ debt.supplier_name }}</td>
                                     <td style="text-align: center;">@{{ debt.deliver_no }}</td>
                                     <td style="text-align: right;">@{{ debt.debt_amount | number: 2 }}</td>
-                                    <td style="text-align: center;">@{{ '0000-00-00' }}</td>
+                                    <td style="text-align: center;">@{{ debt.app_recdoc_date | thdate }}</td>
                                     <td style="text-align: center;">
                                         @{{ (debt.debt_status==1) ? 'ขออนุมัติ' : 
                                             (debt.debt_status==2) ? 'ชำระเงินแล้ว' : 

@@ -64,7 +64,8 @@ class CreditorPaidExport implements FromView, WithColumnFormatting
     public function columnFormats(): array
     {
         return [
-            'H' => '@',
+            'D' => '@',
+            'E' => '@',
         ];
     }
 }

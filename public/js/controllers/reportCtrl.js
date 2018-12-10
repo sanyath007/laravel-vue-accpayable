@@ -79,8 +79,7 @@ app.controller('reportCtrl', function($scope, $http, toaster, CONFIG) {
             var creditor = ($("#debtType").val() == '') ? '0' : $("#debtType").val();
             var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
 
-            console.log(CONFIG.BASE_URL +URL+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll);
-            // window.location.href = CONFIG.BASE_URL +URL+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll;
+            window.location.href = CONFIG.BASE_URL +URL+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll;
         }
     };
 
@@ -95,8 +94,7 @@ app.controller('reportCtrl', function($scope, $http, toaster, CONFIG) {
             var eDate = debtDate[1].trim();
             var debtType = ($("#debtType").val() == '') ? '0' : $("#debtType").val();
             var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
-
-            console.log(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' + showAll);
+            
             window.location.href = CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' + showAll;
         }
     };

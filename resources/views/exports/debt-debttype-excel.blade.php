@@ -2,16 +2,15 @@
 <table>
     <thead>
         <tr>
-            <th style="width: 5%; text-align: center;">#</th>
+            <th style="width: 3%; text-align: center;">#</th>
             <th style="width: 5%; text-align: center;">รหัสรายการ</th>
-            <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
-            <th style="width: 15%; text-align: left;">รายการ</th>
             <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
-            <th style="width: 8%; text-align: center;">วันที่ตรวจรับ</th>
-            <th style="text-align: left;">บริษัท</th>
-            <th style="width: 8%; text-align: center;">เลขที่เอกสาร</th>
-            <th style="width: 8%; text-align: center;">ยอดหนี้สุทธิ</th>
-            <th style="width: 8%; text-align: center;">วันที่รับเอกสาร (ชุดเบิก-จ่าย)</th> <!-- //ฟิลด์ app_recdoc_date ตาราง nrhosp_acc_app -->
+            <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
+            <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
+            <th style="text-align: left;">เจ้าหนี้</th>
+            <th style="width: 8%; text-align: center;">ยอดหนี้</th>
+            <th style="width: 8%; text-align: center;">ภาษี</th>
+            <th style="width: 8%; text-align: center;">สุทธิ</th>
             <th style="width: 8%; text-align: center;">สถานะ</th>
         </tr>
     </thead>
@@ -23,14 +22,13 @@
             <tr>
                 <td style="text-align: center;">{{ ++$cx }}</td>
                 <td style="text-align: center;">{{ $debt->debt_id }}</td>
-                <td style="text-align: left;">{{ $debt->debttype->debt_type_name }}</td>
-                <td style="text-align: left;">{{ $debt->debt_type_detail }}</td>
-                <td style="text-align: center;">{{ $debt->debt_date }}</td>
-                <td style="text-align: center;">{{ $debt->debt_doc_recdate }}</td>
-                <td style="text-align: left;">{{ $debt->supplier_name }}</td>
+                <td style="text-align: left;">{{ convDateFromDb($debt->debt_date) }}</td>
                 <td style="text-align: center;">{{ $debt->deliver_no }}</td>
-                <td style="text-align: right;">{{ number_format($debt->debt_total, 2) }}</td>
-                <td style="text-align: center;">{{ '' }}</td> <!-- //ฟิลด์ app_recdoc_date ตาราง nrhosp_acc_app -->
+                <td style="text-align: left;">{{ $debt->debt_type_name }}</td>
+                <td style="text-align: left;">{{ $debt->supplier_name }}</td>
+                <td style="text-align: center;">{{ number_format($debt->debt_amount, 2) }}</td>
+                <td style="text-align: center;">{{ number_format($debt->debt_vat, 2) }}</td>
+                <td style="text-align: center;">{{ number_format($debt->debt_total, 2) }}</td>   
                 <td style="text-align: center;">
                     <?php if($debt->debt_status==1) {
                         echo 'ขออนุมัติ';

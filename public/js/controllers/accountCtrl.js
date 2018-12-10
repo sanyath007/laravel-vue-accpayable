@@ -6,6 +6,7 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     $scope.debts = [];
     $scope.payments = [];
     $scope.pager = [];
+    $scope.pages = [];
     $scope.totalDebt = 0.00;
     $scope.loading = false;
 
@@ -32,6 +33,12 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
                 $scope.pager = res.data.debts;
                 $scope.totalDebt = res.data.totalDebt;
 
+                if($scope.pager.last_page > 10) {
+                    $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
+                } else {
+                    $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
+                }
+
                 $scope.loading = false;
             }, function(err) {
                 console.log(err);
@@ -43,6 +50,7 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     $scope.getArrearWithURL = function(URL) {
         $scope.debts = [];
         $scope.pager = [];
+        $scope.loading = true;
             
         $http.get(URL)
         .then(function(res) {
@@ -50,6 +58,14 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
             $scope.debts = res.data.debts.data;
             $scope.pager = res.data.debts;
             $scope.totalDebt = res.data.totalDebt;
+
+            if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 < $scope.pager.last_page) {
+                $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
+            } else if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 > $scope.pager.last_page) {
+                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
+            } else {
+                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
+            }
 
             $scope.loading = false;
         }, function(err) {
@@ -97,6 +113,12 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
                 $scope.pager = res.data.payments;
                 $scope.totalDebt = res.data.totalDebt;
 
+                if($scope.pager.last_page > 10) {
+                    $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
+                } else {
+                    $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
+                }
+
                 $scope.loading = false;
             }, function(err) {
                 console.log(err);
@@ -108,6 +130,8 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     $scope.getCreditorPaidWithURL = function(URL) {
         $scope.payments = [];
         $scope.pager = [];
+
+        $scope.loading = true;
             
         $http.get(URL)
         .then(function(res) {
@@ -115,6 +139,14 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
             $scope.payments = res.data.payments.data;
             $scope.pager = res.data.payments;
             $scope.totalDebt = res.data.totalDebt;
+
+            if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 < $scope.pager.last_page) {
+                $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
+            } else if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 > $scope.pager.last_page) {
+                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
+            } else {
+                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
+            }
 
             $scope.loading = false;
         }, function(err) {

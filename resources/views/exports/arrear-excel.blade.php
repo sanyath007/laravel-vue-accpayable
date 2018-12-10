@@ -23,14 +23,14 @@
             <tr>
                 <td style="text-align: center;">{{ ++$cx }}</td>
                 <td style="text-align: center;">{{ $debt->debt_id }}</td>
-                <td style="text-align: left;">{{ $debt->debttype->debt_type_name }}</td>
+                <td style="text-align: left;">{{ $debt->debt_type_name }}</td>
                 <td style="text-align: left;">{{ $debt->debt_type_detail }}</td>
-                <td style="text-align: center;">{{ $debt->debt_date }}</td>
-                <td style="text-align: center;">{{ $debt->debt_doc_recdate }}</td>
+                <td style="text-align: center;">{{ convDateFromDb($debt->debt_date) }}</td>
+                <td style="text-align: center;">{{ convDateFromDb($debt->debt_doc_recdate) }}</td>
                 <td style="text-align: left;">{{ $debt->supplier_name }}</td>
                 <td style="text-align: center;">{{ $debt->deliver_no }}</td>
                 <td style="text-align: right;">{{ number_format($debt->debt_total, 2) }}</td>
-                <td style="text-align: center;">{{ '' }}</td> <!-- //ฟิลด์ app_recdoc_date ตาราง nrhosp_acc_app -->
+                <td style="text-align: center;">{{ $debt->app_recdoc_date }}</td> <!-- //ฟิลด์ app_recdoc_date ตาราง nrhosp_acc_app -->
                 <td style="text-align: center;">
                     <?php if($debt->debt_status==1) {
                         echo 'ขออนุมัติ';
