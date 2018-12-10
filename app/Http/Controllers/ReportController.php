@@ -70,9 +70,6 @@ class ReportController extends Controller
 
     public function debtDebttypeRpt(Request $req, $debttype, $sdate, $edate, $showall)
     {
-    	// $sdate = $month . '-01';
-     	// $edate = date("Y-m-t", strtotime($sdate));
-
         $perpage = 10;
         $page = (isset($req['page'])) ? $req['page'] : 1;
         $offset = ($page * $perpage) - $perpage;
@@ -140,5 +137,39 @@ class ReportController extends Controller
         $fileName = 'debt-type-' . date('YmdHis') . '.xlsx';
         return (new DebttypeExport($debttype, $sdate, $edate, $showall))->download($fileName);
     }
-    
+
+    public function sumMonth($month)
+    {
+        // $sdate = $month . '-01';
+        // $edate = date("Y-m-t", strtotime($sdate));
+
+        $sql = "SELECT CONCAT(YEAR(debt_date),'-',MONTH(debt_date)) AS yyyymm, 
+                SUM(CASE WHEN (debt_status IN ('0','1')) THEN debt_total END) AS debt,
+                SUM(CASE WHEN (debt_status IN ('2')) THEN debt_total END) AS paid,
+                SUM(CASE WHEN (debt_status IN ('4')) THEN debt_total END) AS setzero
+
+                FROM nrhosp_acc_debt d 
+                WHERE (debt_date BETWEEN '2017-10-01' AND '2018-09-30')
+                GROUP BY CONCAT(YEAR(debt_date),'-',MONTH(debt_date))
+                ORDER BY CONCAT(YEAR(debt_date),'-',MONTH(debt_date))";
+
+        return \DB::select($sql);
+    }
+
+    public function sumYear($month)
+    {
+        // $sdate = $month . '-01';
+        // $edate = date("Y-m-t", strtotime($sdate));
+
+        $sql = "SELECT YEAR(debt_date) AS yyyy, 
+                SUM(CASE WHEN (debt_status IN ('0','1')) THEN debt_total END) AS debt,
+                SUM(CASE WHEN (debt_status IN ('2')) THEN debt_total END) AS paid,
+                SUM(CASE WHEN (debt_status IN ('4')) THEN debt_total END) AS setzero
+                FROM nrhosp_acc_debt d 
+                WHERE (YEAR(debt_date) BETWEEN '2011' AND '2018')
+                GROUP BY YEAR(debt_date)
+                ORDER BY YEAR(debt_date)";
+
+        return \DB::select($sql);
+    }
 }

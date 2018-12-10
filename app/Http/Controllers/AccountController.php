@@ -28,26 +28,30 @@ class AccountController extends Controller
 
         if($showall == 1) {
             $debts = \DB::table('nrhosp_acc_debt')
-                            ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
-                                     'nrhosp_acc_app.app_id')
-                            ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
-                            ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
-                            ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
-                            ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
-                            ->paginate(20);
+                        ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
+                                 'nrhosp_acc_app.app_id')
+                        ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                        ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                        ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                        ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                        ->paginate(20);
 
             $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
                                 ->sum('debt_total');
         } else {
             if($debttype != 0 && $creditor != 0) {
                 /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
-                
-                $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                                ->where('debt_type_id', '=', $debttype)
-                                ->where('supplier_id', '=', $creditor)
-                                ->whereBetween('debt_date', [$sdate, $edate])
-                                ->with('debttype')
-                                ->paginate(20);
+                $debts = \DB::table('nrhosp_acc_debt')
+                            ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
+                                     'nrhosp_acc_app.app_id')
+                            ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                            ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                            ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                            ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                            ->where('nrhosp_acc_debt.debt_type_id', '=', $debttype)
+                            ->where('nrhosp_acc_debt.supplier_id', '=', $creditor)
+                            ->whereBetween('nrhosp_acc_debt.debt_date', [$sdate, $edate])
+                            ->paginate(20);
 
                 $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
                                 ->where('debt_type_id', '=', $debttype)
@@ -56,21 +60,31 @@ class AccountController extends Controller
                                 ->sum('debt_total');
             } else {
                 if($debttype != 0 && $creditor == 0) {
-                    $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                                    ->where('debt_type_id', '=', $debttype)
-                                    ->whereBetween('debt_date', [$sdate, $edate])
-                                    ->with('debttype')
-                                    ->paginate(20);
+                    $debts = \DB::table('nrhosp_acc_debt')
+                                ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
+                                         'nrhosp_acc_app.app_id')
+                                ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                                ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                                ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                                ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                                ->where('nrhosp_acc_debt.debt_type_id', '=', $debttype)
+                                ->whereBetween('nrhosp_acc_debt.debt_date', [$sdate, $edate])
+                                ->paginate(20);
 
                     $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
                                     ->where('debt_type_id', '=', $debttype)
                                     ->whereBetween('debt_date', [$sdate, $edate])
                                     ->sum('debt_total');
                 } else if($debttype == 0 && $creditor != 0) {
-                    $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                                    ->where('supplier_id', '=', $creditor)
-                                    ->whereBetween('debt_date', [$sdate, $edate])
-                                    ->with('debttype')
+                     $debts = \DB::table('nrhosp_acc_debt')
+                                    ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
+                                             'nrhosp_acc_app.app_id')
+                                    ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                                    ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                                    ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                                    ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                                    ->where('nrhosp_acc_debt.supplier_id', '=', $creditor)
+                                    ->whereBetween('nrhosp_acc_debt.debt_date', [$sdate, $edate])
                                     ->paginate(20);
 
                     $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])

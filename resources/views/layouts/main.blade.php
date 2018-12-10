@@ -85,6 +85,7 @@
 	<!-- AngularJS Components -->
 	<script src="{{ asset('/js/app.js') }}"></script>
 	<script src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/homeCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/debtCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/creditorCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/debttypeCtrl.js') }}"></script>
@@ -93,6 +94,7 @@
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 	<script src="{{ asset('/js/services/report.js') }}"></script>
 	<script src="{{ asset('/js/services/stringFormat.js') }}"></script>
+	<script src="{{ asset('/js/services/pagination.js') }}"></script>
 
 	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 	<!--<script src="{{ asset('/js/services/dashboard.js') }}"></script>-->
@@ -115,15 +117,18 @@
 
 			<!-- Header Navbar: style can be found in header.less -->
 			<nav class="navbar navbar-static-top">
+
 				<!-- Sidebar toggle button-->
 				<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
 					<span class="sr-only">Toggle navigation</span>
 				</a>
+
 				<!-- Navbar Right Menu -->
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
+
 						<!-- Messages: style can be found in dropdown.less-->
-						<li class="dropdown messages-menu">
+						<!-- <li class="dropdown messages-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<i class="fa fa-envelope-o"></i>
 								<span class="label label-success">4</span>
@@ -131,9 +136,8 @@
 							<ul class="dropdown-menu">
 								<li class="header">You have 4 messages</li>
 								<li>
-									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
-										<li><!-- start message -->
+										<li>
 											<a href="#">
 												<div class="pull-left">
 													<img src="{{ asset('/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
@@ -145,7 +149,6 @@
 												<p>Why not buy a new awesome theme?</p>
 											</a>
 										</li>
-										<!-- end message -->
 										<li>
 											<a href="#">
 												<div class="pull-left">
@@ -198,9 +201,10 @@
 								</li>
 								<li class="footer"><a href="#">See All Messages</a></li>
 							</ul>
-						</li>
+						</li> --><!-- End messages menu-->
+
 						<!-- Notifications: style can be found in dropdown.less -->
-						<li class="dropdown notifications-menu">
+						<!-- <li class="dropdown notifications-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<i class="fa fa-bell-o"></i>
 								<span class="label label-warning">10</span>
@@ -208,7 +212,6 @@
 							<ul class="dropdown-menu">
 								<li class="header">You have 10 notifications</li>
 								<li>
-									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
 										<li>
 											<a href="#">
@@ -240,9 +243,10 @@
 								</li>
 								<li class="footer"><a href="#">View all</a></li>
 							</ul>
-						</li>
+						</li> --><!-- End notifications menu -->
+
 						<!-- Tasks: style can be found in dropdown.less -->
-						<li class="dropdown tasks-menu">
+						<!-- <li class="dropdown tasks-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<i class="fa fa-flag-o"></i>
 								<span class="label label-danger">9</span>
@@ -250,9 +254,8 @@
 							<ul class="dropdown-menu">
 								<li class="header">You have 9 tasks</li>
 								<li>
-									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
-										<li><!-- Task item -->
+										<li>
 											<a href="#">
 												<h3>
 													Design some buttons
@@ -265,9 +268,8 @@
 													</div>
 												</div>
 											</a>
-										</li><!-- end task item -->
-
-										<li><!-- Task item -->
+										</li>
+										<li>
 											<a href="#">
 												<h3>
 													Create a nice theme
@@ -280,9 +282,8 @@
 													</div>
 												</div>
 											</a>
-										</li><!-- end task item -->
-
-										<li><!-- Task item -->
+										</li>
+										<li>
 											<a href="#">
 												<h3>
 													Some task I need to do
@@ -295,9 +296,8 @@
 													</div>
 												</div>
 											</a>
-										</li><!-- end task item -->
-
-										<li><!-- Task item -->
+										</li>
+										<li>
 											<a href="#">
 												<h3>
 													Make beautiful transitions
@@ -311,15 +311,13 @@
 												</div>
 											</a>
 										</li>
-										<!-- end task item -->
-
 									</ul>
 								</li>
 								<li class="footer">
 									<a href="#">View all tasks</a>
 								</li>
 							</ul>
-						</li>
+						</li> --><!-- End tasks menu -->
 
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu">
@@ -344,7 +342,7 @@
 									</li>
 									
 									<!-- Menu Body -->
-									<li class="user-body">
+									<!-- <li class="user-body">
 										<div class="row">
 											<div class="col-xs-4 text-center">
 												<a href="#">Followers</a>
@@ -356,8 +354,7 @@
 												<a href="#">Friends</a>
 											</div>
 										</div>
-										<!-- /.row -->
-									</li>
+									</li> -->
 									
 									<!-- Menu Footer-->
 									<li class="user-footer">
@@ -380,7 +377,7 @@
 
 							@endif
 
-						</li><!-- User Account -->
+						</li><!-- End user account menu -->
 
 						<!-- Control Sidebar Toggle Button -->
 						<li>
@@ -388,7 +385,7 @@
 						</li>
 						<!-- Control Sidebar Toggle Button -->
 
-					</ul>
+					</ul><!-- /.nav navbar-nav -->
 				</div>
 
 			</nav>
@@ -439,6 +436,9 @@
 						<a href="#">
 							<i class="fa fa-files-o"></i>
 							<span>บันทึกรายการ</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
 						</a>
 						<ul class="treeview-menu">
 							<li><a href="{{ url('/debt/list') }}"><i class="fa fa-circle-o"></i> รับหนี้</a></li>

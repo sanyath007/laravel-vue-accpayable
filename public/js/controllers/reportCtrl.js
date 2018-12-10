@@ -1,4 +1,4 @@
-app.controller('reportCtrl', function($scope, $http, toaster, CONFIG) {
+app.controller('reportCtrl', function(CONFIG, $scope, $http, toaster, PaginateService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
@@ -25,11 +25,7 @@ app.controller('reportCtrl', function($scope, $http, toaster, CONFIG) {
             $scope.debts = res.data.pager.data;
             $scope.pager = res.data.pager;
 
-            if($scope.pager.last_page > 10) {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
-            } else {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-            }
+            $scope.pages = PaginateService.createPagerNo($scope.pager);
 
             console.log($scope.pages);
             $scope.loading = false;
@@ -51,13 +47,7 @@ app.controller('reportCtrl', function($scope, $http, toaster, CONFIG) {
             $scope.debts = res.data.pager.data;
             $scope.pager = res.data.pager;
 
-            if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 < $scope.pager.last_page) {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
-            } else if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 > $scope.pager.last_page) {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-            } else {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-            }
+            $scope.pages = PaginateService.createPagerNo($scope.pager);
 
             console.log($scope.pages);
             $scope.loading = false;

@@ -25,27 +25,51 @@ class ArrearExport implements FromView, WithColumnFormatting
     {	$debts = [];
 
     	if($this->showall == '1') {
-            $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                            ->with('debttype')->get();
+            $debts = \DB::table('nrhosp_acc_debt')
+                        ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
+                                 'nrhosp_acc_app.app_id')
+                        ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                        ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                        ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                        ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                        ->get();
         } else {
             if($this->debttype != 0 && $this->creditor != 0) {
                 /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */                
-                $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                                ->where('debt_type_id', '=', $this->debttype)
-                                ->where('supplier_id', '=', $this->creditor)
-                                ->whereBetween('debt_date', [$this->sdate, $this->edate])
-                                ->with('debttype')->get();
+               $debts = \DB::table('nrhosp_acc_debt')
+                            ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
+                                     'nrhosp_acc_app.app_id')
+                            ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                            ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                            ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                            ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                            ->where('nrhosp_acc_debt.debt_type_id', '=', $this->debttype)
+                            ->where('nrhosp_acc_debt.supplier_id', '=', $this->creditor)
+                            ->whereBetween('nrhosp_acc_debt.debt_date', [$this->sdate, $this->edate])
+                            ->get();
             } else {
                 if($this->debttype != 0 && $this->creditor == 0) {
-                    $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                                    ->where('debt_type_id', '=', $this->debttype)
-                                    ->whereBetween('debt_date', [$this->sdate, $this->edate])
-                                    ->with('debttype')->get();
+                    $debts = \DB::table('nrhosp_acc_debt')
+                                ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
+                                         'nrhosp_acc_app.app_id')
+                                ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                                ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                                ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                                ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                                ->where('nrhosp_acc_debt.debt_type_id', '=', $this->debttype)
+                                ->whereBetween('nrhosp_acc_debt.debt_date', [$this->sdate, $this->edate])
+                                ->get();
                 } else if($this->debttype == 0 && $this->creditor != 0) {
-                    $debts = Debt::whereNotIn('debt_status', [2,3,4])
-                                    ->where('supplier_id', '=', $this->creditor)
-                                    ->whereBetween('debt_date', [$this->sdate, $this->edate])
-                                    ->with('debttype')->get();
+                   $debts = \DB::table('nrhosp_acc_debt')
+                                ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
+                                         'nrhosp_acc_app.app_id')
+                                ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                                ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                                ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                                ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                                ->where('nrhosp_acc_debt.supplier_id', '=', $this->creditor)
+                                ->whereBetween('nrhosp_acc_debt.debt_date', [$this->sdate, $this->edate])
+                                ->get();
                 }   
             }   
         }

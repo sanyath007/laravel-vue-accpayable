@@ -1,4 +1,4 @@
-app.controller('homeCtrl', function(CONFIG, $scope, limitToFilter, $scope, ReportService) {
+app.controller('homeCtrl', function(CONFIG, $scope, limitToFilter, ReportService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
@@ -6,34 +6,79 @@ app.controller('homeCtrl', function(CONFIG, $scope, limitToFilter, $scope, Repor
     $scope.pieOptions = {};
     $scope.barOptions = {};
 
-    $scope.getServiceData = function () {
-        var selectMonth = document.getElementById('selectMonth').value;
-        var month = (selectMonth == '') ? moment().format('YYYY-MM') : selectMonth;
+    $scope.getSumMonthData = function () {       
+        var month = '2018';
         console.log(month);
 
-        ReportService.getSeriesData('/report/service-chart/', month)
+        ReportService.getSeriesData('/report/sum-month-chart/', month)
         .then(function(res) {
-            var requestSeries = [];
-            var serviceSeries = [];
-            var cancelSeries = [];
+            console.log(res);
+            var debtSeries = [];
+            var paidSeries = [];
+            var setzeroSeries = [];
 
             angular.forEach(res.data, function(value, key) {
-                requestSeries.push(value.request);
-                serviceSeries.push(value.service);
-                cancelSeries.push(value.cancel);
+                let debt = (value.debt) ? parseFloat(value.debt.toFixed(2)) : 0;
+                let paid = (value.paid) ? parseFloat(value.paid.toFixed(2)) : 0;
+                let setzero = (value.setzero) ? parseFloat(value.setzero.toFixed(2)) : 0;
+
+                debtSeries.push(debt);
+                paidSeries.push(paid);
+                setzeroSeries.push(setzero);
             });
 
             var categories = ['ตค', 'พย', 'ธค', 'มค', 'กพ', 'มีค', 'เมย', 'พค', 'มิย', 'กค', 'สค', 'กย']
-            $scope.barOptions = ReportService.initBarChart("barContainer", "รายงานการให้บริการทั้งหมด", categories, 'จำนวน');
+            $scope.barOptions = ReportService.initBarChart("barContainer1", "รายงานยอดหนี้ทั้งหมด ปีงบ 2561", categories, 'จำนวน');
             $scope.barOptions.series.push({
-                name: 'ร้องขอ',
-                data: requestSeries
+                name: 'หนี้คงเหลือ',
+                data: debtSeries
             }, {
-                name: 'ให้บริการ',
-                data: serviceSeries
+                name: 'ชำระแล้ว',
+                data: paidSeries
             }, {
-                name: 'ยกเลิก',
-                data: cancelSeries
+                name: 'ลดหนี้ศูนย์',
+                data: setzeroSeries
+            });
+
+            var chart = new Highcharts.Chart($scope.barOptions);
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
+    $scope.getSumYearData = function () {       
+        var month = '2018';
+        console.log(month);
+
+        ReportService.getSeriesData('/report/sum-year-chart/', month)
+        .then(function(res) {
+            console.log(res);
+            var debtSeries = [];
+            var paidSeries = [];
+            var setzeroSeries = [];
+            var categories = [];
+
+            angular.forEach(res.data, function(value, key) {
+                let debt = (value.debt) ? parseFloat(value.debt.toFixed(2)) : 0;
+                let paid = (value.paid) ? parseFloat(value.paid.toFixed(2)) : 0;
+                let setzero = (value.setzero) ? parseFloat(value.setzero.toFixed(2)) : 0;
+
+                categories.push(parseInt(value.yyyy) + 543);
+                debtSeries.push(debt);
+                paidSeries.push(paid);
+                setzeroSeries.push(setzero);
+            });
+
+            $scope.barOptions = ReportService.initBarChart("barContainer2", "รายงานยอดหนี้รายปี", categories, 'จำนวน');
+            $scope.barOptions.series.push({
+                name: 'หนี้คงเหลือ',
+                data: debtSeries
+            }, {
+                name: 'ชำระแล้ว',
+                data: paidSeries
+            }, {
+                name: 'ลดหนี้ศูนย์',
+                data: setzeroSeries
             });
 
             var chart = new Highcharts.Chart($scope.barOptions);

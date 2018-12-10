@@ -73,4 +73,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('report/debt-debttype/rpt/{debtType}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeRpt');  
     Route::get('report/debt-debttype-excel/{debttype}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeExcel');
     Route::get('report/debt-chart/{creditorId}', 'ReportController@debtChart');     
+    Route::get('report/sum-month-chart/{month}', 'ReportController@sumMonth');     
+    Route::get('report/sum-year-chart/{month}', 'ReportController@sumYear');     
 });

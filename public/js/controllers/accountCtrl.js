@@ -1,4 +1,4 @@
-app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalService) {
+app.controller('accountCtrl', function(CONFIG, $scope, $http, toaster, ModalService, PaginateService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
@@ -33,12 +33,9 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
                 $scope.pager = res.data.debts;
                 $scope.totalDebt = res.data.totalDebt;
 
-                if($scope.pager.last_page > 10) {
-                    $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
-                } else {
-                    $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-                }
+                $scope.pages = PaginateService.createPagerNo($scope.pager);
 
+                console.log($scope.pages);
                 $scope.loading = false;
             }, function(err) {
                 console.log(err);
@@ -59,14 +56,9 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
             $scope.pager = res.data.debts;
             $scope.totalDebt = res.data.totalDebt;
 
-            if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 < $scope.pager.last_page) {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
-            } else if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 > $scope.pager.last_page) {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-            } else {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-            }
+            $scope.pages = PaginateService.createPagerNo($scope.pager);
 
+            console.log($scope.pages);
             $scope.loading = false;
         }, function(err) {
             console.log(err);
@@ -113,12 +105,9 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
                 $scope.pager = res.data.payments;
                 $scope.totalDebt = res.data.totalDebt;
 
-                if($scope.pager.last_page > 10) {
-                    $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
-                } else {
-                    $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-                }
+                $scope.pages = PaginateService.createPagerNo($scope.pager);
 
+                console.log($scope.pages);
                 $scope.loading = false;
             }, function(err) {
                 console.log(err);
@@ -140,14 +129,9 @@ app.controller('accountCtrl', function($scope, $http, toaster, CONFIG, ModalServ
             $scope.pager = res.data.payments;
             $scope.totalDebt = res.data.totalDebt;
 
-            if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 < $scope.pager.last_page) {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.current_page + 10)
-            } else if($scope.pager.last_page > 10 && ($scope.pager.current_page) + 10 > $scope.pager.last_page) {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-            } else {
-                $scope.pages = _.range($scope.pager.current_page, $scope.pager.last_page + 1)
-            }
+            $scope.pages = PaginateService.createPagerNo($scope.pager);
 
+            console.log($scope.pages);
             $scope.loading = false;
         }, function(err) {
             console.log(err);

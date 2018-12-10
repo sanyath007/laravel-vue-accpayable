@@ -1,21 +1,28 @@
-app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, ReportService) {
+app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, ReportService, PaginateService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
 
     $scope.loading = false;
     $scope.cboDebtType = "";
+    $scope.searchKeyword = "";
+    $scope.searchTmp = [];
+
+    $scope.debts = [];
+    $scope.apps = [];
+    $scope.paids = [];
+    $scope.setzeros = [];
 
     $scope.debtPager = [];
     $scope.appPager = [];
     $scope.paidPager = [];
     $scope.setzeroPager = [];
 
-    $scope.debts = [];
-    $scope.apps = [];
-    $scope.paids = [];
-    $scope.setzeros = [];
-    
+    $scope.debtPages = [];
+    $scope.appPages = [];
+    $scope.paidPages = [];
+    $scope.setzeroPages = [];
+
     $scope.totalDebt = 0.00;
 
     $scope.debt = {
@@ -110,6 +117,20 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
 
     $scope.getDebtData = function(URL) {
         $scope.debts = [];
+        $scope.apps = [];
+        $scope.paids = [];
+        $scope.setzeros = [];
+
+        $scope.debtPager = [];
+        $scope.appPager = [];
+        $scope.paidPager = [];
+        $scope.setzeroPager = [];
+
+        $scope.debtPages = [];
+        $scope.appPages = [];
+        $scope.paidPages = [];
+        $scope.setzeroPages = [];
+
         $scope.loading = true;
         
         var debtDate = ($("#debtDate").val()).split(",");
@@ -117,19 +138,25 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
         var eDate = debtDate[1].trim();
         var debtType = ($("#debtType").val() != '') ? $("#debtType").val() : 0;
         var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
-		console.log(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' +showAll);
 
         $http.get(CONFIG.BASE_URL +URL+ '/' +debtType+ '/' +sDate+ '/' +eDate+ '/' +showAll)
         .then(function(res) {
             console.log(res);
             $scope.debts = res.data.debts.data;
             $scope.debtPager = res.data.debts;
+            $scope.debtPages = PaginateService.createPagerNo($scope.debtPager);
 
             $scope.apps = res.data.apps.data;
             $scope.appPager = res.data.apps;
+            $scope.appPages = PaginateService.createPagerNo($scope.appPager);
 
             $scope.paids = res.data.paids.data;
             $scope.paidPager = res.data.paids;
+            $scope.paidPages = PaginateService.createPagerNo($scope.paidPager);
+
+            $scope.setzeros = res.data.setzeros.data;
+            $scope.setzeroPager = res.data.setzeros;
+            $scope.setzeroPages = PaginateService.createPagerNo($scope.setzeroPager);
 
     		$scope.totalDebt = res.data.totalDebt;
 
@@ -143,6 +170,9 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
     $scope.getDebtWithURL = function(URL) {
         console.log(URL);
         $scope.debts = [];
+        $scope.debtPager = [];
+        $scope.debtPages = [];
+
         $scope.loading = true;
 
         $http.get(URL)
@@ -150,6 +180,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             console.log(res);
             $scope.debts = res.data.debts.data;
             $scope.debtPager = res.data.debts;
+            $scope.debtPages = PaginateService.createPagerNo($scope.debtPager);
 
             $scope.loading = false;
         }, function(err) {
@@ -161,6 +192,9 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
     $scope.getAppWithURL = function(URL) {
         console.log(URL);
         $scope.apps = [];
+        $scope.appPager = [];
+        $scope.appPages = [];
+
         $scope.loading = true;
 
         $http.get(URL)
@@ -168,6 +202,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             console.log(res);
             $scope.apps = res.data.apps.data;
             $scope.appPager = res.data.apps;
+            $scope.appPages = PaginateService.createPagerNo($scope.appPager);
 
             $scope.loading = false;
         }, function(err) {
@@ -179,6 +214,9 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
     $scope.getPaidWithURL = function(URL) {
         console.log(URL);
         $scope.paids = [];
+        $scope.paidPager = [];
+        $scope.paidPages = [];
+
         $scope.loading = true;
 
         $http.get(URL)
@@ -186,7 +224,30 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             console.log(res);
             $scope.paids = res.data.paids.data;
             $scope.paidPager = res.data.paids;
+            $scope.paidPages = PaginateService.createPagerNo($scope.paidPager);
 
+            $scope.loading = false;
+        }, function(err) {
+            console.log(err);
+            $scope.loading = false;
+        });
+    }
+
+    $scope.getSetzeroWithURL = function(URL) {
+        console.log(URL);
+        $scope.setzeros = [];
+        $scope.setzeroPager = [];
+        $scope.setzeroPages = [];
+        
+        $scope.loading = true;
+
+        $http.get(URL)
+        .then(function(res) {
+            console.log(res);
+            $scope.setzeros = res.data.setzeros.data;
+            $scope.setzeroPager = res.data.setzeros;
+            $scope.setzeroPages = PaginateService.createPagerNo($scope.setzeroPager);
+            
             $scope.loading = false;
         }, function(err) {
             console.log(err);

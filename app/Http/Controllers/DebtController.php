@@ -30,7 +30,11 @@ class DebtController extends Controller
                             ->with('debttype')
                             ->paginate(20);
             $paids = Debt::where('supplier_id', '=', $creditor)
-                            ->whereIn('debt_status', [2,4])
+                            ->whereIn('debt_status', [2])
+                            ->with('debttype')
+                            ->paginate(20);
+            $setzeros = Debt::where('supplier_id', '=', $creditor)
+                            ->whereIn('debt_status', [4])
                             ->with('debttype')
                             ->paginate(20);
         } else {
@@ -45,7 +49,12 @@ class DebtController extends Controller
                             ->with('debttype')
                             ->paginate(20);
             $paids = Debt::where('supplier_id', '=', $creditor)
-                            ->whereIn('debt_status', [2,4])
+                            ->whereIn('debt_status', [2])
+                            ->whereBetween('debt_date', [$sdate, $edate])
+                            ->with('debttype')
+                            ->paginate(20);
+            $setzeros = Debt::where('supplier_id', '=', $creditor)
+                            ->whereIn('debt_status', [4])
                             ->whereBetween('debt_date', [$sdate, $edate])
                             ->with('debttype')
                             ->paginate(20);
@@ -57,6 +66,7 @@ class DebtController extends Controller
             "debts"     => $debts,
             "apps"      => $apps,
             "paids"     => $paids,
+            "setzeros"  => $setzeros,
             "totalDebt" => $totalDebt,
         ];
     }

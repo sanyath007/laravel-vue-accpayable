@@ -1,13 +1,15 @@
-app.service('PaginationService', function(CONFIG, $http) {
-	this.convToDbDate = function (date) {
-		arrDate = date.split('/');
+app.service('PaginateService', function(CONFIG, $http) {
+	this.createPagerNo = function (pager) {
+		let pages = [];
 
-		return (parseInt(arrDate[2]) - 543)+ '-' +arrDate[1]+ '-' +arrDate[0];
-	}
+	    if(pager.last_page > 10 && (pager.current_page) + 10 < pager.last_page) {
+            pages = _.range(pager.current_page, pager.current_page + 10)
+        } else if(pager.last_page > 10 && (pager.current_page) + 10 > pager.last_page) {
+            pages = _.range(pager.current_page, pager.last_page + 1)
+        } else {
+            pages = _.range(pager.current_page, pager.last_page + 1)
+        }
 
-	this.convFromDbDate = function (date) {
-		arrDate = date.split('-');
-
-		return arrDate[2]+ '/' +arrDate[1]+ '/' +(parseInt(arrDate[0]) + 543);
+		return pages;
 	}
 });

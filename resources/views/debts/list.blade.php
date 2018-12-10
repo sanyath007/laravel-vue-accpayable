@@ -116,6 +116,16 @@
                         <!-- รายการรอดำเนินการ -->
                         <div class="tab-content clearfix">
                             <div class="tab-pane active" id="1a" style="padding: 10px;">
+
+                                <div class="form-group pull-right">
+                                    <input  type="text" 
+                                            id="table_search" 
+                                            name="table_search"
+                                            ng-model="searchKeyword"
+                                            class="form-control pull-right" 
+                                            placeholder="ค้นหาเลขที่ใบส่งของ">                                       
+                                </div>
+
                                 <table class="table table-bordered table-striped" style="font-size: 12px;">
                                     <thead>
                                         <tr>
@@ -189,7 +199,7 @@
                                         </a>
                                     </li>
 
-                                    <li ng-repeat="i in pages" ng-class="{'active': debtPager.current_page==i}">
+                                    <li ng-repeat="i in debtPages" ng-class="{'active': debtPager.current_page==i}">
                                         <a href="#" ng-click="getDebtWithURL(debtPager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
@@ -267,7 +277,7 @@
                                         </a>
                                     </li>
                                     
-                                    <li ng-repeat="i in pages" ng-class="{'active': appPager.current_page==i}">
+                                    <li ng-repeat="i in appPages" ng-class="{'active': appPager.current_page==i}">
                                         <a href="#" ng-click="getAppWithURL(appPager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
@@ -354,7 +364,7 @@
                                         </a>
                                     </li>
                                    
-                                   <li ng-repeat="i in pages" ng-class="{'active': paidPager.current_page==i}">
+                                   <li ng-repeat="i in paidPages" ng-class="{'active': paidPager.current_page==i}">
                                         <a href="#" ng-click="getPaidWithURL(paidPager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
@@ -430,7 +440,7 @@
 
                                 <ul class="pagination pagination-sm no-margin pull-right">
                                     <li ng-if="setzeroPager.current_page !== 1">
-                                        <a href="#" ng-click="getPaidWithURL(setzeroPager.first_page_url)" aria-label="Previous">
+                                        <a href="#" ng-click="getSetzeroWithURL(setzeroPager.first_page_url)" aria-label="Previous">
                                             <span aria-hidden="true">First</span>
                                         </a>
                                     </li>
@@ -441,7 +451,7 @@
                                         </a>
                                     </li>
 
-                                    <li ng-repeat="i in pages" ng-class="{'active': setzeroPager.current_page==i}">
+                                    <li ng-repeat="i in setzeroPages" ng-class="{'active': setzeroPager.current_page==i}">
                                         <a href="#" ng-click="getDataWithURL(setzeroPager.path + '?page=' +i)">
                                             @{{ i }}
                                         </a>
