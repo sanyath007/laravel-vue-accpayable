@@ -31,6 +31,13 @@ Route::group(['middleware' => 'web'], function() {
 });
 
 Route::group(['middleware' => ['web','auth']], function () {
+    Route::get('account/arrear', 'AccountController@arrear');    
+    Route::get('account/arrear-rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearRpt');     
+    Route::get('account/arrear-excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearExcel'); 
+    Route::get('account/creditor-paid', 'AccountController@creditorPaid');    
+    Route::get('account/creditor-paid-rpt/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
+    Route::get('account/creditor-paid-excel/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');
+
     Route::get('creditor/list', 'CreditorController@list');
     Route::get('creditor/search/{searchKey}', 'CreditorController@search');
     Route::get('creditor/get-creditor/{creditorId}', 'CreditorController@getById');
@@ -61,16 +68,9 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     Route::get('report/debt-creditor/list', 'ReportController@debtCreditor');    
     Route::get('report/debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');    
+    Route::get('report/debt-creditor-excel/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorExcel');     
     Route::get('report/debt-debttype/list', 'ReportController@debtDebttype');    
     Route::get('report/debt-debttype/rpt/{debtType}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeRpt');  
-    Route::get('report/excel', 'ReportController@excel');     
+    Route::get('report/debt-debttype-excel/{debttype}/{sdate}/{edate}/{showall}', 'ReportController@debtDebttypeExcel');
     Route::get('report/debt-chart/{creditorId}', 'ReportController@debtChart');     
-
-    Route::get('account/arrear', 'AccountController@arrear');    
-    Route::get('account/arrear-rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearRpt');     
-    Route::get('account/arrear-excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearExcel'); 
-    Route::get('account/creditor-paid', 'AccountController@creditorPaid');    
-    Route::get('account/creditor-paid-rpt/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
-    Route::get('account/creditor-paid-excel/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');     
-
 });

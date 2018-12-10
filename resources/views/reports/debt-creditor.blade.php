@@ -86,7 +86,8 @@
                       <table class="table table-bordered" style="font-size: 12px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 5%; text-align: center;">#</th>
+                                    <th style="width: 3%; text-align: center;">#</th>
+                                    <th style="width: 5%; text-align: center;">รหัสรายการ</th>
                                     <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
                                     <th style="width: 8%; text-align: center;">เลขที่ใบส่งของ</th>
                                     <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
@@ -98,15 +99,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="debt in debts">
+                                <tr ng-repeat="(index, debt) in debts">
+                                    <td style="text-align: center;">@{{ index+pager.from }}</td>
                                     <td style="text-align: center;">@{{ debt.debt_id }}</td>
                                     <td style="text-align: left;">@{{ debt.debt_date | thdate }}</td>
                                     <td style="text-align: center;">@{{ debt.deliver_no }}</td>
                                     <td style="text-align: left;">@{{ debt.debt_type_name }}</td>
                                     <td style="text-align: left;">@{{ debt.supplier_name }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_amount }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_vat }}</td>
-                                    <td style="text-align: center;">@{{ debt.debt_total }}</td>                                    
+                                    <td style="text-align: center;">@{{ debt.debt_amount | number: 2 }}</td>
+                                    <td style="text-align: center;">@{{ debt.debt_vat | number: 2 }}</td>
+                                    <td style="text-align: center;">@{{ debt.debt_total | number: 2 }}</td>                                    
                                     <td style="text-align: center;">@{{ debt.debt_status }}</td>             
                                 </tr>
                             </tbody>
@@ -120,8 +122,48 @@
                     <!-- end loading -->
                     
                     <div class="box-footer clearfix">
+                        <a  ng-show="debts.length"
+                            ng-click="debtCreditorToExcel('/report/debt-creditor-excel')"
+                            class="btn btn-success">
+                            Excel
+                        </a>
+                        
                         <ul class="pagination pagination-sm no-margin pull-right">
+                            <li ng-if="pager.current_page !== 1">
+                                <a href="#" ng-click="getDataWithURL(pager.first_page_url)" aria-label="Previous">
+                                    <span aria-hidden="true">First</span>
+                                </a>
+                            </li>
+                        
+                            <li ng-class="{'disabled': (pager.current_page==1)}">
+                                <a href="#" ng-click="getDataWithURL(pager.prev_page_url)" aria-label="Prev">
+                                    <span aria-hidden="true">Prev</span>
+                                </a>
+                            </li>
+                           
+                           <li ng-repeat="i in pages" ng-class="{'active': pager.current_page==i}">
+                                <a href="#" ng-click="getDataWithURL(pager.path + '?page=' +i)">
+                                    @{{ i }}
+                                </a>
+                            </li>
 
+                            <!-- <li ng-if="pager.current_page < pager.last_page && (pager.last_page - pager.current_page) > 10">
+                                <a href="#" ng-click="getDataWithURL(pager.path)">
+                                    ...
+                                </a>
+                            </li> -->
+                        
+                            <li ng-class="{'disabled': (pager.current_page==pager.last_page)}">
+                                <a href="#" ng-click="getDataWithURL(pager.next_page_url)" aria-label="Next">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
+
+                            <li ng-if="pager.current_page !== pager.last_page">
+                                <a href="#" ng-click="getDataWithURL(pager.last_page_url)" aria-label="Previous">
+                                    <span aria-hidden="true">Last</span>
+                                </a>
+                            </li>
                         </ul>
                     </div><!-- /.box-footer -->
 

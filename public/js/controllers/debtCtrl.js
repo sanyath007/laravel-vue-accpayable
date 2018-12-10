@@ -247,6 +247,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             });            
         }
 
+        // Clear control value and model data
         document.getElementById('frmNewDebt').reset();
         $scope.clearDebtObj();
     }
@@ -270,6 +271,8 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
 
     $scope.edit = function(debtId) {
         console.log(debtId);
+
+        // Show edit form modal dialog
         // $('#dlgEditForm').modal('show');
 
         var creditor = $("#debtType").val();
@@ -313,7 +316,8 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
                 });
             }
 
-            // window.location.href = CONFIG.BASE_URL + '/debt/list';
+            // Redirect to debt list
+            window.location.href = CONFIG.BASE_URL + '/debt/list';
         }
     };
 
@@ -331,6 +335,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             });
         }
 
+        // Get debt list and re-render chart
         $scope.getDebtData('/debt/rpt'); 
         $scope.getDebtChart($scope.cboDebtType);
     };
@@ -354,6 +359,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             });
         }
 
+        // Get debt list and re-render chart
         $scope.getDebtData('/debt/rpt'); 
         $scope.getDebtChart($scope.cboDebtType);
     };

@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use App\Models\DebtType;
 use App\Models\Creditor;
+
+use App\Exports\DebtCreditorExport;
+use App\Exports\DebttypeExport;
 
 class ReportController extends Controller
 {
@@ -15,8 +19,12 @@ class ReportController extends Controller
     	]);
     }
 
-    public function debtCreditorRpt($creditor, $sdate, $edate, $showall)
+    public function debtCreditorRpt(Request $req, $creditor, $sdate, $edate, $showall)
     {
+        $perpage = 10;
+        $page = (isset($req['page'])) ? $req['page'] : 1;
+        $offset = ($page * $perpage) - $perpage;
+
         $sql = "SELECT b.debt_id,b.debt_date,b.deliver_no,c.debt_type_name,b.debt_type_detail,";
         $sql .= "b.supplier_id,b.supplier_name,b.debt_amount,b.debt_vatrate,b.debt_vat,b.debt_total, ";
         $sql .= "CASE WHEN (b.debt_status='0') THEN 'ตั้งหนี้' ";
@@ -24,16 +32,33 @@ class ReportController extends Controller
         $sql .= "WHEN (b.debt_status='2') THEN 'ตัดจ่าย' END AS debt_status ";
         $sql .= "FROM nrhosp_acc_debt b ";
         $sql .= "LEFT JOIN nrhosp_acc_debt_type c ON (b.debt_type_id=c.debt_type_id)";
-        $sql .= "WHERE (b.supplier_id='$creditor')";
-        //$sql .= "AND (b.debt_status='0')"";
+        $sql .= "WHERE (b.debt_status IN ('0', '1'))";
+
+        if($creditor != 0) {
+            $sql .= "AND (b.supplier_id='$creditor')";
+        } 
 
         if($showall == 0) {
             $sql .= "AND (b.debt_date BETWEEN '$sdate' AND '$edate')";
         }
 
-        $sql .= "ORDER BY b.supplier_id, b.debt_date ";
+        $sql .= "ORDER BY b.debt_date ";
+        
+        $count = count(\DB::select($sql));
 
-        return \DB::select($sql);
+        $sql .= "LIMIT $offset, $perpage ";
+
+        $items = \DB::select($sql);
+        
+        $paginator = new Paginator($items, $count, $perpage, $page, [
+            'path' => $req->url(),
+            'query' => $req->query()
+        ]);
+
+        return [
+            'pager' => $paginator,
+            'page' => $page
+        ];
     }
 
     public function debtDebttype()
@@ -43,22 +68,31 @@ class ReportController extends Controller
     	]);
     }
 
-    public function debtDebttypeRpt($debttype, $sdate, $edate, $showall)
+    public function debtDebttypeRpt(Request $req, $debttype, $sdate, $edate, $showall)
     {
     	// $sdate = $month . '-01';
      	// $edate = date("Y-m-t", strtotime($sdate));
+        $perpage = 10;
+        $page = (isset($req['page'])) ? $req['page'] : 1;
+        $offset = ($page * $perpage) - $perpage;
 
         $sql = "SELECT b.debt_id,b.debt_date,b.deliver_no,c.debt_type_name,b.debt_type_detail,";
         $sql .= "b.supplier_id,b.supplier_name,b.debt_amount,b.debt_vatrate,b.debt_vat,b.debt_total, ";
         $sql .= "CASE WHEN (b.debt_status='0') THEN 'ตั้งหนี้' ";
         $sql .= "WHEN (b.debt_status='1') THEN 'ขออนุมัติ' ";
-        $sql .= "WHEN (b.debt_status='2') THEN 'ตัดจ่าย' END AS debt_status, pa.paid_date ";
+        $sql .= "WHEN (b.debt_status='2') THEN 'ตัดจ่าย' END AS debt_status "; //, pa.paid_date 
         $sql .= "FROM nrhosp_acc_debt b ";
         $sql .= "LEFT JOIN nrhosp_acc_debt_type c ON (b.debt_type_id=c.debt_type_id)";
-        $sql .= "LEFT JOIN (SELECT pd.debt_id, p.paid_date, p.cheque_no, p.cheque_date FROM nrhosp_acc_payment_detail pd
-LEFT JOIN nrhosp_acc_payment p ON (pd.payment_id=p.payment_id)) AS pa ON (b.debt_id=pa.debt_id)";
-        $sql .= "WHERE (b.debt_type_id='$debttype')";
-        //$sql .= "AND (b.debt_status='0')"";
+        /*$sql .= "LEFT JOIN ("; 
+            $sql .= "SELECT pd.debt_id, p.paid_date, p.cheque_no, p.cheque_date ";
+            $sql .= "FROM nrhosp_acc_payment_detail pd ";
+            $sql .= "LEFT JOIN nrhosp_acc_payment p ON (pd.payment_id=p.payment_id)";
+        $sql .= ") AS pa ON (b.debt_id=pa.debt_id)";*/        
+        $sql .= "WHERE (b.debt_status IN ('0', '1'))";
+
+        if($debttype != 0) {
+            $sql .= "AND (b.debt_type_id='$debttype')";
+        }
 
         if($showall == 0) {
             $sql .= "AND (b.debt_date BETWEEN '$sdate' AND '$edate')";
@@ -66,12 +100,21 @@ LEFT JOIN nrhosp_acc_payment p ON (pd.payment_id=p.payment_id)) AS pa ON (b.debt
 
         $sql .= "ORDER BY b.supplier_id, b.debt_date ";
 
-        return \DB::select($sql);
-    }
+        $count = count(\DB::select($sql));
 
-    public function excel()
-    {
-        return view('reports.excel');
+        $sql .= "LIMIT $offset, $perpage ";
+
+        $items = \DB::select($sql);
+        
+        $paginator = new Paginator($items, $count, $perpage, $page, [
+            'path' => $req->url(),
+            'query' => $req->query()
+        ]);
+
+        return [
+            'pager' => $paginator,
+            'page' => $page
+        ];
     }
 
     public function debtChart($creditorId)
@@ -86,4 +129,15 @@ LEFT JOIN nrhosp_acc_payment p ON (pd.payment_id=p.payment_id)) AS pa ON (b.debt
 
         return \DB::select($sql);
     }
+
+    public function debtCreditorExcel($creditor, $sdate, $edate, $showall) {
+        $fileName = 'debt-creditor-' . date('YmdHis') . '.xlsx';
+        return (new DebtCreditorExport($creditor, $sdate, $edate, $showall))->download($fileName);
+    }
+
+    public function debtDebttypeExcel($debttype, $sdate, $edate, $showall) {
+        $fileName = 'debt-type-' . date('YmdHis') . '.xlsx';
+        return (new DebttypeExport($debttype, $sdate, $edate, $showall))->download($fileName);
+    }
+    
 }

@@ -457,7 +457,7 @@
 						<ul class="treeview-menu">
 							<li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> ยอดหนี้แยกประเภท</a></li>
 							<li><a href="{{ url('/account/arrear') }}"><i class="fa fa-circle-o"></i> ยอดหนี้ค้างจ่าย</a></li>
-							<li><a href="{{ url('/account/creditor-paid') }}"><i class="fa fa-circle-o"></i> ทะเบียนเจ้าหนี้จ่ายชำระหนี้</a></li>
+							<li><a href="{{ url('/account/creditor-paid') }}"><i class="fa fa-circle-o"></i> เจ้าหนี้จ่ายชำระหนี้</a></li>
 						</ul>
 					</li>
 					<!-- <li class="treeview">

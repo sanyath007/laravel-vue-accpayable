@@ -10,6 +10,10 @@ app.constant('CONFIG', {
     'SYSTEM_LANGUAGE' : 'TH'
 });
 
+// app.factory('_', ['window', function () {
+//     return window._;
+// }]);
+
 app.run(function(editableOptions) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
     editableOptions.activate = 'select';
