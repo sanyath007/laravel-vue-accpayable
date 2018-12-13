@@ -3,7 +3,7 @@ app.controller('accountCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
 
-    $scope.debts = [];
+    $scope.creditors = [];
     $scope.payments = [];
     $scope.pager = [];
     $scope.pages = [];
@@ -153,5 +153,29 @@ app.controller('accountCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
 
             window.location.href = CONFIG.BASE_URL +URL+ '/' +creditor+ '/' +sDate+ '/' +eDate+ '/' + showAll;
         }
+    };
+
+    $scope.getLedgerData = function(event, URL) {
+        event.preventDefault();        
+        $scope.loading = true;
+
+        var debtDate = ($("#debtDate").val()).split(",");
+        var sDate = debtDate[0].trim();
+        var eDate = debtDate[1].trim();
+        var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+        
+        $scope.loading = false;
+
+        $("#frmSearch").attr('action', CONFIG.BASE_URL +URL+ '/' +sDate+ '/' +eDate+ '/' + showAll);
+        $("#frmSearch").submit();
+    };
+
+    $scope.ledgerToExcel = function(URL) {
+        var debtDate = ($("#debtDate").val()).split(",");
+        var sDate = debtDate[0].trim();
+        var eDate = debtDate[1].trim();
+        var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
+
+        window.location.href = CONFIG.BASE_URL +URL+ '/' +sDate+ '/' +eDate+ '/' + showAll;
     };
 });

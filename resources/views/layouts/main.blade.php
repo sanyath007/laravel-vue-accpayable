@@ -455,7 +455,7 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> ยอดหนี้แยกประเภท</a></li>
+							<li><a href="{{ url('/account/ledger/0/0/0') }}"><i class="fa fa-circle-o"></i> ยอดหนี้แยกประเภท</a></li>
 							<li><a href="{{ url('/account/arrear') }}"><i class="fa fa-circle-o"></i> ยอดหนี้ค้างจ่าย</a></li>
 							<li><a href="{{ url('/account/creditor-paid') }}"><i class="fa fa-circle-o"></i> เจ้าหนี้จ่ายชำระหนี้</a></li>
 						</ul>
@@ -492,8 +492,8 @@
 									<i class="fa fa-circle-o"></i> ยอดหนี้รายประเภทหนี้
 								</a>
 							</li>
-							<!-- <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
-							<li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li> -->
+							<li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
+							<li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
 						</ul>
 					</li>
 					<li class="treeview">

@@ -22,7 +22,8 @@ class ArrearExport implements FromView, WithColumnFormatting
     }
 
     public function view(): View
-    {	$debts = [];
+    {	
+        $debts = [];
 
     	if($this->showall == '1') {
             $debts = \DB::table('nrhosp_acc_debt')

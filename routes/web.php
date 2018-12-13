@@ -37,6 +37,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('account/creditor-paid', 'AccountController@creditorPaid');    
     Route::get('account/creditor-paid-rpt/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidRpt');     
     Route::get('account/creditor-paid-excel/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@creditorPaidExcel');
+    Route::get('account/ledger/{sdate}/{edate}/{showall}', 'AccountController@ledger');     
+    Route::get('account/ledger-excel/{sdate}/{edate}/{showall}', 'AccountController@ledgerExcel'); 
 
     Route::get('creditor/list', 'CreditorController@list');
     Route::get('creditor/search/{searchKey}', 'CreditorController@search');

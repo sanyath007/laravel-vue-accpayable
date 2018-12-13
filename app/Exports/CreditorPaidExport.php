@@ -20,7 +20,8 @@ class CreditorPaidExport implements FromView, WithColumnFormatting
     }
 
     public function view(): View
-    {	$debts = [];
+    {	
+        $debts = [];
 
     	if($this->showall == '1') {
             $payments = \DB::table('nrhosp_acc_payment')
