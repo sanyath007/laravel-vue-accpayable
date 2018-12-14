@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            ยอดหนี้แยกประเภท
+            บัญชีแยกประเภทเจ้าหนี้
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">ยอดหนี้แยกประเภท</li>
+            <li class="breadcrumb-item active">บัญชีแยกประเภทเจ้าหนี้</li>
         </ol>
     </section>
 
@@ -28,21 +28,43 @@
 
                     <form id="frmSearch" name="frmSearch" role="form" action="{{ url(('/account/ledger')) }}" method="GET">
                         <div class="box-body">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
 
                                 <div class="form-group">
-                                    <label>ระหว่างวันที่-วันที่:</label>
+                                    <label>ระหว่างวันที่ :</label>
 
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right" id="debtDate">
+                                        <input  type="text" 
+                                                id="sdate" 
+                                                name="sdate"
+                                                class="form-control pull-right"
+                                                tabindex="1" required>
                                     </div><!-- /.input group -->
                                 </div>
 
                             </div>
 
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label>ถึงวันที่ :</label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input  type="text" 
+                                                id="edate" 
+                                                name="edate"
+                                                class="form-control pull-right"
+                                                tabindex="1" required>
+                                    </div><!-- /.input group -->
+                                </div>
+
+                            </div>
                             <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
@@ -63,7 +85,7 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                      <h3 class="box-title">ยอดหนี้แยกประเภท</h3>
+                      <h3 class="box-title">บัญชีแยกประเภทเจ้าหนี้</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
@@ -107,7 +129,7 @@
                                             <tr>
                                                 <td style="text-align: center;">{{ ++$index }}</td>
                                                 <td style="text-align: center;">{{ $debt->debt_id }}</td>
-                                                <td style="text-align: center;">{{ convDateFromDb($debt->debt_date) }}</td>
+                                                <td style="text-align: center;">{{ convThDateFromDb($debt->debt_date) }}</td>
                                                 <td style="text-align: center;">{{ $debt->deliver_no }}</td>
                                                 <td style="text-align: left;">{{ $debt->debt_type_name }}</td>
                                                 <td style="text-align: left;">{{ $debt->debt_type_detail }}</td>
@@ -202,14 +224,19 @@
             //Initialize Select2 Elements
             $('.select2').select2()
 
-            //Date range picker with time picker
-            $('#debtDate').daterangepicker({
-                timePickerIncrement: 30,
-                locale: {
-                    format: 'YYYY-MM-DD',
-                    separator: " , ",
-                }
-            });
+            $('#sdate').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            }).datepicker("setDate", "<?=convDateFromDb($sdate)?>");;
+
+            $('#edate').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            }).datepicker("setDate", "<?=convDateFromDb($edate)?>");
         });
     </script>
 

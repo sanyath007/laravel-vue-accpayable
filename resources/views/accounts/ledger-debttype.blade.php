@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            ยอดหนี้แยกประเภท
+            บัญชีแยกประเภทหนี้
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">ยอดหนี้แยกประเภท</li>
+            <li class="breadcrumb-item active">บัญชีแยกประเภทหนี้</li>
         </ol>
     </section>
 
@@ -26,18 +26,41 @@
                         <h3 class="box-title">ค้นหาข้อมูล</h3>
                     </div>
 
-                    <form id="frmSearch" name="frmSearch" role="form" action="{{ url(('/account/ledger')) }}" method="GET">
+                    <form id="frmSearch" name="frmSearch" role="form" action="{{ url(('/account/ledger-debttype')) }}" method="GET">
                         <div class="box-body">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
 
                                 <div class="form-group">
-                                    <label>ระหว่างวันที่-วันที่:</label>
+                                    <label>ระหว่างวันที่ :</label>
 
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right" id="debtDate">
+                                        <input  type="text" 
+                                                id="sdate" 
+                                                name="sdate"
+                                                class="form-control pull-right"
+                                                tabindex="1" required>
+                                    </div><!-- /.input group -->
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label>ถึงวันที่ :</label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input  type="text" 
+                                                id="edate" 
+                                                name="edate"
+                                                class="form-control pull-right"
+                                                tabindex="1" required>
                                     </div><!-- /.input group -->
                                 </div>
 
@@ -46,7 +69,7 @@
                             <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="showall" name="showall"> แสดงทั้งหมด
+                                        <input type="checkbox" id="showall" name="showall" {{ (($showall == '1') ? 'checked' : '') }}> แสดงทั้งหมด
                                     </label>
                                 </div>
                             </div>
@@ -54,7 +77,7 @@
                         </div><!-- /.box-body -->
                   
                         <div class="box-footer">
-                            <button ng-click="getLedgerData($event, '/account/ledger')" class="btn btn-info">
+                            <button ng-click="getLedgerData($event, '/account/ledger-debttype')" class="btn btn-info">
                                 ค้นหา
                             </button>
                         </div>
@@ -63,77 +86,52 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                      <h3 class="box-title">ยอดหนี้แยกประเภท</h3>
+                      <h3 class="box-title">บัญชีแยกประเภทหนี้</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
 
-                        @foreach($creditors as $creditor)
+                        <table class="table table-bordered table-striped" style="font-size: 12px;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 3%; text-align: center;">#</th>
+                                    <th style="width: 10%; text-align: center;">รหัสรายการ</th>
+                                    <th style="text-align: left;">ประเภทหนี้</th>
+                                    <th style="width: 10%; text-align: center;">เครดิต</th>
+                                    <th style="width: 10%; text-align: center;">เดบิต</th>
+                                    <th style="width: 10%; text-align: center;">ยอดคงเหลือ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        <div>
-                            <h4>{{ $creditor->supplier_id }} - {{ $creditor->supplier_name }}</h4>
+                                <?php 
+                                    $index = 0;
+                                    $totalDebit = 0;
+                                    $totalCredit = 0;
+                                ?>
 
-                            <table class="table table-bordered table-striped" style="font-size: 12px;">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 3%; text-align: center;">#</th>
-                                        <th style="width: 5%; text-align: center;">รหัสรายการ</th>
-                                        <th style="width: 8%; text-align: center;">วันที่ลงบัญชี</th>
-                                        <th style="width: 8%; text-align: center;">เลขที่เอกสาร</th>
-                                        <th style="width: 15%; text-align: left;">ประเภทหนี้</th>
-                                        <th style="text-align: left;">รายการ</th>
-                                        <!-- <th style="width: 6%; text-align: center;">เลขที่เช็ค</th> -->
-                                        <th style="width: 8%; text-align: center;">เครดิต</th>
-                                        <th style="width: 8%; text-align: center;">เดบิต</th>
-                                        <th style="width: 8%; text-align: center;">ยอดคงเหลือ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                @foreach($debts as $debt)
 
-                                    <?php 
-                                        $index = 0;
-                                        $totalDebit = 0;
-                                        $totalCredit = 0;
+                                    <?php
+                                        $totalDebit += $debt->debit;
+                                        $totalCredit += $debt->credit;
                                     ?>
 
-                                    @foreach($debts as $debt)
-                                        @if($debt->supplier_id==$creditor->supplier_id)
-
-                                            <?php
-                                                $totalDebit += $debt->debt_amount;
-                                                $totalCredit += $debt->rcpamt;
-                                            ?>
-
-                                            <tr>
-                                                <td style="text-align: center;">{{ ++$index }}</td>
-                                                <td style="text-align: center;">{{ $debt->debt_id }}</td>
-                                                <td style="text-align: center;">{{ convDateFromDb($debt->debt_date) }}</td>
-                                                <td style="text-align: center;">{{ $debt->deliver_no }}</td>
-                                                <td style="text-align: left;">{{ $debt->debt_type_name }}</td>
-                                                <td style="text-align: left;">{{ $debt->debt_type_detail }}</td>
-                                                <!-- <td style="text-align: center;">{{ $debt->cheque_no }}</td> -->
-                                                <td style="text-align: right;">{{ number_format($debt->debt_amount,2) }}</td>
-                                                <td style="text-align: right;">{{ number_format($debt->rcpamt,2) }}</td>
-                                                <td style="text-align: right;">
-                                                    {{ ($debt->rcpamt) ? number_format(($debt->rcpamt - $debt->debt_amount),2) : number_format($debt->debt_amount,2) }}
-                                                </td>
-                                            </tr>
-
-                                        @endif
-                                    @endforeach
-
                                     <tr>
-                                        <td colspan="6" style="text-align: right;">รวม</td>
-                                        <td style="text-align: right;">{{ number_format($totalDebit,2) }}</td>
-                                        <td style="text-align: right;">{{ number_format($totalCredit,2) }}</td>
-                                        <td></td>
+                                        <td style="text-align: center;">{{ ++$index }}</td>
+                                        <td style="text-align: center;">{{ $debt->debt_type_id }}</td>
+                                        <td style="text-align: left;">{{ $debt->debt_type_name }}</td>
+                                        <td style="text-align: right;">{{ number_format($debt->debit,2) }}</td>
+                                        <td style="text-align: right;">{{ number_format($debt->credit,2) }}</td>
+                                        <td style="text-align: right;">
+                                            {{ ($debt->credit) ? number_format(($debt->debit - $debt->credit),2) : number_format($debt->debit,2) }}
+                                        </td>
                                     </tr>
-                                </tbody>
-                            </table>
+                                    
+                                @endforeach
 
-                        </div>  
-
-                        @endforeach                   
+                            </tbody>
+                        </table>                 
                         
                     </div><!-- /.box-body -->
 
@@ -146,7 +144,7 @@
                     <div class="box-footer clearfix">
 
                         <a  ng-show="'{{ count($debts) }}'"
-                            ng-click="ledgerToExcel('/account/ledger-excel')"
+                            ng-click="ledgerToExcel('/account/ledger-debttype-excel')"
                             class="btn btn-success">
                             Excel
                         </a>
@@ -200,16 +198,21 @@
     <script>
         $(function () {
             //Initialize Select2 Elements
-            $('.select2').select2()
+            // $('.select2').select2()
 
-            //Date range picker with time picker
-            $('#debtDate').daterangepicker({
-                timePickerIncrement: 30,
-                locale: {
-                    format: 'YYYY-MM-DD',
-                    separator: " , ",
-                }
-            });
+            $('#sdate').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            }).datepicker("setDate", "<?=convDateFromDb($sdate)?>");;
+
+            $('#edate').datepicker({
+                autoclose: true,
+                language: 'th',
+                format: 'dd/mm/yyyy',
+                thaiyear: true
+            }).datepicker("setDate", "<?=convDateFromDb($edate)?>");
         });
     </script>
 

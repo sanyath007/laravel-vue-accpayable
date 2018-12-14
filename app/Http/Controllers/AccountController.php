@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\PaymentDetail;
 
 use App\Exports\LedgerExport;
+use App\Exports\LedgerDebttypeExport;
 use App\Exports\ArrearExport;
 use App\Exports\CreditorPaidExport;
 
@@ -198,6 +199,9 @@ class AccountController extends Controller
         return view('accounts.ledger', [
             "creditors" => $creditors,
             "debts"     => $debts,
+            "sdate"     => $sdate,
+            "edate"     => $edate,
+            "showall"  => $showall,
         ]);
     }
 
@@ -216,42 +220,29 @@ class AccountController extends Controller
                 SUM(pd.rcpamt) as credit
                 FROM nrhosp_acc_debt d 
                 LEFT JOIN nrhosp_acc_debt_type dt ON (d.debt_type_id=dt.debt_type_id)
-                LEFT JOIN nrhosp_acc_payment_detail pd ON (d.debt_id=pd.debt_id)
-                WHERE (debt_date BETWEEN '2018-09-01' AND '2018-09-30')
-                GROUP BY d.debt_type_id, dt.debt_type_name
-                ORDER BY debt_type_id";
+                LEFT JOIN nrhosp_acc_payment_detail pd ON (d.debt_id=pd.debt_id) 
+                WHERE (d.debt_status NOT IN ('3','4')) ";
+
+        if($showall == '0') {
+            $sql .= "AND (d.debt_date BETWEEN '$sdate' AND '$edate') ";
+        }
+
+        $sql .= "GROUP BY d.debt_type_id, dt.debt_type_name
+                 ORDER BY debt_type_id";
 
         $debts = \DB::select($sql);
 
-        // $debts = \DB::table('nrhosp_acc_debt')
-        //                 ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_payment_detail.cheque_amt',
-        //                          'nrhosp_acc_payment_detail.rcpamt', 'nrhosp_acc_payment.cheque_no', 'nrhosp_acc_payment.payment_id')
-        //                 ->leftJoin('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
-        //                 ->leftJoin('nrhosp_acc_payment_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_payment_detail.debt_id')
-        //                 ->leftJoin('nrhosp_acc_payment', 'nrhosp_acc_payment_detail.payment_id', '=', 'nrhosp_acc_payment.payment_id')
-
-        //                 ->whereNotIn('nrhosp_acc_debt.debt_status', [3,4])
-        //                 ->whereBetween('nrhosp_acc_debt.debt_date', [$sdate, $edate])
-        //                 ->get();
-
-        // $subQuery = \DB::table('nrhosp_acc_debt')
-        //                 ->select('nrhosp_acc_debt.supplier_id', 'nrhosp_acc_debt.supplier_name')
-        //                 ->whereBetween('nrhosp_acc_debt.debt_date', [$sdate, $edate])
-        //                 ->groupBy('nrhosp_acc_debt.supplier_id', 'nrhosp_acc_debt.supplier_name');
-
-        // $creditors = \DB::table(\DB::raw("(" .$subQuery->toSql() . ") as creditors"))
-        //                 ->mergeBindings($subQuery)
-        //                 ->get();
-
         return view('accounts.ledger-debttype', [
-            // "creditors" => $creditors,
             "debts"     => $debts,
+            "sdate"     => $sdate,
+            "edate"     => $edate,
+            "showall"  => $showall,
         ]);
     }
 
     public function ledgerDebttypeExcel($sdate, $edate, $showall)
     {
-        $fileName = 'ledger-' . date('YmdHis') . '.xlsx';
-        return (new LedgerExport($sdate, $edate, $showall))->download($fileName);
+        $fileName = 'ledger-debttype' . date('YmdHis') . '.xlsx';
+        return (new LedgerDebttypeExport($sdate, $edate, $showall))->download($fileName);
     }
 }

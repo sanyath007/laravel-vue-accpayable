@@ -1,4 +1,4 @@
-app.controller('accountCtrl', function(CONFIG, $scope, $http, toaster, ModalService, PaginateService) {
+app.controller('accountCtrl', function(CONFIG, $scope, $http, toaster, ModalService, StringFormatService, PaginateService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
@@ -159,9 +159,8 @@ app.controller('accountCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         event.preventDefault();        
         $scope.loading = true;
 
-        var debtDate = ($("#debtDate").val()).split(",");
-        var sDate = debtDate[0].trim();
-        var eDate = debtDate[1].trim();
+        var sDate = StringFormatService.convToDbDate($("#sdate").val());
+        var eDate = StringFormatService.convToDbDate($("#edate").val());
         var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
         
         $scope.loading = false;
@@ -171,9 +170,8 @@ app.controller('accountCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
     };
 
     $scope.ledgerToExcel = function(URL) {
-        var debtDate = ($("#debtDate").val()).split(",");
-        var sDate = debtDate[0].trim();
-        var eDate = debtDate[1].trim();
+        var sDate = StringFormatService.convToDbDate($("#sdate").val());
+        var eDate = StringFormatService.convToDbDate($("#edate").val());
         var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
 
         window.location.href = CONFIG.BASE_URL +URL+ '/' +sDate+ '/' +eDate+ '/' + showAll;

@@ -1,4 +1,4 @@
-<h3>ยอดหนี้แยกประเภท</h3>
+<h3>บัญชีแยกประเภทเจ้าหนี้</h3>
 
 @foreach($creditors as $creditor)
 
@@ -39,7 +39,7 @@
                         <tr>
                             <td style="text-align: center;">{{ ++$index }}</td>
                             <td style="text-align: center;">{{ $debt->debt_id }}</td>
-                            <td style="text-align: center;">{{ convDateFromDb($debt->debt_date) }}</td>
+                            <td style="text-align: center;">{{ convThDateFromDb($debt->debt_date) }}</td>
                             <td style="text-align: center;">{{ $debt->deliver_no }}</td>
                             <td style="text-align: left;">{{ $debt->debt_type_name }}</td>
                             <td style="text-align: left;">{{ $debt->debt_type_detail }}</td>
