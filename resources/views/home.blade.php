@@ -22,9 +22,9 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3>933</h3>
 
-                        <p>New Orders</p>
+                        <p><h4>เจ้าหนี้ทั้งหมด</h4></p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
@@ -37,9 +37,9 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                        <h3>925,632,795.93</h3><!-- <sup style="font-size: 20px">%</sup> -->
 
-                        <p>Bounce Rate</p>
+                        <p><h4>ยอดหนี้ทั้งหมด</h4></p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
@@ -52,9 +52,9 @@
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3>44</h3>
+                        <h3>8,373,859.21</h3>
 
-                        <p>User Registrations</p>
+                        <p><h4>ยอดลดหนี้ศูนย์ทั้งหมด</h4></p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
@@ -67,9 +67,9 @@
                 <!-- small box -->
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3>65</h3>
+                        <h3>55,297,959.03</h3>
 
-                        <p>Unique Visitors</p>
+                        <p><h4>ยอดหนี้ค้างจ่ายทั้งหมด</h4></p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
