@@ -157,21 +157,19 @@
                                                     <th style="width: 7%; text-align: center;">ยอดหนี้</th>
                                                     <th style="width: 7%; text-align: center;">ภาษี</th>
                                                     <th style="width: 7%; text-align: center;">สุทธิ</th>
-                                                    <th style="width: 6%; text-align: center;">สถานะ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="(index, debt) in supplierDebtData">
                                                     <td>@{{ (index + 1) }}</td>
                                                     <td>@{{ debt.debt_id }}</td>
-                                                    <td>@{{ debt.debt_date }}</td>
+                                                    <td>@{{ debt.debt_date | thdate }}</td>
                                                     <td>@{{ debt.deliver_no }}</td>
-                                                    <!-- <td>@{{ debt.deliver_date }}</td> -->
-                                                    <!-- <td>@{{ debt.debt_type_detail }}</td> -->
+                                                    <td>@{{ debt.deliver_date | thdate }}</td>
+                                                    <td>@{{ debt.debt_type_detail }}</td>
                                                     <td class="text-right">@{{ debt.debt_amount | number:2 }}</td>
                                                     <td class="text-right">@{{ debt.debt_vat | number:2 }}</td>
                                                     <td class="text-right">@{{ debt.debt_total | number:2 }}</td>
-                                                    <!-- <td>@{{ debt.debt_status }}</td> -->
                                                 </tr>   
                                             </tbody>
                                         </table>
@@ -180,23 +178,27 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>VAT (%) :</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" id="vatrate" name="vatrate" value="7" class="form-control">
                                             </div>
                                             <div class="form-group">
                                                 <label>ภาษีมูลค่าเพิ่ม :</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" id="vatamt" name="vatamt" class="form-control">
                                             </div>
                                             <div class="form-group">
                                                 <label>ฐานภาษี :</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" id="net_val" name="net_val" class="form-control">
                                             </div>
                                             <div class="form-group">
                                                 <label>ภาษีหัก ณ ที่จ่าย :</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" id="tax_val" name="tax_val" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>ยอดสุทธิ :</label>
+                                                <input type="text" id="net_total" name="net_total" class="form-control">
                                             </div>
                                             <div class="form-group">
                                                 <label>ยอดจ่ายเช็ค :</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" id="cheque" name="cheque" class="form-control">
                                             </div>
                                         </div>
                                     </div>

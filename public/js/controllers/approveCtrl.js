@@ -157,5 +157,30 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     $scope.addSupplierDebtData = function(supplierDebt) {
         $scope.supplierDebtData.push(supplierDebt);
         console.log($scope.supplierDebtData);
+        calculateSupplierDebt();
     };
+
+    function calculateSupplierDebt() {
+        let vatAmt  = 0.0;
+        let taxVal  = 0.0;
+        let netVal  = 0.0;
+        let netTotal = 0.0;
+        let cheque = 0.0;
+        let vatRate = $("#vatrate").val();
+
+        angular.forEach($scope.supplierDebtData, function(debt) {
+            netVal += debt.debt_total;
+        });
+
+        vatAmt = (netVal * vatRate) / 100;
+        taxVal = (netVal * 1) / 100;
+        netTotal = netVal + vatAmt;
+        cheque = netTotal - taxVal;
+
+        $("#net_val").val(netVal);
+        $("#vatamt").val(vatAmt);
+        $("#tax_val").val(taxVal);
+        $("#net_total").val(netTotal);
+        $("#cheque").val(cheque);
+    }
 });

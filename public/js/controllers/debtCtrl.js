@@ -284,16 +284,16 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
             return;
         } else {
-            // Convert thai date to db date.
+            /** Convert thai date to db date. */
             $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
             $scope.debt.debt_doc_recdate = StringFormatService.convToDbDate($scope.debt.debt_doc_recdate);
             $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
             $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convToDbDate($scope.debt.debt_doc_date) : '';
             $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
-            // Get supplier data
+            /** Get supplier data */
             $scope.debt.supplier_id = $("#supplier_id").val();
             $scope.debt.supplier_name = $("#supplier_name").val();
-            // Get user id
+            /** Get user id */
             $scope.debt.debt_creby = $("#user").val();
             $scope.debt.debt_userid = $("#user").val();
             console.log($scope.debt);
@@ -308,7 +308,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             });            
         }
 
-        // Clear control value and model data
+        /** Clear control value and model data */
         document.getElementById('frmNewDebt').reset();
         $scope.clearDebtObj();
     }
@@ -319,7 +319,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             console.log(res);
             $scope.debt = res.data.debt;
 
-            // Convert thai date to db date.
+            /** Convert db date to thai date. */
             $scope.debt.debt_date = StringFormatService.convFromDbDate($scope.debt.debt_date);
             $scope.debt.debt_doc_recdate = StringFormatService.convFromDbDate($scope.debt.debt_doc_recdate);
             $scope.debt.deliver_date = StringFormatService.convFromDbDate($scope.debt.deliver_date);
@@ -333,7 +333,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
     $scope.edit = function(debtId) {
         console.log(debtId);
 
-        // Show edit form modal dialog
+        /** Show edit form modal dialog */
         // $('#dlgEditForm').modal('show');
 
         var creditor = $("#debtType").val();
@@ -354,16 +354,16 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             toaster.pop('warning', "", 'กรุณาข้อมูลให้ครบก่อน !!!');
             return;
         } else {
-            // Convert thai date to db date.
+            /** Convert thai date to db date. */
             $scope.debt.debt_date = StringFormatService.convToDbDate($scope.debt.debt_date);
             $scope.debt.debt_doc_recdate = StringFormatService.convToDbDate($scope.debt.debt_doc_recdate);
             $scope.debt.deliver_date = StringFormatService.convToDbDate($scope.debt.deliver_date);
             $scope.debt.debt_doc_date = ($scope.debt.debt_doc_date) ? StringFormatService.convToDbDate($scope.debt.debt_doc_date) : '';
             $scope.debt.doc_receive = StringFormatService.convToDbDate($scope.debt.doc_receive);
-            // Get supplier data
+            /** Get supplier data */
             $scope.debt.supplier_id = $("#supplier_id").val();
             $scope.debt.supplier_name = $("#supplier_name").val();
-            // Get user id
+            /** Get user id */
             $scope.debt.debt_creby = $("#user").val();
             $scope.debt.debt_userid = $("#user").val();
             console.log($scope.debt);
@@ -377,7 +377,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
                 });
             }
 
-            // Redirect to debt list
+            /** Redirect to debt list */
             window.location.href = CONFIG.BASE_URL + '/debt/list';
         }
     };
@@ -396,7 +396,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             });
         }
 
-        // Get debt list and re-render chart
+        /** Get debt list and re-render chart */
         $scope.getDebtData('/debt/rpt'); 
         $scope.getDebtChart($scope.cboDebtType);
     };
@@ -420,7 +420,7 @@ app.controller('debtCtrl', function(CONFIG, $scope, $http, toaster, ModalService
             });
         }
 
-        // Get debt list and re-render chart
+        /** Get debt list and re-render chart */
         $scope.getDebtData('/debt/rpt'); 
         $scope.getDebtChart($scope.cboDebtType);
     };
