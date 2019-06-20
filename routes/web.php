@@ -31,6 +31,15 @@ Route::group(['middleware' => 'web'], function() {
 });
 
 Route::group(['middleware' => ['web','auth']], function () {
+    Route::get('approve/list', 'ApprovementController@list');
+    Route::get('approve/search/{searchKey}', 'ApprovementController@search');
+    Route::get('approve/get-approve/{appId}', 'ApprovementController@getById');
+    Route::get('approve/add', 'ApprovementController@add');
+    Route::post('approve/store', 'ApprovementController@store');
+    Route::get('approve/edit/{appId}', 'ApprovementController@edit');
+    Route::put('approve/update', 'ApprovementController@update');
+    Route::delete('approve/delete/{appId}', 'ApprovementController@delete');
+
     Route::get('account/arrear', 'AccountController@arrear');    
     Route::get('account/arrear-rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearRpt');     
     Route::get('account/arrear-excel/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearExcel'); 
@@ -69,6 +78,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::put('debt/update', 'DebtController@update');
     Route::delete('debt/delete/{debtId}', 'DebtController@delete');
     Route::post('debt/setzero', 'DebtController@setZero');
+    Route::get('debt/{creditor}/list', 'DebtController@creditorDebt');
 
     Route::get('report/debt-creditor/list', 'ReportController@debtCreditor');    
     Route::get('report/debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');    

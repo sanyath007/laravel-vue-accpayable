@@ -226,4 +226,11 @@ class DebtController extends Controller
             ];
         }
     }
+
+    public function creditorDebt($creditor)
+    {
+        return [
+            'debts' => Debt::where('debt_status', '<>', '3')->paginate(10),
+        ];
+    }
 }

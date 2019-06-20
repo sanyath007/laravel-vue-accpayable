@@ -91,6 +91,7 @@
 	<script src="{{ asset('/js/controllers/debttypeCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/accountCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/approveCtrl.js') }}"></script>
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 	<script src="{{ asset('/js/services/report.js') }}"></script>
 	<script src="{{ asset('/js/services/stringFormat.js') }}"></script>
@@ -442,7 +443,7 @@
 						</a>
 						<ul class="treeview-menu">
 							<li><a href="{{ url('/debt/list') }}"><i class="fa fa-circle-o"></i> รับหนี้</a></li>
-							<li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> ขออนุมัติเบิก-จ่ายหนี้</a></li>
+							<li><a href="{{ url('/approve/list') }}"><i class="fa fa-circle-o"></i> ขออนุมัติเบิก-จ่ายหนี้</a></li>
 							<li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> ตัดจ่ายหนี้</a></li>
 						</ul>
 					</li>					
