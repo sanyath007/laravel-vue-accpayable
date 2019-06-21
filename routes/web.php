@@ -78,7 +78,7 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::put('debt/update', 'DebtController@update');
     Route::delete('debt/delete/{debtId}', 'DebtController@delete');
     Route::post('debt/setzero', 'DebtController@setZero');
-    Route::get('debt/{creditor}/list', 'DebtController@creditorDebt');
+    Route::get('debt/{creditor}/list', 'DebtController@supplierDebt');
 
     Route::get('report/debt-creditor/list', 'ReportController@debtCreditor');    
     Route::get('report/debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');    

@@ -227,10 +227,14 @@ class DebtController extends Controller
         }
     }
 
-    public function creditorDebt($creditor)
+    public function supplierDebt($creditor)
     {
+        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
         return [
-            'debts' => Debt::where('debt_status', '<>', '3')->paginate(10),
+            'debts' => Debt::where(['supplier_id' => $creditor])
+                            ->where(['debt_status' => 0])
+                            ->with('debttype')
+                            ->paginate(10),
         ];
     }
 }

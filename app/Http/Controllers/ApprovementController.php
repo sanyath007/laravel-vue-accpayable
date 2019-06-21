@@ -9,6 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Approvement;
 use App\Models\ApprovementDetail;
 use App\Models\Creditor;
+use App\Models\Budget;
 
 class ApprovementController extends Controller
 {
@@ -36,7 +37,8 @@ class ApprovementController extends Controller
     public function add()
     {
     	return view('approvements.add', [
-    		'creditors'	=> Creditor::all(),
+            'creditors' => Creditor::all(),
+    		'budgets'	=> Budget::all(),
     	]);
     }
 }
