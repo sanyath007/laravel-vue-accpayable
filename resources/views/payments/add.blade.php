@@ -5,25 +5,25 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            สร้างรายการขออนุมัติเบิก-จ่ายหนี้
+            สร้างรายการตัดจ่ายหนี้
             <!-- <small>preview of simple tables</small> -->
         </h1>
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-            <li class="breadcrumb-item active">สร้างรายการขออนุมัติเบิก-จ่ายหนี้</li>
+            <li class="breadcrumb-item active">สร้างรายการตัดจ่ายหนี้</li>
         </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-controller="approveCtrl" ng-init="initData()">
+    <section class="content" ng-controller="paymentCtrl" ng-init="initData()">
 
         <div class="row">
             <div class="col-md-12">
 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">สร้างรายการขออนุมัติ</h3>
+                        <h3 class="box-title">สร้างรายการตัดจ่ายหนี้</h3>
                     </div>
 
                     <form id="frmNewApprove" name="frmNewApprove" method="post" action="{{ url('/approve/store') }}" role="form">
@@ -32,8 +32,7 @@
                     
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-12">                                
-
+                                <div class="col-md-6">
                                     <div class="form-group" ng-class="{ 'has-error': frmNewApprove.creditor_id.$error.required }">
                                         <label>เจ้าหนี้ :</label>
                                         <select id="creditor_id" 
@@ -58,12 +57,10 @@
                                             กรุณาเลือกเจ้าหนี้
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
-                                    
+
                                     <div class="form-group" ng-class="{ 'has-error': frmNewApprove.app_doc_no.$error.required }">
-                                        <label>เลขที่ขออนุมัติ :</label>
+                                        <label>เลขที่ บค. :</label>
                                         <input  type="text" 
                                                 id="app_doc_no" .
                                                 name="app_doc_no" 
@@ -71,12 +68,12 @@
                                                 class="form-control"
                                                 tabindex="4" required>
                                         <div class="help-block" ng-show="frmNewApprove.app_doc_no.$error.required">
-                                            กรุณาระบุเลขที่ขออนุมัติ
+                                            กรุณาระบุเลขที่ บค.
                                         </div>
                                     </div>
 
                                     <div class="form-group" ng-class="{ 'has-error': frmNewApprove.app_recdoc_no.$error.required }">
-                                        <label>เลขที่รับเอกสาร :</label>
+                                        <label>เลขที่เช็ค :</label>
                                         <input  type="text" 
                                                 id="app_recdoc_no" 
                                                 name="app_recdoc_no" 
@@ -84,16 +81,58 @@
                                                 class="form-control"
                                                 tabindex="8" required>
                                         <div class="help-block" ng-show="frmNewApprove.app_recdoc_no.$error.required">
-                                            กรุณาระบุเลขที่รับเอกสาร
+                                            กรุณาระบุเลขที่เช็ค
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error': frmNewApprove.budget_id.$error.required }">
+                                        <label>ธนาคาร :</label>
+                                        <select id="budget_id" 
+                                                name="budget_id"
+                                                ng-model="approve.budget_id"
+                                                class="form-control select2" 
+                                                style="width: 100%; font-size: 12px;"
+                                                tabindex="2" required>
+                                            <option value="" selected="selected">-- กรุณาเลือก --</option>
+
+                                            @foreach($budgets as $budget)
+
+                                                <option value="{{ $budget->budget_id }}">
+                                                    {{ $budget->budget_name }}
+                                                </option>
+
+                                            @endforeach
+                                            
+                                        </select>
+                                        <div class="help-block" ng-show="frmNewApprove.budget_id.$error.required">
+                                            กรุณาเลือกประเภทงบประมาณ
                                         </div>
                                     </div>
 
                                 </div><!-- /.col -->
 
                                 <div class="col-md-6">
+                                    <div class="form-group" ng-class="{ 'has-error': frmNewApprove.app_doc_no.$error.required }">
+                                        <label>รหัสรายการขออนุมัติ :</label>                                       
+                                        <div class="input-group">
+                                            <input  type="text" 
+                                                    id="app_doc_no" .
+                                                    name="app_doc_no" 
+                                                    ng-model="approve.app_doc_no" 
+                                                    class="form-control"
+                                                    tabindex="4" required>
 
+                                            <div class="input-group-addon">
+                                                <a ng-click="popupApproveSelection($event)" style="cursor: pointer;">...</a>
+                                            </div>
+                                        </div>
+                                        <div class="help-block" ng-show="frmNewApprove.app_doc_no.$error.required">
+                                            กรุณาระบุรหัสรายการขออนุมัติ
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group" ng-class="{ 'has-error': frmNewApprove.app_date.$error.required }">
-                                        <label>วันที่ขออนุมัติ :</label>
+                                        <label>วันที่ บค. :</label>
 
                                         <div class="input-group">
                                             <div class="input-group-addon">
@@ -107,12 +146,12 @@
                                                     tabindex="1" required>
                                         </div><!-- /.input group -->
                                         <div class="help-block" ng-show="frmNewApprove.app_date.$error.required">
-                                            กรุณาเลือกวันที่ขออนุมัติ
+                                            กรุณาเลือกวันที่ บค.
                                         </div>
                                     </div>
 
                                     <div class="form-group" ng-class="{ 'has-error': frmNewApprove.app_recdoc_date.$error.required }">
-                                        <label>วันที่รับเอกสาร :</label>
+                                        <label>วันที่เช็ค :</label>
 
                                         <div class="input-group">
                                             <div class="input-group-addon">
@@ -126,7 +165,20 @@
                                                     tabindex="5" required>
                                         </div><!-- /.input group -->
                                         <div class="help-block" ng-show="frmNewApprove.app_recdoc_date.$error.required">
-                                            กรุณาเลือกวันที่รับเอกสาร
+                                            กรุณาเลือกวันที่เช็ค
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error': frmNewApprove.app_recdoc_no.$error.required }">
+                                        <label>ผู้รับเช็ค :</label>
+                                        <input  type="text" 
+                                                id="app_recdoc_no" 
+                                                name="app_recdoc_no" 
+                                                ng-model="approve.app_recdoc_no" 
+                                                class="form-control"
+                                                tabindex="8" required>
+                                        <div class="help-block" ng-show="frmNewApprove.app_recdoc_no.$error.required">
+                                            กรุณาระบุผู้รับเช็ค
                                         </div>
                                     </div>
                                     
@@ -142,9 +194,7 @@
                             <div class="tab-content clearfix">
                                 <div class="tab-pane active" id="1a" style="padding: 10px;">
 
-                                    <div class="col-md-12">       
-                                        <a class="btn btn-primary" ng-click="showSupplierDebtList($event)">เพิ่ม</a>
-                                        <a class="btn btn-danger" ng-click="removeSupplierDebt()">ลบ</a>
+                                    <div class="col-md-12">
 
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped" style="font-size: 12px; margin-top: 10px;">
@@ -183,7 +233,7 @@
                                         <hr style="margin: 0; margin-bottom: 10px;">
 
                                         <div class="col-md-6">
-                                            <div class="form-group col-md-6" ng-class="{ 'has-error': frmNewApprove.budget_id.$error.required }">
+                                            <div class="form-group" ng-class="{ 'has-error': frmNewApprove.budget_id.$error.required }">
                                                 <label>ประเภทงบประมาณ :</label>
                                                 <select id="budget_id" 
                                                         name="budget_id"
@@ -302,7 +352,7 @@
                 </div><!-- /.box -->
 
                 <!-- Modal -->
-                <div class="modal fade" id="dlgSupplierDebtList" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+                <div class="modal fade" id="dlgApproveSelection" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">

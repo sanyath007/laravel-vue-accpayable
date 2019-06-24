@@ -11,6 +11,17 @@
 |
 */
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Request-With');
+header('Access-Control-Allow-Credentials: true');
+
+Route::get('/', function () {
+    return view('welcome', [
+    	"title" => "This is cool app.",
+    ]);
+});
+
 Route::get('/', 'Auth\LoginController@showLogin');
 
 Auth::routes();
@@ -36,9 +47,20 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('approve/get-approve/{appId}', 'ApprovementController@getById');
     Route::get('approve/add', 'ApprovementController@add');
     Route::post('approve/store', 'ApprovementController@store');
+    Route::get('approve/detail/{appId}', 'ApprovementController@detail');
     Route::get('approve/edit/{appId}', 'ApprovementController@edit');
     Route::put('approve/update', 'ApprovementController@update');
     Route::delete('approve/delete/{appId}', 'ApprovementController@delete');
+
+    Route::get('payment/list', 'PaymentController@list');
+    Route::get('payment/search/{searchKey}', 'PaymentController@search');
+    Route::get('payment/get-payment/{appId}', 'PaymentController@getById');
+    Route::get('payment/add', 'PaymentController@add');
+    Route::post('payment/store', 'PaymentController@store');
+    Route::get('payment/detail/{appId}', 'PaymentController@detail');
+    Route::get('payment/edit/{appId}', 'PaymentController@edit');
+    Route::put('payment/update', 'PaymentController@update');
+    Route::delete('payment/delete/{appId}', 'PaymentController@delete');
 
     Route::get('account/arrear', 'AccountController@arrear');    
     Route::get('account/arrear-rpt/{debttype}/{creditor}/{sdate}/{edate}/{showall}', 'AccountController@arrearRpt');     

@@ -1,4 +1,4 @@
-app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalService, StringFormatService) {
+app.controller('paymentCtrl', function($scope, $http, toaster, CONFIG, ModalService, StringFormatService) {
 /** ################################################################################## */
     console.log(CONFIG.BASE_URL);
     let baseUrl = CONFIG.BASE_URL;
@@ -12,11 +12,11 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
     $scope.loading = false;
     $scope.pager = [];
-    $scope.approvements = [];
-    $scope.approve = {};
+    $scope.payments = [];
+    $scope.payment = {};
 
     $scope.initData = function() {
-        $scope.approve = {
+        $scope.payment = {
             creditor_id: '',
             app_doc_no: '',
             app_date: '',
@@ -51,17 +51,16 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
     $scope.getData = function(event) {
         console.log(event);
-        $scope.approvements = [];
+        $scope.payments = [];
         $scope.loading = true;
         
         var searchKey = ($("#searchKey").val() == '') ? 0 : $("#searchKey").val();
-        console.log(CONFIG.BASE_URL+ '/approve/search/' +searchKey);
 
-        $http.get(CONFIG.BASE_URL+ '/approve/search/' +searchKey)
+        $http.get(CONFIG.BASE_URL+ '/payment/search/' +searchKey)
         .then(function(res) {
             console.log(res);
-            $scope.approvements = res.data.approvements.data;
-            $scope.pager = res.data.approvements;
+            $scope.payments = res.data.payments.data;
+            $scope.pager = res.data.payments;
 
             $scope.loading = false;
         }, function(err) {
@@ -72,14 +71,14 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
     $scope.getDataWithURL = function(URL) {
         console.log(URL);
-        $scope.approvements = [];
+        $scope.payments = [];
         $scope.loading = true;
 
     	$http.get(URL)
     	.then(function(res) {
     		console.log(res);
-            $scope.approvements = res.data.approvements.data;
-            $scope.pager = res.data.approvements;
+            $scope.payments = res.data.payments.data;
+            $scope.pager = res.data.payments;
 
             $scope.loading = false;
     	}, function(err) {
@@ -97,16 +96,16 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
             return;
         } else {
             /** Convert thai date to db date. */
-            $scope.approve.app_date = StringFormatService.convToDbDate($scope.approve.app_date);
-            $scope.approve.app_recdoc_date = StringFormatService.convToDbDate($scope.approve.app_recdoc_date);
+            $scope.payment.app_date = StringFormatService.convToDbDate($scope.payment.app_date);
+            $scope.payment.app_recdoc_date = StringFormatService.convToDbDate($scope.payment.app_recdoc_date);
             /** Get user id */
-            $scope.approve.cr_user = $("#user").val();
-            $scope.approve.chg_user = $("#user").val();
-            /** Add debt to approvement */
-            $scope.approve.debts =  $scope.supplierDebtData;
-            console.log($scope.approve);
+            $scope.payment.cr_user = $("#user").val();
+            $scope.payment.chg_user = $("#user").val();
+            /** Add debt to paymentment */
+            $scope.payment.debts =  $scope.supplierDebtData;
+            console.log($scope.payment);
 
-            $http.post(CONFIG.BASE_URL + '/approve/store', $scope.approve)
+            $http.post(CONFIG.BASE_URL + '/payment/store', $scope.payment)
                 .then(function(res) {
                     console.log(res);
                     toaster.pop('success', "", 'บันทึกข้อมูลเรียบร้อยแล้ว !!!');
@@ -117,15 +116,15 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         }
 
         /** Clear control value and model data */
-        document.getElementById('frmNewApprove').reset();
+        document.getElementById('frmNewPayment').reset();
         $scope.initData();
     }
 
     $scope.getCreditor = function(creditorId) {
-        $http.get(CONFIG.BASE_URL + '/creditor/get-creditor/' +creditorId)
+        $http.get(CONFIG.BASE_URL + '/payment/get-payment/' +paymentId)
         .then(function(res) {
             console.log(res);
-            $scope.creditor = res.data.creditor;
+            $scope.payment = res.data.payment;
         }, function(err) {
             console.log(err);
         });
@@ -134,7 +133,7 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
     $scope.edit = function(creditorId) {
         console.log(creditorId);
 
-        window.location.href = CONFIG.BASE_URL + '/creditor/edit/' + creditorId;
+        window.location.href = CONFIG.BASE_URL+ '/payment/edit/' +paymentId;
     };
 
     $scope.update = function(event, form, creditorId) {
@@ -142,7 +141,7 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         event.preventDefault();
 
         if(confirm("คุณต้องแก้ไขเจ้าหนี้เลขที่ " + creditorId + " ใช่หรือไม่?")) {
-            $http.put(CONFIG.BASE_URL + '/creditor/update/', $scope.creditor)
+            $http.put(CONFIG.BASE_URL + '/payment/update/', $scope.payment)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'แก้ไขข้อมูลเรียบร้อยแล้ว !!!');
@@ -157,7 +156,7 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         console.log(creditorId);
 
         if(confirm("คุณต้องลบเจ้าหนี้เลขที่ " + creditorId + " ใช่หรือไม่?")) {
-            $http.delete(CONFIG.BASE_URL + '/creditor/delete/' +creditorId)
+            $http.delete(CONFIG.BASE_URL + '/payment/delete/' +creditorId)
             .then(function(res) {
                 console.log(res);
                 toaster.pop('success', "", 'ลบข้อมูลเรียบร้อยแล้ว !!!');
@@ -169,21 +168,21 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
         }
     };
 
-    $scope.showSupplierDebtList = function(event) {
-        let creditor = $("#creditor_id").val();
+    $scope.popupApproveSelection = function(event) {
+        // let creditor = $("#creditor_id").val();
 
-        if (!creditor) {
-            toaster.pop('error', "", 'กรุณาเลือกเจ้าหนี้ก่อน !!!');
-            return;
-        }
+        // if (!creditor) {
+        //     toaster.pop('error', "", 'กรุณาเลือกเจ้าหนี้ก่อน !!!');
+        //     return;
+        // }
 
-        $http.get(baseUrl + '/debt/'+ creditor +'/list')
-            .then(function (res) {
-                console.log(res);
-                $scope.getSupplierDebtData(res.data.debts.data, res.data.debts);
+        // $http.get(baseUrl + '/payment/'+ creditor +'/list')
+        //     .then(function (res) {
+        //         console.log(res);
+        //         $scope.getSupplierDebtData(res.data.debts.data, res.data.debts);
 
-                $('#dlgSupplierDebtList').modal('show');
-            });
+                $('#dlgApproveSelection').modal('show');
+            // });
     };
 
     $scope.getSupplierDebtData = function(data, pager) {
@@ -272,13 +271,13 @@ app.controller('approveCtrl', function($scope, $http, toaster, CONFIG, ModalServ
 
     $scope.popupApproveDebtList = function(appid) {
         console.log(appid);
-        $http.get(baseUrl + '/approve/detail/'+ appid)
+        $http.get(baseUrl + '/payment/detail/'+ appid)
             .then(function (res) {
                 console.log(res);
                 $scope.debts = res.data.appdetails;
                 $scope.debttypes = res.data.debttypes;
 
-                $('#dlgApproveDebtList').modal('show');
+                $('#dlgPaymentDebtList').modal('show');
             });
     };
 

@@ -75,6 +75,7 @@
 	<script src="{{ asset('/js/locales/bootstrap-datepicker.th.js') }}"></script>
 	<script src="{{ asset('/js/jquery.knob.min.js') }}"></script>
 	<script src="{{ asset('/js/fastclick.js') }}"></script>
+	<script src="{{ asset('/js/thaibath.js') }}"></script>
 
 	<script src="https://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/highcharts-more.js"></script>
@@ -83,7 +84,7 @@
 	<script src="{{ asset('/js/adminlte.min.js') }}"></script>
 
 	<!-- AngularJS Components -->
-	<script src="{{ asset('/js/app.js') }}"></script>
+	<script src="{{ asset('/js/main.js') }}"></script>
 	<script src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/homeCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/debtCtrl.js') }}"></script>
@@ -92,6 +93,7 @@
 	<script src="{{ asset('/js/controllers/accountCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/reportCtrl.js') }}"></script>
 	<script src="{{ asset('/js/controllers/approveCtrl.js') }}"></script>
+	<script src="{{ asset('/js/controllers/paymentCtrl.js') }}"></script>
 	<!--<script src="{{ asset('/js/directives/highcharts.js') }}"></script>-->
 	<script src="{{ asset('/js/services/report.js') }}"></script>
 	<script src="{{ asset('/js/services/stringFormat.js') }}"></script>
@@ -442,9 +444,21 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<li><a href="{{ url('/debt/list') }}"><i class="fa fa-circle-o"></i> รับหนี้</a></li>
-							<li><a href="{{ url('/approve/list') }}"><i class="fa fa-circle-o"></i> ขออนุมัติเบิก-จ่ายหนี้</a></li>
-							<li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> ตัดจ่ายหนี้</a></li>
+							<li>
+								<a href="{{ url('/debt/list') }}">
+									<i class="fa fa-circle-o"></i> รับหนี้
+								</a>
+							</li>
+							<li>
+								<a href="{{ url('/approve/list') }}">
+									<i class="fa fa-circle-o"></i> ขออนุมัติเบิก-จ่ายหนี้
+								</a>
+							</li>
+							<li>
+								<a href="{{ url('payment/list') }}">
+									<i class="fa fa-circle-o"></i> ตัดจ่ายหนี้
+								</a>
+							</li>
 						</ul>
 					</li>					
 					<li class="treeview">
