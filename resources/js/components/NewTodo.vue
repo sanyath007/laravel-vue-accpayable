@@ -13,12 +13,14 @@
   export default {
     name: 'NewTodo',
     computed: {
-      ...mapGetters(["newTodo"])
+      ...mapGetters({
+        newTodo: "task/newTodo"
+      })
     },
     methods: {
       addTodo() {
-        this.$store.dispatch("ADD_TODO", this.newTodo)
-        this.$store.dispatch("GET_TODOS")
+        this.$store.dispatch("task/ADD_TODO", this.newTodo)
+        this.$store.dispatch("task/GET_TODOS")
       }
     }
   }

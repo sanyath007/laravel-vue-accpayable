@@ -1,4 +1,4 @@
-const getters = {
+export default {
   newTodo: state => {
     return state.newTodo
   },
@@ -9,5 +9,3 @@ const getters = {
     return state.toRemove
   }
 }
-
-export default getters

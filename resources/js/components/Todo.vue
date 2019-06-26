@@ -14,9 +14,9 @@
     props: ["todo"],
     methods: {
       removeTodo(todo) {
-        this.$store.commit("CACHE_REMOVED", todo)
-        this.$store.dispatch("DELETE_TODO", todo)
-        this.$store.dispatch("GET_TODOS")
+        this.$store.commit("task/CACHE_REMOVED", todo)
+        this.$store.dispatch("task/DELETE_TODO", todo)
+        this.$store.dispatch("task/GET_TODOS")
       }
     }
   }

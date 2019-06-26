@@ -12,9 +12,12 @@ class DebtController extends Controller
 {
     public function list()
     {
-    	return view('debts.list', [
+        return [
             "creditors" => Creditor::all(),
-    	]);
+        ];
+    	// return view('debts.list', [
+        //     "creditors" => Creditor::all(),
+    	// ]);
     }
 
     public function debtRpt($creditor, $sdate, $edate, $showall)

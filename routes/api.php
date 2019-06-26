@@ -17,6 +17,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('todos','TaskController@fetchAll');
-Route::post('todos','TaskController@store');
-Route::delete('todos/{id}','TaskController@delete');
+/** JWT Auth */
+Route::post('auth/register', 'AuthController@register');
+Route::post('auth/login', 'AuthController@login');
+Route::group(['middleware' => 'jwt.auth'], function() {
+    Route::get('auth/user', 'AuthController@user');
+    Route::post('auth/logout', 'AuthController@logout');
+    /** Todo */
+    Route::get('todos','TaskController@fetchAll');
+    Route::post('todos','TaskController@store');
+    Route::delete('todos/{id}','TaskController@delete');
+});
+Route::group(['middleware' => 'jwt.refresh'], function() {
+    Route::get('auth/refresh', 'AuthController@refresh');
+});
+

@@ -1,7 +1,7 @@
-import Axios from "axios";
+import axios from "axios";
 
-const actions = {
-  ADD_TODO({commit}, todo) {
+export default {
+  ADD_TODO: ({commit}, todo) => {
     axios.post('/api/todos', todo)
     .then(res => {
       if (res.data === 'added')
@@ -10,7 +10,7 @@ const actions = {
         console.log(err)
     })
   },
-  DELETE_TODO({commit}, todo) {
+  DELETE_TODO: ({commit}, todo) => {
     axios.delete(`/api/todos/${todo.id}`)
     .then(res => {
       if (res.data === 'deleted')
@@ -20,7 +20,7 @@ const actions = {
       console.log(err)
     })
   },
-  GET_TODOS({commit}) {
+  GET_TODOS: ({commit}) => {
     axios.get('/api/todos')
     .then(res => {
       {
@@ -33,5 +33,3 @@ const actions = {
     })
   }
 }
-
-export default actions

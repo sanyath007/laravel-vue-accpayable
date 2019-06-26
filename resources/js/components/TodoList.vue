@@ -14,10 +14,12 @@
       todo
     },
     mounted() {
-      this.$store.dispatch("GET_TODOS")
+      this.$store.dispatch("task/GET_TODOS")
     },
     computed: {
-      ...mapGetters(["todos"])
+      ...mapGetters({
+        todos: "task/todos"
+      })
     }
   }
 </script>
