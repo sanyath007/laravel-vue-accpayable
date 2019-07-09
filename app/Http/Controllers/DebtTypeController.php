@@ -16,9 +16,9 @@ class DebtTypeController extends Controller
     public function search($searchKey)
     {
         if($searchKey == '0') {
-            $debttypes = DebtType::paginate(20);
+            $debttypes = DebtType::paginate(10);
         } else {
-            $debttypes = DebtType::where('debt_type_name', 'like', '%'.$searchKey.'%')->paginate(20);
+            $debttypes = DebtType::where('debt_type_name', 'like', '%'.$searchKey.'%')->paginate(10);
         }
 
         return [
@@ -41,9 +41,9 @@ class DebtTypeController extends Controller
 
     public function add()
     {
-    	return view('debttypes.add', [
+    	return [
             'cates' => \DB::table('nrhosp_acc_debt_cate')->select('*')->get(),
-    	]);
+    	];
     }
 
     public function store(Request $req)
@@ -53,8 +53,8 @@ class DebtTypeController extends Controller
         $debttype = new DebtType();
         $debttype->debt_type_id = $lastId;
         $debttype->debt_type_name = $req['debt_type_name'];
-        $debttype->debt_cate_id = $req['debt_cate_id'];
-        // $debttype->debt_cate_name = $req['debt_cate_name'];
+        $debttype->debt_cate_id = $req['debt_cate'];
+        $debttype->debt_cate_name = $req['debt_cate_name'];
         $debttype->debt_type_status = '1';
 
         if($debttype->save()) {

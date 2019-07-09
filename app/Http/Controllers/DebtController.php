@@ -13,11 +13,9 @@ class DebtController extends Controller
     public function list()
     {
         return [
-            "creditors" => Creditor::all(),
+            "suppliers" => Creditor::all(),
+            "debttypes" => DebtType::all(),
         ];
-    	// return view('debts.list', [
-        //     "creditors" => Creditor::all(),
-    	// ]);
     }
 
     public function debtRpt($creditor, $sdate, $edate, $showall)
@@ -71,6 +69,7 @@ class DebtController extends Controller
             "paids"     => $paids,
             "setzeros"  => $setzeros,
             "totalDebt" => $totalDebt,
+            "supplier"  => $creditor
         ];
     }
 
@@ -108,11 +107,11 @@ class DebtController extends Controller
         $debt->deliver_date = $req['deliver_date'];
         $debt->debt_doc_no = $req['debt_doc_no'];
         $debt->debt_doc_date = $req['debt_doc_date'];
-        $debt->debt_type_id = $req['debt_type_id'];
+        $debt->debt_type_id = $req['debt_type'];
         $debt->debt_type_detail = $req['debt_type_detail'];
         $debt->debt_month = $req['debt_month'];
         $debt->debt_year = $req['debt_year'];
-        $debt->supplier_id = $req['supplier_id'];
+        $debt->supplier_id = $req['supplier'];
         $debt->supplier_name = $req['supplier_name'];
         $debt->doc_receive = $req['doc_receive'];
         $debt->debt_amount = $req['debt_amount'];
@@ -127,17 +126,23 @@ class DebtController extends Controller
         $debt->debt_chgdate = date("Y-m-d H:i:s");
         $debt->debt_status = '0';
 
-        if($debt->save()) {
-            return [
-                "status" => "success",
-                "message" => "Insert success.",
-            ];
-        } else {
-            return [
-                "status" => "error",
-                "message" => "Insert failed.",
-            ];
-        }
+        return [
+            "status" => "success",
+            "message" => "Insert success.",
+            "data"  => $debt,
+        ];
+
+        // if($debt->save()) {
+        //     return [
+        //         "status" => "success",
+        //         "message" => "Insert success.",
+        //     ];
+        // } else {
+        //     return [
+        //         "status" => "error",
+        //         "message" => "Insert failed.",
+        //     ];
+        // }
     }
 
     public function getById($debtId)

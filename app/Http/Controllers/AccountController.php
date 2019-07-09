@@ -232,12 +232,25 @@ class AccountController extends Controller
 
         $debts = \DB::select($sql);
 
-        return view('accounts.ledger-debttype', [
-            "debts"     => $debts,
-            "sdate"     => $sdate,
-            "edate"     => $edate,
-            "showall"  => $showall,
-        ]);
+        $objPaidOutOfDates = \DB::select("SELECT a.payment_id 
+                                FROM nrhosp_acc_payment a 
+                                LEFT JOIN nrhosp_acc_payment_detail b ON (a.payment_id=b.payment_id)
+                                WHERE (a.paid_date > '$sdate') 
+                                AND (a.paid_date > '$edate') 
+                                AND (a.paid_stat='Y') ");
+
+        $paidOutOfDates = array_map(function($p) {
+            return [$p->payment_id];
+        }, $objPaidOutOfDates);
+
+        print_r($paidOutOfDates);
+        // return view('accounts.ledger-debttype', [
+        //     "debts"             => $debts,
+        //     "paidOutOfDates"    => $paidOutOfDates,
+        //     "sdate"             => $sdate,
+        //     "edate"             => $edate,
+        //     "showall"           => $showall,
+        // ]);
     }
 
     public function ledgerDebttypeExcel($sdate, $edate, $showall)

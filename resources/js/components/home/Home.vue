@@ -13,8 +13,8 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import todoList from './TodoList'
-  import newTodo from './NewTodo'
+  import todoList from '../todo/TodoList'
+  import newTodo from '../todo/NewTodo'
   
   export default {
     name: 'Home',
@@ -29,7 +29,8 @@
       })
     },
     mounted() {
-      console.log('Component mounted.')
+      this.$store.dispatch('page/setCurrentPage', this.$route.name)
+      
       window.Echo.channel('newTask').listen(".task-created", e => {
         this.$store.commit("ADD_TODO", e.task)
         this.newTodo.title = ''

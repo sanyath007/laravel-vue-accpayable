@@ -19,9 +19,9 @@ class CreditorController extends Controller
     public function search($searchKey)
     {
         if($searchKey == '0') {
-            $creditors = Creditor::paginate(20);
+            $creditors = Creditor::paginate(10);
         } else {
-            $creditors = Creditor::where('supplier_name', 'like', '%'.$searchKey.'%')->paginate(20);
+            $creditors = Creditor::where('supplier_name', 'like', '%'.$searchKey.'%')->paginate(10);
         }
 
         return [
@@ -44,9 +44,9 @@ class CreditorController extends Controller
 
     public function add()
     {
-    	return view('creditors.add', [
-            'prefixs' => SupplierPrefix::all(),
-    	]);
+    	return [
+            'prefixes' => SupplierPrefix::all(),
+    	];
     }
 
     public function store(Request $req)
@@ -55,7 +55,7 @@ class CreditorController extends Controller
 
         $creditor = new Creditor();
         $creditor->supplier_id = $lastId;
-        $creditor->prename_id = $req['prename_id'];
+        $creditor->prename_id = $req['prefix'];
         $creditor->supplier_name = $req['supplier_name'];
         $creditor->supplier_payto = $req['supplier_name'];
         $creditor->supplier_address1 = $req['supplier_address1'];

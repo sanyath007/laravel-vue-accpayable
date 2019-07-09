@@ -17,13 +17,13 @@
 // header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Request-With');
 // header('Access-Control-Allow-Credentials: true');
 
-// Route::get('/', function () {
-//     return view('welcome', [
-//     	"title" => "This is cool app.",
-//     ]);
-// });
+Route::get('/', function () {
+    return view('welcome', [
+    	"title" => "This is cool app.",
+    ]);
+});
 
-Route::get('/', 'Auth\LoginController@showLogin');
+// Route::get('/', 'Auth\LoginController@showLogin');
 
 Auth::routes();
 

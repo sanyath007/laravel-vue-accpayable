@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '../components/Home'
-import Login from '../components/Login'
-import Register from '../components/Register'
-import Debt from '../components/Debt'
+import Home from '../components/home/Home'
+import Login from '../components//login/Login'
+import Register from '../components/register/Register'
+import Debt from '../components/debt/Debt'
 
 Vue.use(VueRouter)
 
@@ -12,16 +12,19 @@ const router = new VueRouter({
 	mode: 'history',
 	routes: [
 		{
-			path: '/',
+			path: '/home',
 			name: 'home',
-			component: Home
+			component: Home,
+			meta: {
+				auth: true
+			}
 		},
 		{
 			path: '/debt',
 			name: 'debt',
 			component: Debt,
 			meta: {
-				auth: false
+				auth: true
 			}
 		},
 		{
@@ -41,7 +44,7 @@ const router = new VueRouter({
 			}
 		},
 		// otherwise redirect to home
-		{ path: '*', redirect: '/' }
+		{ path: '*', redirect: '/login' }
 	],
 })
 

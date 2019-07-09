@@ -164,7 +164,7 @@ app.controller('accountCtrl', function(CONFIG, $scope, $http, toaster, ModalServ
         var showAll = ($("#showall:checked").val() == 'on') ? 1 : 0;
         
         $scope.loading = false;
-
+        console.log(URL);
         $("#frmSearch").attr('action', CONFIG.BASE_URL +URL+ '/' +sDate+ '/' +eDate+ '/' + showAll);
         $("#frmSearch").submit();
     };
