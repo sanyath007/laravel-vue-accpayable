@@ -10,6 +10,8 @@ use App\Models\Creditor;
 
 class DebtController extends Controller
 {
+    /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
+    
     public function list()
     {
         return [
@@ -20,45 +22,52 @@ class DebtController extends Controller
 
     public function debtRpt($creditor, $sdate, $edate, $showall)
     {
-        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
         if($showall == 1) {
             $debts = Debt::where('supplier_id', '=', $creditor)
                             ->where('debt_status', '=', '0')
                             ->with('debttype')
-                            ->paginate(20);
+                            ->orderBy('debt_date', 'DESC')
+                            ->paginate(10);
             $apps = Debt::where('supplier_id', '=', $creditor)
                             ->where('debt_status', '=', '1')
                             ->with('debttype')
-                            ->paginate(20);
+                            ->orderBy('debt_date', 'DESC')
+                            ->paginate(10);
             $paids = Debt::where('supplier_id', '=', $creditor)
                             ->whereIn('debt_status', [2])
                             ->with('debttype')
-                            ->paginate(20);
+                            ->orderBy('debt_date', 'DESC')
+                            ->paginate(10);
             $setzeros = Debt::where('supplier_id', '=', $creditor)
                             ->whereIn('debt_status', [4])
                             ->with('debttype')
-                            ->paginate(20);
+                            ->orderBy('debt_date', 'DESC')
+                            ->paginate(10);
         } else {
             $debts = Debt::where('supplier_id', '=', $creditor)
                             ->where('debt_status', '=', '0')
                             ->whereBetween('debt_date', [$sdate, $edate])
                             ->with('debttype')
-                            ->paginate(20);
+                            ->orderBy('debt_date', 'DESC')
+                            ->paginate(10);
             $apps =  Debt::where('supplier_id', '=', $creditor)
                             ->where('debt_status', '=', '1')
                             ->whereBetween('debt_date', [$sdate, $edate])
                             ->with('debttype')
-                            ->paginate(20);
+                            ->orderBy('debt_date', 'DESC')
+                            ->paginate(10);
             $paids = Debt::where('supplier_id', '=', $creditor)
                             ->whereIn('debt_status', [2])
                             ->whereBetween('debt_date', [$sdate, $edate])
                             ->with('debttype')
-                            ->paginate(20);
+                            ->orderBy('debt_date', 'DESC')
+                            ->paginate(10);
             $setzeros = Debt::where('supplier_id', '=', $creditor)
                             ->whereIn('debt_status', [4])
                             ->whereBetween('debt_date', [$sdate, $edate])
                             ->with('debttype')
-                            ->paginate(20);
+                            ->orderBy('debt_date', 'DESC')
+                            ->paginate(10);
         }
 
         $totalDebt = Debt::where('supplier_id', '=', $creditor)->sum('debt_total');
@@ -97,7 +106,6 @@ class DebtController extends Controller
 
     public function store(Request $req)
     {
-        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
         $debt = new Debt();
         $debt->debt_id = $this->generateAutoId();
         $debt->debt_date = $req['debt_date'];
@@ -126,23 +134,19 @@ class DebtController extends Controller
         $debt->debt_chgdate = date("Y-m-d H:i:s");
         $debt->debt_status = '0';
 
-        return [
-            "status" => "success",
-            "message" => "Insert success.",
-            "data"  => $debt,
-        ];
-
-        // if($debt->save()) {
-        //     return [
-        //         "status" => "success",
-        //         "message" => "Insert success.",
-        //     ];
-        // } else {
-        //     return [
-        //         "status" => "error",
-        //         "message" => "Insert failed.",
-        //     ];
-        // }
+        if($debt->save()) {
+            return [
+                "status" => "success",
+                "message" => "Insert success.",
+                "data"  => $debt,
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "Insert failed.",
+                "data"  => $debt,
+            ];
+        }
     }
 
     public function getById($debtId)
@@ -163,7 +167,6 @@ class DebtController extends Controller
 
     public function update(Request $req)
     {
-        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
         $debt = Debt::find($req['debt_id']);
         $debt->debt_date = $req['debt_date'];
         $debt->debt_doc_recno = $req['debt_doc_recno'];
@@ -172,9 +175,9 @@ class DebtController extends Controller
         $debt->deliver_date = $req['deliver_date'];
         $debt->debt_doc_no = $req['debt_doc_no'];
         $debt->debt_doc_date = $req['debt_doc_date'];
-        $debt->debt_type_id = $req['debt_type_id'];
+        $debt->debt_type_id = $req['debt_type'];
         $debt->debt_type_detail = $req['debt_type_detail'];
-        $debt->supplier_id = $req['supplier_id'];
+        $debt->supplier_id = $req['supplier'];
         $debt->supplier_name = $req['supplier_name'];
         $debt->doc_receive = $req['doc_receive'];
         $debt->debt_year = $req['debt_year'];
@@ -193,11 +196,13 @@ class DebtController extends Controller
             return [
                 "status" => "success",
                 "message" => "Insert success.",
+                "data" => $debt,
             ];
         } else {
             return [
                 "status" => "error",
                 "message" => "Insert failed.",
+                "data" => $debt,
             ];
         }
 
@@ -237,12 +242,11 @@ class DebtController extends Controller
 
     public function supplierDebt($creditor)
     {
-        /** 0=รอดำเนินการ,1=ขออนุมัติ,2=ตัดจ่าย,3=ยกเลิก,4=ลดหนี้ศุนย์ */
         return [
             'debts' => Debt::where(['supplier_id' => $creditor])
-                            ->where(['debt_status' => 0])
-                            ->with('debttype')
-                            ->paginate(10),
+                        ->where(['debt_status' => 0])
+                        ->with('debttype')
+                        ->paginate(5),
         ];
     }
 }

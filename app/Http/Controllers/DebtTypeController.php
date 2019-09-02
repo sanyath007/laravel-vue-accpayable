@@ -90,8 +90,8 @@ class DebtTypeController extends Controller
         $debttype = DebtType::find($req['debt_type_id']);
 
         $debttype->debt_type_name = $req['debt_type_name'];
-        $debttype->debt_cate_id = $req['debt_cate_id'];
-        // $debttype->debt_cate_name = $req['debt_cate_name'];
+        $debttype->debt_cate_id = $req['debt_cate'];
+        $debttype->debt_cate_name = $req['debt_cate_name'];
 
         if($debttype->save()) {
             return [

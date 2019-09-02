@@ -13,7 +13,9 @@ class CreditorController extends Controller
 {
     public function list()
     {
-    	return view('creditors.list');
+    	return [
+            'creditors' => Creditor::all()
+        ];
     }
 
     public function search($searchKey)
@@ -105,7 +107,7 @@ class CreditorController extends Controller
     public function update(Request $req)
     {
         $creditor = Creditor::find($req['supplier_id']);
-        $creditor->prename_id = $req['prename_id'];
+        $creditor->prename_id = $req['prefix'];
         $creditor->supplier_name = $req['supplier_name'];
         $creditor->supplier_payto = $req['supplier_name'];
         $creditor->supplier_address1 = $req['supplier_address1'];
