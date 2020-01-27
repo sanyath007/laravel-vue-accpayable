@@ -1,37 +1,39 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 import './bootstrap'
-
 import Vue from 'vue'
+import vSelect from 'vue-select'
+import VeeValidate from 'vee-validate'
+import BootstrapVue from 'bootstrap-vue'
+import Paginate from 'vuejs-paginate'
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+import 'vue-select/dist/vue-select.css'
+// import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+import axios from './utils/api'
 
 import App from './components/App'
+
 import router from './router'
 import store from './store'
 
-// const files = require.context('./', true, /\.vue$/i)
+Vue.config.productionTip = false
 
-// files.keys().map(key => {
-//     return Vue.component(_.last(key.split('/')).split('.')[0], files(key))
-// })
+Vue.component('v-select', vSelect)
+Vue.component('paginate', Paginate)
+Vue.use(VeeValidate)
+Vue.use(BootstrapVue)
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+Vue.filter('currency', function (value) {
+  return parseFloat(value).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+})
+
+Vue.filter('thdate', function (date) {
+  if (!date) return;
+  let arr = date.split('-')
+  return arr[2] + '/' + arr[1] + '/' + (parseInt(arr[0]) + 543)
+})
+
+Vue.prototype.$http = axios
 
 const app = new Vue({
   el: '#app',

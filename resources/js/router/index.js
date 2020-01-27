@@ -1,10 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '../components/home/Home'
-import Login from '../components//login/Login'
-import Register from '../components/register/Register'
-import Debt from '../components/debt/Debt'
+import LoginPage from '../views/LoginPage'
+import RegisterPage from '../views/RegisterPage'
+import HomePage from '../views/HomePage'
+import DebtPage from '../views/DebtPage'
+import ApprovePage from '../views/ApprovePage'
+import ApproveForm from '../components/approve/Form'
+import PaymentPage from '../views/PaymentPage'
+import PaymentForm from '../components/payment/Form'
+import CreditorPage from '../views/CreditorPage'
+import DebtTypePage from '../views/DebtTypePage'
+
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -12,40 +20,111 @@ const router = new VueRouter({
 	mode: 'history',
 	routes: [
 		{
-			path: '/home',
+			path: '/',
 			name: 'home',
-			component: Home,
+			component: HomePage,
 			meta: {
-				auth: true
+				requiresAuth: true
 			}
 		},
 		{
 			path: '/debt',
 			name: 'debt',
-			component: Debt,
+			component: DebtPage,
 			meta: {
-				auth: true
+				requiresAuth: true
+				// is_admin : true
+			}
+		},
+		{
+			path: '/approve',
+			name: 'approve',
+			component: ApprovePage,
+			meta: {
+				requiresAuth: true
+				// is_admin : true
+			}
+		},
+		{
+			path: '/approve/form',
+			name: 'approve-form',
+			component: ApproveForm,
+			meta: {
+				requiresAuth: true
+				// is_admin : true
+			}
+		},
+		{
+			path: '/payment',
+			name: 'payment',
+			component: PaymentPage,
+			meta: {
+				requiresAuth: true
+				// is_admin : true
+			}
+		},
+		{
+			path: '/payment/form',
+			name: 'payment-form',
+			component: PaymentForm,
+			meta: {
+				requiresAuth: true
+				// is_admin : true
+			}
+		},
+		{
+			path: '/creditor',
+			name: 'creditor',
+			component: CreditorPage,
+			meta: {
+				requiresAuth: true
+				// is_admin : true
+			}
+		},
+		{
+			path: '/debttype',
+			name: 'debttype',
+			component: DebtTypePage,
+			meta: {
+				requiresAuth: true
+				// is_admin : true
 			}
 		},
 		{
 			path: '/login',
 			name: 'login',
-			component: Login,
+			component: LoginPage,
 			meta: {
-				auth: false
+				requiresAuth: false
 			}
 		},
 		{
 			path: '/register',
 			name: 'register',
-			component: Register,
+			component: RegisterPage,
 			meta: {
-				auth: false
+				requiresAuth: false
 			}
 		},
-		// otherwise redirect to home
-		{ path: '*', redirect: '/login' }
-	],
+		{// otherwise redirect to home
+			path: '*',
+			redirect: '/'
+		}
+	]
+})
+
+/** Guad router */
+router.beforeEach((to, from, next) => {
+	const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+	const isLoggedIn = store.getters['user/isLoggedIn']
+
+	if (requiresAuth && !isLoggedIn) {
+			next('/login')
+	} else if (requiresAuth && isLoggedIn) {
+			next()
+	} else {
+			next()
+	}
 })
 
 export default router

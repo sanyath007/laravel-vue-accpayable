@@ -4,8 +4,10 @@ import mutations from './mutations'
 
 const state = {
   token: localStorage.getItem('token') || '',
+  loading: false,
   currentUser: null,
-  isAdmin: false,
+  userProfile: {},
+  authErrors: null
 }
 
 export default {
@@ -13,5 +15,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 }

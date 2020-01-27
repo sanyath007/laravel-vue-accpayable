@@ -48,54 +48,52 @@
 </template>
 
 <script>
-  export default {
-    name: 'footer-section',
-  }
+export default {
+  name: 'footer-section'
+}
 </script>
 
 <style scoped>
-  /********** footer **********/
-  footer {
-    background: rgba(0, 0, 0, 0.815);
-    overflow-x: hidden;
-    padding: 14vmin 18vmin;
-  }
+/********** footer **********/
+footer {
+  background: rgba(0, 0, 0, 0.815);
+  overflow-x: hidden;
+  padding: 14vmin 18vmin;
+}
 
-  footer p>span {
-    color: #ff512f;
-  }
+footer p>span {
+  color: #ff512f;
+}
 
-  footer input {
-    border: none !important;
-  }
+footer input {
+  border: none !important;
+}
 
-  footer input::placeholder {
-    color: white !important;
-  }
+footer input::placeholder {
+  color: white !important;
+}
 
-  footer .input-group .input-group-text {
-    background: linear-gradient(to bottom, #dd2476, #ff512f);
-    border: none;
-  }
+footer .input-group .input-group-text {
+  background: linear-gradient(to bottom, #dd2476, #ff512f);
+  border: none;
+}
 
-  footer .column i {
-    color: #dd2476;
-  }
+footer .column i {
+  color: #dd2476;
+}
 
-  /* It is Adjacent sibling combinator */
+/* It is Adjacent sibling combinator */
 
-  footer .column i+i {
-    padding: 0 0.5em;
-  }
+footer .column i+i {
+  padding: 0 0.5em;
+}
 
-  .sticky {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.815);
-    z-index: 9999;
-    transition: all 1.5s ease;
-  }
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.815);
+  z-index: 9999;
+  transition: all 1.5s ease;
+}
 </style>
-
-

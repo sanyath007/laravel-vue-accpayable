@@ -2,7 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import page from './modules/page'
 import user from './modules/user'
-import task from './modules/task'
+import debt from './modules/debt'
+import approve from './modules/approve'
+import payment from './modules/payment'
+import creditor from './modules/creditor'
+import debttype from './modules/debttype'
 
 Vue.use(Vuex)
 
@@ -12,7 +16,11 @@ export default new Vuex.Store({
   modules: {
     page,
     user,
-    task,
+    debt,
+    approve,
+    payment,
+    creditor,
+    debttype
   },
-  strict: debug,
+  strict: debug
 })

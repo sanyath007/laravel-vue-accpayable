@@ -1,3 +1,3 @@
 export default {
-  currentPage: state => state.currentPage
+  getCurrentPage: state => state.currentPage
 }

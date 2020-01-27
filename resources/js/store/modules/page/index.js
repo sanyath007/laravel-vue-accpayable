@@ -3,7 +3,7 @@ import getters from './getters'
 import mutations from './mutations'
 
 const state = {
-  currentPage: 'home',
+  currentPage: 'home'
 }
 
 export default {
@@ -11,5 +11,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 }

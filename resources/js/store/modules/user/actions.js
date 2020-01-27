@@ -1,38 +1,48 @@
-import axios from "axios";
-import jwt_decode  from 'jwt-decode'
+import axios from 'axios'
+import jwtDecode from 'jwt-decode'
+import router from '../../../router'
+
+axios.defaults.baseURL = 'http://accpayable.com/api'
 
 export default {
   login: ({ commit, dispatch }, user) => {
-    axios.post('/api/auth/login', user)
+    commit('AUTH_REQUEST')
+
+    axios.post('/auth/login', user)
       .then(res => {
-        console.log(res)
         const token = res.data.access_token
-        const decoded = jwt_decode(token)
+        const decoded = jwtDecode(token)
         const userId = decoded.sub
 
         localStorage.setItem('token', token)
-        axios.defaults.headers.common['Authorization'] = token
 
-        commit('AUTH_SUCCESS', token)
-        dispatch('getCurrentUser', token, userId)
+        commit('AUTH_SUCCESS', {token, userId})
+        dispatch('fetchUserProfile', userId)
+
+        axios.defaults.headers.common['Authorization'] = `bearer ${token}`
+
+        router.push('/home')
       })
       .catch(err => {
-        console.log(err)
         localStorage.removeItem('token')
-      })      
+
+        commit('AUTH_FAILED', { code: '500', message: 'Internal Error'})
+      })
   },
   logout: ({ commit }) => {
     commit('LOGOUT')
     localStorage.removeItem('token')
-  },
-  getCurrentUser: ({ commit }, token, userId) => {
-    axios.defaults.headers.common['Authorization'] = `bearer ${token}`
 
-    axios.get('/api/auth/user', userId)
+    router.push('/login')
+  },
+  fetchUserProfile: ({ commit }, userId) => {
+    axios.defaults.headers.common['Authorization'] = `bearer ${localStorage.getItem('token')}`
+
+    axios.get('/auth/user', userId)
       .then(res => {
         const user = res.data.data
-        console.log(user)
-        commit('GET_CURRENT_USER', user)
+        
+        commit('SET_USER_PROFILE', user)
       })
       .catch(err => {
         console.log(err)

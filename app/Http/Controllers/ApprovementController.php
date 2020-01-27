@@ -148,6 +148,13 @@ class ApprovementController extends Controller
         }
     }
 
+    public function getById($appId)
+    {
+        return [
+            'approvement' => Approvement::find($appId),
+        ];
+    }
+
     public function update(Request $req)
     {
         $approvement = Approvement::find($req['app_id']);
