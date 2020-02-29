@@ -10,5 +10,8 @@ export default {
   },
   CLEAR_CREDITOR: (state, data) => {
     state.creditor = data
+  },
+  COUNT: (state) => {
+    state.creditorCount = state.creditors.length
   }
 }

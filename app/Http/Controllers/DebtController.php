@@ -155,6 +155,21 @@ class DebtController extends Controller
             'debt' => Debt::find($debtId),
         ];
     }
+    
+    public function sumDebit()
+    {
+        return Debt::whereIn('debt_status', [2])->sum('debt_total');
+    }
+    
+    public function sumCredit()
+    {
+        return Debt::sum('debt_total');
+    }
+
+    public function balance()
+    {
+        return Debt::whereIn('debt_status', [0, 1])->sum('debt_total');
+    }
 
     public function edit($creditor, $debtId)
     {

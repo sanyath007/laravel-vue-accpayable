@@ -5,7 +5,8 @@ import mutations from './mutations'
 const state = {
   creditor: {},
   creditors: [],
-  pager: {}
+  pager: {},
+  creditorCount: 0
 }
 
 export default {

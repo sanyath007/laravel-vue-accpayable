@@ -8,5 +8,8 @@ export default {
   getPaids: state => state.paids,
   getPaidPager: state => state.paidPager,
   getSetZeros: state => state.setZeros,
-  getSetZeroPager: state => state.setZeroPager
+  getSetZeroPager: state => state.setZeroPager,
+  getSumDebit: state => state.sumDebit,
+  getSumCredit: state => state.sumCredit,
+  getBalance: state => state.balance,
 }

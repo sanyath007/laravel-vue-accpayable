@@ -13,6 +13,9 @@ const state = {
   paidPager: {},
   setZeros: [],
   setZeroPager: {},
+  sumDebit: 0.0,
+  sumCredit: 0.0,
+  balance: 0.0
 }
 
 export default {

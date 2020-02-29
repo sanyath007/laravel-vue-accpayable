@@ -1,18 +1,19 @@
 <template>
   <div class="row mt-3">
 
-    <card :title="'เจ้าหนี้'" :data="supplierCount" />
+    <card :title="'เจ้าหนี้'" :data="creditors.length" />
 
     <card :title="'ยอดหนี้คงเหลือ'" :data="balance" />
 
-    <card :title="'ยอดเคดิต'" :data="creditSum" />
+    <card :title="'ยอดเคดิต'" :data="sumCredit" />
 
-    <card :title="'ยอดเดบิต'" :data="debitSum" />
+    <card :title="'ยอดเดบิต'" :data="sumDebit" />
 
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Card from '../../components/dashboard/Card'
 
 export default {
@@ -20,13 +21,22 @@ export default {
   components: {
     'card': Card
   },
+  created() {
+    this.$store.dispatch('creditor/fetchAll')
+    this.$store.dispatch('debt/fetchBalance')
+    this.$store.dispatch('debt/fetchSumCredit')
+    this.$store.dispatch('debt/fetchSumDebit')
+  },
+  computed: {
+    ...mapGetters({
+      creditors: 'creditor/getAll',
+      sumDebit: 'debt/getSumDebit',
+      sumCredit: 'debt/getSumCredit',
+      balance: 'debt/getBalance'
+    })
+  },
   data() {
-    return {
-      supplierCount: 933,
-      debitSum: 925632795.93,
-      creditSum: 55297959.03,
-      balance: 8373859.21
-    }
+    return {}
   }
 }
 </script>

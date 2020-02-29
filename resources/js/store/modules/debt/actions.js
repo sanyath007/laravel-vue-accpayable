@@ -92,5 +92,35 @@ export default {
       .catch(err => {
         console.log(err)
       })
+  },
+  fetchSumDebit({ commit }) {
+    axios.get('/debts/sum-debit')
+      .then(res => {
+        console.log(res)
+        commit('SET_SUM_DEBIT', res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    fetchSumCredit({ commit }) {
+      axios.get('/debts/sum-credit')
+      .then(res => {
+        console.log(res)
+        commit('SET_SUM_CREDIT', res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    fetchBalance({ commit }) {
+      axios.get('/debts/balance')
+      .then(res => {
+        console.log(res)
+        commit('SET_BALANCE', res.data)
+      })
+      .catch(err => {
+        console.log(err)        
+      })
   }
 }

@@ -97,6 +97,9 @@ Route::put('debts/update', 'DebtController@update');
 Route::delete('debts/delete/{debtId}', 'DebtController@delete');
 Route::post('debts/setzero', 'DebtController@setZero');
 Route::get('debts/{creditor}/list', 'DebtController@supplierDebt');
+Route::get('debts/sum-debit', 'DebtController@sumDebit');
+Route::get('debts/sum-credit', 'DebtController@sumCredit');
+Route::get('debts/balance', 'DebtController@balance');
 
 Route::get('report/debt-creditor/list', 'ReportController@debtCreditor');    
 Route::get('report/debt-creditor/rpt/{creditor}/{sdate}/{edate}/{showall}', 'ReportController@debtCreditorRpt');    

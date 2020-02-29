@@ -35,5 +35,14 @@ export default {
   },
   CLEAR_DEBT: (state, data) => {
     state.debt = data
+  },
+  SET_SUM_DEBIT: (state, data) => {
+    state.sumDebit = data
+  },
+  SET_SUM_CREDIT: (state, data) => {
+    state.sumCredit = data
+  },
+  SET_BALANCE: (state, data) => {
+    state.balance = data
   }
 }
