@@ -30,9 +30,9 @@
             บันทึกรายการ
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <router-link :to="{name: 'debt'}" class="dropdown-item">รับหนี้</router-link>
-            <router-link :to="{name: 'approve'}" class="dropdown-item">ขออนุมัติจ่าย</router-link>
-            <router-link :to="{name: 'payment'}" class="dropdown-item">ตัดจ่าย</router-link>
+            <router-link to="debt" class="dropdown-item">รับหนี้</router-link>
+            <router-link to="approve" class="dropdown-item">ขออนุมัติจ่าย</router-link>
+            <router-link to="payment" class="dropdown-item">ตัดจ่าย</router-link>
             <!-- <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">ขออนุมัติซื้อ</a>
             <a class="dropdown-item" href="#">สั่งซื้อ (PO)</a> -->

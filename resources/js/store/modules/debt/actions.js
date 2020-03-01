@@ -66,7 +66,6 @@ export default {
     
     axios.get(url + '?page=' + page)
     .then(res => {
-      console.log(res)
       commit('SET_PAIDS', res.data.paids.data)
       commit('SET_PAID_PAGER', res.data.paids)
     })
@@ -81,7 +80,6 @@ export default {
     
     axios.get(url + '?page=' + page)
     .then(res => {
-      console.log(res)
       commit('SET_SETZEROS', res.data.setzeros.data)
       commit('SET_SETZERO_PAGER', res.data.setzeros)
     })
@@ -92,7 +90,6 @@ export default {
   fetchById ({ commit }, id) {
     axios.get('/debts/get-debt/' + id)
     .then(res => {
-      console.log(res)
       commit('SET_DEBT', res.data.debt)
     })
     .catch(err => {
@@ -102,7 +99,6 @@ export default {
   fetchSumDebit({ commit }) {
     axios.get('/debts/sum-debit')
     .then(res => {
-      console.log(res)
       commit('SET_SUM_DEBIT', res.data)
     })
     .catch(err => {
@@ -113,7 +109,6 @@ export default {
     axios.get('/debts/sum-credit')
     .then(res => {
       Vue.$toast.success('Test Toast!!!', { position: 'top-right' })
-      console.log(res)
       commit('SET_SUM_CREDIT', res.data)
     })
     .catch(err => {
@@ -124,7 +119,6 @@ export default {
   fetchBalance({ commit }) {
     axios.get('/debts/balance')
     .then(res => {
-      console.log(res)
       commit('SET_BALANCE', res.data)
     })
     .catch(err => {

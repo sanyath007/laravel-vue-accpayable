@@ -43,7 +43,7 @@ const router = new VueRouter({
 			component: ApprovePage,
 			children: [
 				{
-					/** when /approve/form is matched */
+					/** when /approve is matched */
 					path: '',
 					component: ApproveList,
 				},
