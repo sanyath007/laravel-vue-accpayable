@@ -32,21 +32,25 @@ export default {
   },
   store({ commit }, data) {
     console.log(data)
+    commit('APPROVE_REQUEST')
 
     axios.post('/approves/store', data)
       .then(res => {
         console.log(res)
         Vue.$toast.success('Test Toast!!!', { position: 'top-right' })
+
+        commit('STORE_SUCCESS')
       })
       .catch(err => {
         console.log(err)
         Vue.$toast.error('Test Toast!!!', { position: 'top-right' })
       })
   },
-  update({ commit }, data) {
-    console.log(data)
+  update({ commit }, payload) {
+    console.log(payload)
+    commit('APPROVE_REQUEST')
 
-    axios.put('/approves/update', data)
+    axios.put(`/approves/${payload.id}`, payload.data)
       .then(res => {
         console.log(res)
       })
@@ -54,7 +58,16 @@ export default {
         console.log(err)
       })
   },
-  delete({ commit }, approveId) {
+  delete({ commit }, id) {
+    console.log(id)
+    commit('APPROVE_REQUEST')
 
+    axios.delete(`/approves/${id}`)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 }

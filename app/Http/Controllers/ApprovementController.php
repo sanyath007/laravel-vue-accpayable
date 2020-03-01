@@ -155,10 +155,10 @@ class ApprovementController extends Controller
         ];
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $appId)
     {
-        $approvement = Approvement::find($req['app_id']);
-        $approvement->app_id = $this->generateAutoId();
+        $approvement = Approvement::find($appId);
+        
         $approvement->app_doc_no = $req['app_doc_no'];
         $approvement->app_date = $req['app_date'];
         $approvement->app_recdoc_no = $req['app_recdoc_no'];

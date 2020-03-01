@@ -17,5 +17,14 @@ export default {
   },
   CLEAR_APPROVE: (state, data) => {
     state.approve = data
+  },
+  STORE_SUCCESS: (state) => {
+    state.loading = false
+  },
+  UPDATE_SUCCESS: (state) => {
+    state.loading = false
+  },
+  DELETE_SUCCESS: (state) => {
+    state.loading = false
   }
 }
