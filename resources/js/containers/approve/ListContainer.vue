@@ -19,7 +19,7 @@
     <!-- Page Header -->
 
     <!-- Search Box -->
-    <search-box />
+    <search-box @onSearch="handleSearch" />
 
     <!-- Lists -->
     <approve-list :approves="approves" :approveDebts="approveDebts" />
@@ -58,6 +58,13 @@ export default {
       approves: 'approve/getAll',
       approveDebts: 'approve/getDebts'
     })
-  }
+  },methods: {
+    handleSearch(searchKeys) {
+      this.$store.dispatch('approve/fetchAll', {
+        url: `/approves/${searchKeys.supplier}/${searchKeys.startDate}/${searchKeys.endDate}/${searchKeys.showAll}`,
+        page: searchKeys.page
+      })
+    }
+  },
 }
 </script>

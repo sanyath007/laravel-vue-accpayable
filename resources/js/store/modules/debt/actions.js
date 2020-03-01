@@ -8,12 +8,13 @@ Vue.use(VueToast)
 
 export default {
   fetchAll ({ commit }, data) {
-    let { supplierId, startDate, endDate, showAll, page } = data
+    let { url, page } = data
 
     commit('DEBTS_REQUEST')
     
-    console.log('supplier=' + supplierId + ' startDate=' + startDate + ' endDate=' + endDate + ' showAll=' + showAll + ' page=' + page)
-    axios.get('/debts/' + supplierId + '/' + startDate + '/' + endDate + '/' + showAll + '?page=' + page)
+    const endpoint = page === 1 ? url : `${url}?page=${page}`
+    
+    axios.get(endpoint)
     .then(res => {
       commit('SET_DEBTS', res.data.debts.data)
       commit('SET_PAGER', res.data.debts)

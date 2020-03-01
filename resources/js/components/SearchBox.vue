@@ -10,7 +10,7 @@
           :reduce="s => s.supplier_id"
           label="supplier_name"
           v-model="supplierSelected"
-          @input="getApproves"
+          @input="getData"
         />
       </div>
     </div>
@@ -81,7 +81,7 @@ export default {
   },
   created() {
     this.$store.dispatch('creditor/fetchAll')
-    this.getApproves()
+    this.getData()
   },
   computed: {
     ...mapGetters({
@@ -89,15 +89,18 @@ export default {
     })
   },
   methods: {
-    getApproves (page) {
-      this.$store.dispatch('approve/fetchAll', {
-        url: `/approves/${this.supplierSelected || 0}/${getDate(this.searchStartDate)}/${getDate(this.searchEndDate)}/${this.showAll ? 1 : 0}`,
+    getData (page) {
+      this.$emit('onSearch', {
+        supplier: this.supplierSelected || 0,
+        startDate: this.searchStartDate ? getDate(this.searchStartDate) : 0,
+        endDate: this.searchEndDate ? getDate(this.searchEndDate) : 0,
+        showAll: this.showAll ? 1 : 0,
         page: (typeof page !== 'number') ? 1 : page
       })
     },
     toggleShowAll () {
       this.showAll = event.target.checked
-      this.getApproves()
+      this.getData()
     }
   },
 }

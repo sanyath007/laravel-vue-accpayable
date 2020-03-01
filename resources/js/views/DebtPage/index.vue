@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+    <!-- Page header -->
     <breadcrumb :pageTitle="'รายการหนี้'" />
 
     <loading :active.sync="isLoading" 
@@ -18,9 +19,12 @@
         </a>
       </div>
     </div>
+    <!-- Page header -->
 
-    <debt-search :suppliers="suppliers" @onSetDataState="setDataState" />
+    <!-- Search Box -->
+    <search-box @onSearch="handleSearch" />
     
+    <!-- Tab Lists -->
     <nav class="mt-2">
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a
@@ -85,7 +89,7 @@
       </div><!-- /.tab-pane -->
     </div><!-- /.tab-content -->
 
-    <debt-form :editDebt="debt" :supplierSelected="supplier" />
+    <debt-form :editDebt="debt" :supplierSelected="supplier" v-if="supplier" />
   </div>
 </template>
 
@@ -93,12 +97,12 @@
 import { mapGetters } from 'vuex'
 
 import Breadcrumb from '../../components/Breadcrumb'
+import SearchBox from '../../components/SearchBox'
 import DebtList from '../../components/debt/List'
 import ApprovedList from '../../components/debt/ApprovedList'
 import PaidList from '../../components/debt/PaidList'
 import SetzeroList from '../../components/debt/SetzeroList'
 import DebtForm from '../../components/debt/Form'
-import DebtSearch from '../../components/debt/Search'
 
 // Import component
 import Loading from 'vue-loading-overlay';
@@ -109,7 +113,7 @@ export default {
   name: 'DebtPage',
   components: {
     'breadcrumb': Breadcrumb,
-    'debt-search': DebtSearch,
+    'search-box': SearchBox,
     'debt-list': DebtList,
     'approved-list': ApprovedList,
     'paid-list': PaidList,
@@ -120,10 +124,6 @@ export default {
   data () {
     return {
       supplierSelected: '',
-      searchStartDate: 0,
-      searchEndDate: 0,
-      showAll: 1,
-      performingRequest: false
     }
   },
   mounted () {
@@ -144,30 +144,15 @@ export default {
     })
   },
   methods: {
-    setDataState (data) {
-      let { supplierId, startDate, endDate, showAll } = data
-
-      this.supplierSelected = supplierId
-      this.searchStartDate = startDate
-      this.searchEndDate = endDate
-      this.showAll = showAll
-
-      this.getAll(1)
-    },
-    getAll (page) {
-      this.performingRequest = true
+    handleSearch(searchKeys) {
+      this.supplierSelected = searchKeys.supplier
 
       this.$store.dispatch('debt/fetchAll', {
-        supplierId: this.supplierSelected,
-        startDate: this.searchStartDate,
-        endDate: this.searchEndDate,
-        showAll: this.showAll,
-        page: (typeof page !== 'number') ? 1 : page
+        url: `/debts/${searchKeys.supplier}/${searchKeys.startDate}/${searchKeys.endDate}/${searchKeys.showAll}`,
+        page: searchKeys.page
       })
-
+      
       this.$store.dispatch('creditor/fetchById', this.supplierSelected)
-
-      this.performingRequest = false
     },
     showModal () {
       if (!this.supplierSelected) {

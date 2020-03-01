@@ -10,7 +10,9 @@ export default {
     
     commit('APPROVE_REQUEST')
 
-    axios.get(`${url}?page=${page}`)
+    const endpoint = page === 1 ? url : `${url}?page=${page}`
+    
+    axios.get(endpoint)
       .then(res => {
         commit('SET_APPROVES', res.data.approvements.data)
         commit('SET_APPROVE_DEBTS', res.data.approvement_debts)

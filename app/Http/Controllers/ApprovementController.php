@@ -158,7 +158,7 @@ class ApprovementController extends Controller
     public function update(Request $req, $appId)
     {
         $approvement = Approvement::find($appId);
-        
+
         $approvement->app_doc_no = $req['app_doc_no'];
         $approvement->app_date = $req['app_date'];
         $approvement->app_recdoc_no = $req['app_recdoc_no'];
@@ -182,8 +182,6 @@ class ApprovementController extends Controller
         $approvement->cheque = floatval(str_replace(",", "", $req['cheque']));
         $approvement->cheque_str = $req['cheque_str'];
         /** user info */
-        $approvement->cr_userid = $req['cr_user'];
-        $approvement->cr_date = date("Y-m-d H:i:s");
         $approvement->chg_userid = $req['chg_user'];
         $approvement->chg_date = date("Y-m-d H:i:s");
         
