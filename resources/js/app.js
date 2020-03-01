@@ -35,6 +35,16 @@ Vue.filter('thdate', function (date) {
 
 Vue.prototype.$http = axios
 
+axios.interceptors.response.use(response => {
+  console.log('axios interceptors')
+  console.log(response)
+  return response
+}, error => {
+  console.log(error)
+  // return Error object with Promise
+  return Promise.reject(error);
+});
+
 const app = new Vue({
   el: '#app',
   components: { 

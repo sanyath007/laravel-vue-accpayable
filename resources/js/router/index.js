@@ -6,6 +6,7 @@ import RegisterPage from '../views/RegisterPage'
 import HomePage from '../views/HomePage'
 import DebtPage from '../views/DebtPage'
 import ApprovePage from '../views/ApprovePage'
+import ApproveList from '../containers/approve/ListContainer'
 import ApproveForm from '../components/approve/Form'
 import PaymentPage from '../views/PaymentPage'
 import PaymentForm from '../components/payment/Form'
@@ -40,15 +41,18 @@ const router = new VueRouter({
 			path: '/approve',
 			name: 'approve',
 			component: ApprovePage,
-			meta: {
-				requiresAuth: true
-				// is_admin : true
-			}
-		},
-		{
-			path: '/approve/form',
-			name: 'approve-form',
-			component: ApproveForm,
+			children: [
+				{
+					/** when /approve/form is matched */
+					path: '',
+					component: ApproveList,
+				},
+				{
+					/** when /approve/form is matched */
+					path: 'form',
+					component: ApproveForm,
+				}
+			],
 			meta: {
 				requiresAuth: true
 				// is_admin : true
@@ -58,15 +62,13 @@ const router = new VueRouter({
 			path: '/payment',
 			name: 'payment',
 			component: PaymentPage,
-			meta: {
-				requiresAuth: true
-				// is_admin : true
-			}
-		},
-		{
-			path: '/payment/form',
-			name: 'payment-form',
-			component: PaymentForm,
+			children: [
+				{
+					/** when /payment/form is matched */
+					path: 'form',
+					component: PaymentForm,
+				}
+			],
 			meta: {
 				requiresAuth: true
 				// is_admin : true
@@ -106,7 +108,8 @@ const router = new VueRouter({
 				requiresAuth: false
 			}
 		},
-		{// otherwise redirect to home
+		{
+			// otherwise redirect to home
 			path: '*',
 			redirect: '/'
 		}

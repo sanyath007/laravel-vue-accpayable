@@ -1,7 +1,11 @@
+import Vue from 'vue'
+import VueToast from 'vue-toast-notification'
 import axios from '../../../utils/api'
 
+import 'vue-toast-notification/dist/index.css'
+
 export default {
-  fetchAll ({ commit }, data) {
+  fetchAll({ commit }, data) {
     let { url, page } = data
     
     commit('APPROVE_REQUEST')
@@ -16,7 +20,7 @@ export default {
         console.log(err)
       })
   },
-  fetchById ({ commit }, approveId) {
+  fetchById({ commit }, approveId) {
     axios.get('/approves/get-approve/' + approveId)
       .then(res => {
         console.log(res)
@@ -25,5 +29,32 @@ export default {
       .catch(err => {
         console.log(err)
       })
+  },
+  store({ commit }, data) {
+    console.log(data)
+
+    axios.post('/approves/store', data)
+      .then(res => {
+        console.log(res)
+        Vue.$toast.success('Test Toast!!!', { position: 'top-right' })
+      })
+      .catch(err => {
+        console.log(err)
+        Vue.$toast.error('Test Toast!!!', { position: 'top-right' })
+      })
+  },
+  update({ commit }, data) {
+    console.log(data)
+
+    axios.put('/approves/update', data)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+  delete({ commit }, approveId) {
+
   }
 }

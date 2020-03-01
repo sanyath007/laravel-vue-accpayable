@@ -372,7 +372,6 @@
 import { mapGetters } from 'vuex'
 import DatePicker from 'vuejs-datepicker'
 import {en, th} from 'vuejs-datepicker/dist/locale'
-// import moment from 'moment'
 
 import Breadcrumb from '../../components/Breadcrumb'
 import DebtSelectionModal from '../debt/SelectionModal'
@@ -380,6 +379,36 @@ import DebtSelectionModal from '../debt/SelectionModal'
 import { ArabicNumberToText } from '../../utils/thaibath'
 import { currencyFormat } from '../../utils/number-func'
 import { getDate } from '../../utils/date-func'
+
+// Custom validator dict
+const dict = {
+  custom: {
+    net_val: {
+      required: 'กรุณาระบุฐานภาษี',
+      regex: 'กรุณาระบุฐานภาษีเป็นตัวเลข'
+    },
+    vatrate: {
+      required: 'กรุณาระบุอัตราภาษี (%)',
+      regex: 'กรุณาระบุอัตราภาษี (%) เป็นตัวเลข'
+    },
+    vatamt: {
+      required: 'กรุณาระบุจำนวนภาษี',
+      regex: 'กรุณาระบุจำนวนภาษีเป็นตัวเลข'
+    },
+    tax_val: {
+      required: 'กรุณาระบุภาษีหัก ณ ที่จ่าย',
+      regex: 'กรุณาระบุภาษีหัก ณ ที่จ่ายป็นตัวเลข'
+    },
+    net_total: {
+      required: 'กรุณาระบุยอดหนี้สุทธิ',
+      regex: 'กรุณาระบุยอดหนี้สุทธิป็นตัวเลข'
+    },
+    cheque: {
+      required: 'กรุณาระบุยอดจ่ายเช็ค',
+      regex: 'กรุณาระบุยอดจ่ายเช็คป็นตัวเลข'
+    }
+  }
+}
 
 export default {
   name: 'ApproveForm',
@@ -434,7 +463,7 @@ export default {
   computed: {
     ...mapGetters({
       token: 'user/getToken',
-      currentUser: 'user/getCurrentUser'
+      currentUser: 'user/getUserProfile'
     })
   },
   methods: {
@@ -451,61 +480,26 @@ export default {
     },
     onSubmit: function (event) {
       this.submitted = true
-      const dict = {
-        custom: {
-          net_val: {
-            required: 'กรุณาระบุฐานภาษี',
-            regex: 'กรุณาระบุฐานภาษีเป็นตัวเลข'
-          },
-          vatrate: {
-            required: 'กรุณาระบุอัตราภาษี (%)',
-            regex: 'กรุณาระบุอัตราภาษี (%) เป็นตัวเลข'
-          },
-          vatamt: {
-            required: 'กรุณาระบุจำนวนภาษี',
-            regex: 'กรุณาระบุจำนวนภาษีเป็นตัวเลข'
-          },
-          tax_val: {
-            required: 'กรุณาระบุภาษีหัก ณ ที่จ่าย',
-            regex: 'กรุณาระบุภาษีหัก ณ ที่จ่ายป็นตัวเลข'
-          },
-          net_total: {
-            required: 'กรุณาระบุยอดหนี้สุทธิ',
-            regex: 'กรุณาระบุยอดหนี้สุทธิป็นตัวเลข'
-          },
-          cheque: {
-            required: 'กรุณาระบุยอดจ่ายเช็ค',
-            regex: 'กรุณาระบุยอดจ่ายเช็คป็นตัวเลข'
-          }
-        }
-      }
-
-      if (this.editApprove && this.editApprove.app_id) {
-        console.log('Edition approve')
-      } else {
-        console.log('Insertion approve')
-      }
-
       this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
-        console.log(this.$validator.errors)
-
         if (valid) {
+          this.approve.app_date = this.approve.app_date && getDate(this.approve.app_date)
+          this.approve.app_recdoc_date = this.approve.app_recdoc_date && getDate(this.approve.app_recdoc_date)
+          this.approve.pay_to = this.suppliers.filter(s => s.supplier_id === this.approve.supplier)[0].supplier_name
+
+          this.approve.cr_user = this.currentUser.id
+          this.approve.chg_user = this.currentUser.id
+
           if (this.editApprove && this.editApprove.app_id) {
-            this.updateData()
+            console.log('Edition approve')
+            this.$store.dispatch('approve/update', this.approve)
           } else {
-            this.storeData()
+            console.log('Insertion approve')
+            this.$store.dispatch('approve/store', this.approve)
           }
 
-          // this.$store.dispatch('approve/fetchAll', {
-          //   supplierId: 0,
-          //   startDate: 0,
-          //   endDate: 0,
-          //   showAll: 1,
-          //   page: 1
-          // })
-
-          // this.clearData() // Clear data from control
+          /** Clear data from control */
+          this.clearData()
         } else {
           this.$bvToast.toast(`คุณกรอกข้อมูลยังไม่ครบ !!`, {
             title: 'Warning',
@@ -514,64 +508,6 @@ export default {
           })
         }
       })
-    },
-    storeData: function () {
-      this.approve.app_date = this.approve.app_date && getDate(this.approve.app_date)
-      this.approve.app_recdoc_date = this.approve.app_recdoc_date && getDate(this.approve.app_recdoc_date)
-      this.approve.pay_to = this.suppliers.filter(s => s.supplier_id === this.approve.supplier)[0].supplier_name
-
-      this.approve.cr_user = this.currentUser
-      this.approve.chg_user = this.currentUser
-      console.log(this.approve)
-
-      this.$http.post('/approves/store', this.approve)
-        .then(res => {
-          console.log(res)
-
-          this.$bvToast.toast(`บันทึกข้อมูลเรียบร้อยแล้ว !!`, {
-            title: 'Info',
-            variant: 'success',
-            autoHideDelay: 2000
-          })
-        })
-        .catch(err => {
-          console.log(err)
-
-          this.$bvToast.toast(`พบข้อผิดพลาด "${err}"`, {
-            title: 'Error',
-            variant: 'danger',
-            autoHideDelay: 2000
-          })
-        })
-    },
-    updateData: function () {
-      this.approve.app_date = this.approve.app_date && getDate(this.approve.app_date)
-      this.approve.app_recdoc_date = this.approve.app_recdoc_date && getDate(this.approve.app_recdoc_date)
-      this.approve.pay_to = this.suppliers.filter(s => s.supplier_id === this.approve.supplier)[0].supplier_name
-
-      this.approve.cr_user = this.currentUser
-      this.approve.chg_user = this.currentUser
-      console.log(this.approve)
-
-      this.$http.put('/approves/update', this.approve)
-        .then(res => {
-          console.log(res)
-
-          this.$bvToast.toast(`บันทึกข้อมูลเรียบร้อยแล้ว !!`, {
-            title: 'Info',
-            variant: 'success',
-            autoHideDelay: 2000
-          })
-        })
-        .catch(err => {
-          console.log(err)
-
-          this.$bvToast.toast(`พบข้อผิดพลาด "${err}"`, {
-            title: 'Error',
-            variant: 'danger',
-            autoHideDelay: 2000
-          })
-        })
     },
     showSupplierDebts: function (e) {      
       if (this.approve.supplier) {

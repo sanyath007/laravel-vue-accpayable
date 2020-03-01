@@ -406,8 +406,6 @@ export default {
     }
   },
   mounted () {
-    // $('.select2').select2()
-
     this.submitted = false
     this.onInitForm()
 
