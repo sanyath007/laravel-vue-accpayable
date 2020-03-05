@@ -125,5 +125,36 @@ export default {
     .catch(err => {
       console.log(err)        
     })
+  },
+  store({ commit }, data) {
+    commit('DEBTS_REQUEST')
+
+    console.log(data)
+
+    // axios.post('/debts/store', data)
+    //   .then(res => {
+    //     console.log(res)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
+  },
+  update({ commit }, data) {
+    commit('DEBTS_REQUEST')
+
+    console.log(data)
+
+    // axios.put(`/debts/update/${data.debt_id}`, data)
+    //   .then(res => {
+    //     console.log(res)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
+  },
+  delete({ commit }, id) {
+    commit('DEBTS_REQUEST')
+
+    console.log(data)
   }
 }

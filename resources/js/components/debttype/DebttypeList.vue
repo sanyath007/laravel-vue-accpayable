@@ -56,7 +56,7 @@ export default {
               autoHideDelay: 2000
             })
 
-            this.$store.dispatch('debttype/fetchAll', { searchKey: '0', page: 1 })
+            this.$store.dispatch('debttype/fetchBySearch', { searchKey: '0', page: 1 })
           })
           .catch(err => {
             console.log(err)

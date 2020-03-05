@@ -363,9 +363,48 @@
 import { mapGetters } from 'vuex'
 import DatePicker from 'vuejs-datepicker'
 import {en, th} from 'vuejs-datepicker/dist/locale'
-// import moment from 'moment'
-
 import { getDate } from '../../utils/date-func'
+
+// Custom validator dict
+const dict = {
+  custom: {
+    debt_date: {
+      required: 'กรุณาระบุวันที่ลงบัญชี',
+      date_format: 'กรุณาระบุวันที่ลงบัญชีในรูปแบบ dd/mm/yyyy'
+    },
+    debt_doc_recdate: {
+      required: 'กรุณาระบุวันที่รับหนังสือ',
+      date_format: 'กรุณาระบุวันที่รับหนังสือในรูปแบบ dd/mm/yyyy'
+    },
+    debt_doc_date: {
+      date_format: 'กรุณาระบุวันที่หนังสือในรูปแบบ dd/mm/yyyy'
+    },
+    deliver_date: {
+      required: 'กรุณาระบุวันที่ใบส่งของ/ใบกำกับภาษี',
+      date_format: 'กรุณาระบุวันที่ใบส่งของ/ใบกำกับภาษีในรูปแบบ dd/mm/yyyy'
+    },
+    doc_receive: {
+      required: 'กรุณาระบุวันที่รับเอกสาร',
+      date_format: 'กรุณาระบุวันที่รับเอกสารในรูปแบบ dd/mm/yyyy'
+    },
+    debt_amount: {
+      required: 'กรุณาระบุยอดหนี้',
+      regex: 'กรุณาระบุยอดหนี้เป็นตัวเลข'
+    },
+    debt_vatrate: {
+      required: 'กรุณาระบุอัตราภาษี (%)',
+      regex: 'กรุณาระบุอัตราภาษี (%) เป็นตัวเลข'
+    },
+    debt_vat: {
+      required: 'กรุณาระบุจำนวนภาษี',
+      regex: 'กรุณาระบุจำนวนภาษีเป็นตัวเลข'
+    },
+    debt_total: {
+      required: 'กรุณาระบุยอดหนี้สุทธิ',
+      regex: 'กรุณาระบุยอดหนี้สุทธิป็นตัวเลข'
+    }
+  }
+}
 
 export default {
   name: 'DebtForm',
@@ -375,8 +414,7 @@ export default {
   props: ['editDebt', 'supplierSelected'],
   data () {
     return {
-      suppliers: [],
-      debttypes: [],
+      submitted: false,
       debt: {
         debt_date: '',
         debt_doc_no: '',
@@ -398,26 +436,26 @@ export default {
         doc_receive: '',
         debt_remark: ''
       },
-      submitted: false,
       dpLang: {
         en: en,
         th: th
       }
     }
   },
-  mounted () {
-    this.submitted = false
-    this.onInitForm()
+  created() {
+    this.$store.dispatch('creditor/fetchAll')
+    this.$store.dispatch('debttype/fetchAll')
 
-    // Test create date with regex
-    // var st = "26.04.2013";
-    // var pattern = /(\d{2})\.(\d{2})\.(\d{4})/
-    // console.log(new Date(st.replace(pattern,'$3-$2-$1')))
+    if(this.isEdition) {
+      this.$store.dispatch('debt/fetchById', this.editId)
+    }
   },
   computed: {
     ...mapGetters({
       token: 'user/getToken',
-      currentUser: 'user/getCurrentUser'
+      currentUser: 'user/getUserProfile',
+      suppliers: 'creditor/getAll',
+      debttypes: 'debttype/getAll',
     })
   },
   watch: {
@@ -451,73 +489,28 @@ export default {
     }
   },
   methods: {
-    onInitForm () {
-      this.$http.get('/debts/list')
-        .then(res => {
-          console.log(res.data)
-          this.suppliers = res.data.suppliers
-
-          this.debttypes = res.data.debttypes
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
     onSubmit: function (event) {
       this.submitted = true
-      const dict = {
-        custom: {
-          debt_date: {
-            required: 'กรุณาระบุวันที่ลงบัญชี',
-            date_format: 'กรุณาระบุวันที่ลงบัญชีในรูปแบบ dd/mm/yyyy'
-          },
-          debt_doc_recdate: {
-            required: 'กรุณาระบุวันที่รับหนังสือ',
-            date_format: 'กรุณาระบุวันที่รับหนังสือในรูปแบบ dd/mm/yyyy'
-          },
-          debt_doc_date: {
-            date_format: 'กรุณาระบุวันที่หนังสือในรูปแบบ dd/mm/yyyy'
-          },
-          deliver_date: {
-            required: 'กรุณาระบุวันที่ใบส่งของ/ใบกำกับภาษี',
-            date_format: 'กรุณาระบุวันที่ใบส่งของ/ใบกำกับภาษีในรูปแบบ dd/mm/yyyy'
-          },
-          doc_receive: {
-            required: 'กรุณาระบุวันที่รับเอกสาร',
-            date_format: 'กรุณาระบุวันที่รับเอกสารในรูปแบบ dd/mm/yyyy'
-          },
-          debt_amount: {
-            required: 'กรุณาระบุยอดหนี้',
-            regex: 'กรุณาระบุยอดหนี้เป็นตัวเลข'
-          },
-          debt_vatrate: {
-            required: 'กรุณาระบุอัตราภาษี (%)',
-            regex: 'กรุณาระบุอัตราภาษี (%) เป็นตัวเลข'
-          },
-          debt_vat: {
-            required: 'กรุณาระบุจำนวนภาษี',
-            regex: 'กรุณาระบุจำนวนภาษีเป็นตัวเลข'
-          },
-          debt_total: {
-            required: 'กรุณาระบุยอดหนี้สุทธิ',
-            regex: 'กรุณาระบุยอดหนี้สุทธิป็นตัวเลข'
-          }
-        }
-      }
-
-      if (this.editDebt.debt_id) {
-        console.log('Edition debt')
-      } else {
-        console.log('Insertion debt')
-      }
 
       this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
         if (valid) {
+          this.debt.debt_date = this.debt.debt_date && getDate(this.debt.debt_date)
+          this.debt.debt_doc_date = this.debt.debt_doc_date && getDate(this.debt.debt_doc_date)
+          this.debt.debt_doc_recdate = this.debt.debt_doc_recdate && getDate(this.debt.debt_doc_recdate)
+          this.debt.deliver_date = this.debt.deliver_date && getDate(this.debt.deliver_date)
+          this.debt.doc_receive = this.debt.doc_receive && getDate(this.debt.doc_receive)
+
+          this.debt.debt_creby = this.currentUser
+          this.debt.debt_userid = this.currentUser
+          console.log(this.debt)
+
           if (this.editDebt.debt_id) {
-            this.updateData()
+            console.log('Edition debt')
+            this.$store.dispatch('debt/update', this.debt)
           } else {
-            this.storeData()
+            console.log('Insertion debt')
+            this.$store.dispatch('debt/store', this.debt)
           }
 
           $(this.$refs.debtFormModal).modal('hide')
@@ -530,7 +523,8 @@ export default {
             page: 1
           })
 
-          this.clearData() // Clear data from control
+          /** Clear data from control */
+          this.clearData()
         } else {
           this.$bvToast.toast(`คุณกรอกข้อมูลยังไม่ครบ !!`, {
             title: 'Warning',
@@ -539,68 +533,6 @@ export default {
           })
         }
       })
-    },
-    storeData: function () {
-      this.debt.debt_date = this.debt.debt_date && getDate(this.debt.debt_date)
-      this.debt.debt_doc_date = this.debt.debt_doc_date && getDate(this.debt.debt_doc_date)
-      this.debt.debt_doc_recdate = this.debt.debt_doc_recdate && getDate(this.debt.debt_doc_recdate)
-      this.debt.deliver_date = this.debt.deliver_date && getDate(this.debt.deliver_date)
-      this.debt.doc_receive = this.debt.doc_receive && getDate(this.debt.doc_receive)
-
-      this.debt.debt_creby = this.currentUser
-      this.debt.debt_userid = this.currentUser
-      console.log(this.debt)
-
-      this.$http.post('/debts/store', this.debt)
-        .then(res => {
-          console.log(res)
-
-          this.$bvToast.toast(`บันทึกข้อมูลเรียบร้อยแล้ว !!`, {
-            title: 'Info',
-            variant: 'success',
-            autoHideDelay: 2000
-          })
-        })
-        .catch(err => {
-          console.log(err)
-
-          this.$bvToast.toast(`พบข้อผิดพลาด "${err}"`, {
-            title: 'Error',
-            variant: 'danger',
-            autoHideDelay: 2000
-          })
-        })
-    },
-    updateData: function () {
-      this.debt.debt_date = this.debt.debt_date && getDate(this.debt.debt_date)
-      this.debt.debt_doc_date = this.debt.debt_doc_date && getDate(this.debt.debt_doc_date)
-      this.debt.debt_doc_recdate = this.debt.debt_doc_recdate && getDate(this.debt.debt_doc_recdate)
-      this.debt.deliver_date = this.debt.deliver_date && getDate(this.debt.deliver_date)
-      this.debt.doc_receive = this.debt.doc_receive && getDate(this.debt.doc_receive)
-
-      this.debt.debt_creby = this.currentUser
-      this.debt.debt_userid = this.currentUser
-      console.log(this.debt)
-
-      this.$http.put('/debts/update', this.debt)
-        .then(res => {
-          console.log(res)
-
-          this.$bvToast.toast(`แก้ไขข้อมูลเรียบร้อยแล้ว !!`, {
-            title: 'Info',
-            variant: 'success',
-            autoHideDelay: 2000
-          })
-        })
-        .catch(err => {
-          console.log(err)
-
-          this.$bvToast.toast(`พบข้อผิดพลาด "${err}"`, {
-            title: 'Error',
-            variant: 'danger',
-            autoHideDelay: 2000
-          })
-        })
     },
     clearData: function () {
       this.debt = {

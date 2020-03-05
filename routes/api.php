@@ -81,7 +81,7 @@ Route::delete('creditors/delete/{creditorId}', 'CreditorController@delete');
 
 Route::get('creditors/prefixes', 'CreditorController@prefixes');
 
-Route::get('debttypes/list', 'DebtTypeController@list');
+Route::get('debttypes', 'DebtTypeController@list');
 Route::get('debttypes/search/{searchKey}', 'DebttypeController@search');
 Route::get('debttypes/get-debttype/{debttypeId}', 'DebttypeController@getById');
 Route::get('debttypes/add', 'DebtTypeController@add');

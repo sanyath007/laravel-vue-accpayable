@@ -10,7 +10,7 @@ class DebtTypeController extends Controller
 {
     public function list()
     {
-    	return view('debttypes.list');
+    	return DebtType::all();
     }
 
     public function search($searchKey)
