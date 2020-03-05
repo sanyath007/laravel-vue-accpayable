@@ -23,7 +23,7 @@ class TaskRemoved
      */
     public function __construct($task)
     {
-        $this->task = $task;
+        // $this->task = $task;
     }
 
     /**
@@ -33,11 +33,11 @@ class TaskRemoved
      */
     public function broadcastOn()
     {
-        return new Channel('taskRemoved');
+        // return new Channel('taskRemoved');
     }
 
     public function broadcastAs()
     {
-        return 'task-removed';
+        // return 'task-removed';
     }
 }

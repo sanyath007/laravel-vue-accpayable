@@ -99,7 +99,9 @@ export default {
       })
     },
     edit (approveId) {
-      this.$store.dispatch('approve/fetchById', approveId)
+      this.$store.commit('approve/SET_EDIT', approveId)
+
+      this.$router.push('/approve/form')
     },
     cancel (approveId, approveDebts) {
       const data = { approveId, approveDebts }

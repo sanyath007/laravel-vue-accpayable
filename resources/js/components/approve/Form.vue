@@ -22,19 +22,6 @@
             v-validate="{required: true}"
             @input="clearData"
           />
-          <!-- <select
-            id="supplier_id"
-            name="supplier_id"
-            v-model="approve.supplier"
-            class="form-control"
-            tabindex="0"
-          >
-            <option value="">-- กรุณาเลือก --</option>
-            <option v-for="s in suppliers" :value="s.supplier_id" :key="s.supplier_id">
-              {{ s.supplier_name }}
-            </option>
-
-          </select> -->
           <span class="text-danger small" v-show="submitted && errors.has('supplier_id')">
               กรุณาเลือกเจ้าหนี้
           </span>
@@ -417,7 +404,6 @@ export default {
     'date-picker': DatePicker,
     'debt-selection': DebtSelectionModal
   },
-  props: ['editApprove'],
   data () {
     return {
       submitted: false,
@@ -446,9 +432,6 @@ export default {
         chg_user: '',
         debts: []
       },
-      suppliers: [],
-      budgets: [],
-      debts: [],
       approveDebtsToRemove: [],
       dpLang: {
         en: en,
@@ -456,45 +439,64 @@ export default {
       }
     }
   },
-  mounted () {
-    this.submitted = false
-    this.onInitForm()
+  created() {
+    this.$store.dispatch('creditor/fetchAll')
+    this.$store.dispatch('budget/fetchAll')
+
+    if(this.isEdition) {
+      this.$store.dispatch('approve/fetchById', this.editId)
+    }
   },
   computed: {
     ...mapGetters({
       token: 'user/getToken',
-      currentUser: 'user/getUserProfile'
+      currentUser: 'user/getUserProfile',
+      editId: 'approve/getEditId',
+      isEdition: 'approve/isEdition',
+      editedApprove: 'approve/getById',
+      approveDebts: 'approve/getDebts',
+      suppliers: 'creditor/getAll',
+      budgets: 'budget/getAll'
     })
   },
-  methods: {
-    onInitForm: function () {
-      this.$http.get('/approves/add')
-        .then(res => {
-          console.log(res)
-          this.suppliers = res.data.creditors
-          this.budgets = res.data.budgets
-        })
-        .catch(err => {
-          console.log(err)
-        })
+  watch: {
+    editedApprove: function(newVal, oldVal) {
+      const { app_date, app_recdoc_date, supplier_id, budget_id, cr_date, cr_userid, chg_date, chg_userid, ...app } = newVal
+      
+      this.approve = app
+      this.approve.app_date = app_date && new Date(app_date),
+      this.approve.app_recdoc_date = app_recdoc_date && new Date(app_recdoc_date),
+      this.approve.supplier = supplier_id
+      this.approve.budget = budget_id
+      this.approve.debts = []
     },
+    approveDebts: function(newVal, oldVal) {
+      this.approve.debts = newVal.map(d => d.debt)
+    }
+  },
+  methods: {
     onSubmit: function (event) {
       this.submitted = true
       this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
         if (valid) {
+          // Convert date format to db date
           this.approve.app_date = this.approve.app_date && getDate(this.approve.app_date)
           this.approve.app_recdoc_date = this.approve.app_recdoc_date && getDate(this.approve.app_recdoc_date)
+          // Get supplier name
           this.approve.pay_to = this.suppliers.filter(s => s.supplier_id === this.approve.supplier)[0].supplier_name
-
-          this.approve.cr_user = this.currentUser.id
+          // Specified user who updated data
           this.approve.chg_user = this.currentUser.id
 
-          if (this.editApprove && this.editApprove.app_id) {
+          if (this.isEdition && this.approve.app_id) {
             console.log('Edition approve')
+            
             this.$store.dispatch('approve/update', this.approve)
           } else {
             console.log('Insertion approve')
+            // Specified user who created data
+            this.approve.cr_user = this.currentUser.id
+            
             this.$store.dispatch('approve/store', this.approve)
           }
 
@@ -534,33 +536,33 @@ export default {
       console.log(this.approveDebtsToRemove)
     },
     calculateApproveTotal: function() {
-        let vatAmt = 0.0
-        let taxVal = 0.0
-        let netVal = 0.0
-        let netTotal = 0.0
-        let cheque = 0.0
-        let vatRate = $("#vatrate").val()
+      let vatAmt = 0.0
+      let taxVal = 0.0
+      let netVal = 0.0
+      let netTotal = 0.0
+      let cheque = 0.0
+      let vatRate = $("#vatrate").val()
 
-        this.approve.debts.map(debt => {
-            vatAmt += debt.debt_vat
-            netVal += debt.debt_amount
-        })
+      this.approve.debts.map(debt => {
+          vatAmt += debt.debt_vat
+          netVal += debt.debt_amount
+      })
 
-        taxVal = (netVal * 1) / 100
-        netTotal = netVal + vatAmt
-        cheque = netTotal - taxVal
+      taxVal = (netVal * 1) / 100
+      netTotal = netVal + vatAmt
+      cheque = netTotal - taxVal
 
-        this.approve.amount = netVal.toFixed(2) // ฐานภาษี
-        this.approve.net_val = netVal.toFixed(2) // ฐานภาษี
-        this.approve.vatamt = vatAmt.toFixed(2) // ภาษีมูลค่าเพิ่ม
-        this.approve.tax_val = taxVal.toFixed(2) // ภาษีหัก ณ ที่จ่าย
-        this.approve.net_amt = taxVal.toFixed(2) // ภาษีหัก ณ ที่จ่าย
-        this.approve.net_total = netTotal.toFixed(2) // ยอดสุทธิ
-        this.approve.cheque = cheque.toFixed(2) // ยอดจ่ายเช็ค
+      this.approve.amount = netVal.toFixed(2) // ฐานภาษี
+      this.approve.net_val = netVal.toFixed(2) // ฐานภาษี
+      this.approve.vatamt = vatAmt.toFixed(2) // ภาษีมูลค่าเพิ่ม
+      this.approve.tax_val = taxVal.toFixed(2) // ภาษีหัก ณ ที่จ่าย
+      this.approve.net_amt = taxVal.toFixed(2) // ภาษีหัก ณ ที่จ่าย
+      this.approve.net_total = netTotal.toFixed(2) // ยอดสุทธิ
+      this.approve.cheque = cheque.toFixed(2) // ยอดจ่ายเช็ค
 
-        this.approve.net_amt_str = ArabicNumberToText(taxVal.toFixed(2)) // ภาษีหัก ณ ที่จ่าย
-        this.approve.net_total_str = ArabicNumberToText(netTotal.toFixed(2)) // ยอดสุทธิ
-        this.approve.cheque_str = ArabicNumberToText(cheque.toFixed(2)) // ยอดจ่ายเช็ค
+      this.approve.net_amt_str = ArabicNumberToText(taxVal.toFixed(2)) // ภาษีหัก ณ ที่จ่าย
+      this.approve.net_total_str = ArabicNumberToText(netTotal.toFixed(2)) // ยอดสุทธิ
+      this.approve.cheque_str = ArabicNumberToText(cheque.toFixed(2)) // ยอดจ่ายเช็ค
     },
     clearData: function () {
       this.approve = {

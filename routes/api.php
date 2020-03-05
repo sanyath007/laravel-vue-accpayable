@@ -35,8 +35,8 @@ Route::delete('todos/{id}','TaskController@delete');
 
 Route::get('approves/list', 'ApprovementController@list');
 Route::get('approves/{creditor}/{sdate}/{edate}/{showall}', 'ApprovementController@search');
-Route::get('approves/get-approve/{appId}', 'ApprovementController@getById');
-Route::get('approves/add', 'ApprovementController@add');
+Route::get('approves/{appId}', 'ApprovementController@getById');
+Route::get('approves/{appId}/debts', 'ApprovementController@appDebts');
 Route::post('approves/store', 'ApprovementController@store');
 Route::get('approves/detail/{appId}', 'ApprovementController@detail');
 Route::get('approves/edit/{appId}', 'ApprovementController@edit');
@@ -44,6 +44,9 @@ Route::put('approves/{appId}', 'ApprovementController@update');
 Route::delete('approves/delete/{appId}', 'ApprovementController@delete');
 Route::post('approves/cancel', 'ApprovementController@cancel');
 Route::get('approves/{supplier}/list', 'ApprovementController@supplierApproves');
+
+Route::get('budgets', 'BudgetController@list');
+Route::get('budgets/{id}', 'BudgetController@getById');
 
 Route::get('payments/list', 'PaymentController@list');
 Route::get('payments/{creditor}/{sdate}/{edate}/{showall}', 'PaymentController@search');

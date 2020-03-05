@@ -21,17 +21,19 @@ export default {
       .catch(err => {
         console.log(err)
       })
-  },
-  fetchById({ commit }, approveId) {
-    axios.get('/approves/get-approve/' + approveId)
+    },
+    fetchById({ commit }, approveId) {
+      commit('APPROVE_REQUEST')
+      
+      axios.get(`/approves/${approveId}`)
       .then(res => {
-        console.log(res)
         commit('SET_APPROVE', res.data.approvement)
+        commit('SET_APPROVE_DEBTS', res.data.detail)
       })
       .catch(err => {
         console.log(err)
       })
-  },
+    },
   store({ commit }, data) {
     console.log(data)
     commit('APPROVE_REQUEST')
@@ -39,25 +41,27 @@ export default {
     axios.post('/approves/store', data)
       .then(res => {
         console.log(res)
-        Vue.$toast.success('Test Toast!!!', { position: 'top-right' })
+        Vue.$toast.success('Insert successful!!', { position: 'top-right' })
 
         commit('STORE_SUCCESS')
       })
       .catch(err => {
         console.log(err)
-        Vue.$toast.error('Test Toast!!!', { position: 'top-right' })
+        Vue.$toast.error('Error!!', { position: 'top-right' })
       })
-  },
-  update({ commit }, payload) {
-    console.log(payload)
-    commit('APPROVE_REQUEST')
-
-    axios.put(`/approves/${payload.id}`, payload.data)
+    },
+    update({ commit }, payload) {
+      console.log(payload)
+      commit('APPROVE_REQUEST')
+      
+      axios.put(`/approves/${payload.app_id}`, payload)
       .then(res => {
         console.log(res)
+        Vue.$toast.success('Update successful!!', { position: 'top-right' })
       })
       .catch(err => {
         console.log(err)
+        Vue.$toast.error('Error!!', { position: 'top-right' })
       })
   },
   delete({ commit }, id) {

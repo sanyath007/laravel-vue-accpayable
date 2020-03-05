@@ -7,7 +7,9 @@ const state = {
   approve: {},
   approves: [],
   approveDebts: [],
-  pager: {}
+  pager: {},
+  isEdition: false,
+  editId: ''
 }
 
 export default {

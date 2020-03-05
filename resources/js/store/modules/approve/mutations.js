@@ -18,6 +18,10 @@ export default {
   CLEAR_APPROVE: (state, data) => {
     state.approve = data
   },
+  SET_EDIT: (state, id) => {
+    state.isEdition = true
+    state.editId = id
+  },
   STORE_SUCCESS: (state) => {
     state.loading = false
   },

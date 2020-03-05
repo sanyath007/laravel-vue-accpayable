@@ -77,14 +77,6 @@ class ApprovementController extends Controller
         return $lastId;
     }
 
-    public function add()
-    {
-    	return [
-            'creditors' => Creditor::all(),
-    		'budgets'	=> Budget::all(),
-    	];
-    }
-
     public function store(Request $req)
     {
         $approvement = new Approvement();
@@ -152,6 +144,7 @@ class ApprovementController extends Controller
     {
         return [
             'approvement' => Approvement::find($appId),
+            'detail' => ApprovementDetail::where('app_id', $appId)->with('debt')->get(),
         ];
     }
 
@@ -185,8 +178,14 @@ class ApprovementController extends Controller
         $approvement->chg_userid = $req['chg_user'];
         $approvement->chg_date = date("Y-m-d H:i:s");
         
-        $approvement->app_stat = '0';
-        $approvement->is_approve = 'N';
+        // $approvement->app_stat = '0';
+        // $approvement->is_approve = 'N';
+        
+        /** Restore debt status to 0 */
+        $debts = ApprovementDetail::where('app_id', $appId)->get();
+        foreach ($debts as $key => $debt) {
+            Debt::find($debt->debt_id)->update(['debt_status' => 0]);
+        }
 
         if($approvement->save()) {
             $index = 0;

@@ -7,6 +7,7 @@ import approve from './modules/approve'
 import payment from './modules/payment'
 import creditor from './modules/creditor'
 import debttype from './modules/debttype'
+import budget from './modules/budget'
 
 Vue.use(Vuex)
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
     approve,
     payment,
     creditor,
-    debttype
+    debttype,
+    budget
   },
   strict: debug
 })
