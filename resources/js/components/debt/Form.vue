@@ -443,7 +443,6 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('creditor/fetchAll')
     this.$store.dispatch('debttype/fetchAll')
 
     if(this.isEdition) {
@@ -454,7 +453,6 @@ export default {
     ...mapGetters({
       token: 'user/getToken',
       currentUser: 'user/getUserProfile',
-      suppliers: 'creditor/getAll',
       debttypes: 'debttype/getAll',
     })
   },
@@ -495,21 +493,24 @@ export default {
       this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
         if (valid) {
+          // Convert date format to db date
           this.debt.debt_date = this.debt.debt_date && getDate(this.debt.debt_date)
           this.debt.debt_doc_date = this.debt.debt_doc_date && getDate(this.debt.debt_doc_date)
           this.debt.debt_doc_recdate = this.debt.debt_doc_recdate && getDate(this.debt.debt_doc_recdate)
           this.debt.deliver_date = this.debt.deliver_date && getDate(this.debt.deliver_date)
           this.debt.doc_receive = this.debt.doc_receive && getDate(this.debt.doc_receive)
-
-          this.debt.debt_creby = this.currentUser
-          this.debt.debt_userid = this.currentUser
-          console.log(this.debt)
+          // Specified user who updated data
+          this.debt.debt_userid = this.currentUser.id
 
           if (this.editDebt.debt_id) {
             console.log('Edition debt')
+
             this.$store.dispatch('debt/update', this.debt)
           } else {
             console.log('Insertion debt')
+
+            // Specified user who created data
+            this.debt.debt_creby = this.currentUser.id
             this.$store.dispatch('debt/store', this.debt)
           }
 

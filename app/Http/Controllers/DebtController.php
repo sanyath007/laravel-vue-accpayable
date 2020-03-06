@@ -180,9 +180,10 @@ class DebtController extends Controller
         ]);
     }
 
-    public function update(Request $req)
+    public function update(Request $req, $debtId)
     {
-        $debt = Debt::find($req['debt_id']);
+        $debt = Debt::find($debtId);
+        
         $debt->debt_date = $req['debt_date'];
         $debt->debt_doc_recno = $req['debt_doc_recno'];
         $debt->debt_doc_recdate = $req['debt_doc_recdate'];        

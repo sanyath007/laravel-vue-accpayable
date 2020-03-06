@@ -44,5 +44,17 @@ export default {
   },
   SET_BALANCE: (state, data) => {
     state.balance = data
+  },
+  STORE_SUCCESS: (state, payload) => {
+    state.loading = false
+  },
+  UPDATE_SUCCESS: (state, payload) => {
+    state.loading = false
+  },
+  DELETE_SUCCESS: (state, payload) => {
+    state.loading = false
+  },
+  DEBT_FAILURE: (state) => {
+    state.loading = false
   }
 }
