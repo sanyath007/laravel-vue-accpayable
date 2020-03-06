@@ -93,6 +93,9 @@ export default {
       return this.$store.getters.isLoading;
     },
   },
+  mounted () {
+    this.$store.dispatch('page/setCurrentPage', this.$route.name)
+  },
   methods: {
     login () {
       this.$store.dispatch('user/login', {

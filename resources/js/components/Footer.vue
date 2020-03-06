@@ -58,7 +58,7 @@ export default {
 footer {
   background: rgba(0, 0, 0, 0.815);
   overflow-x: hidden;
-  padding: 14vmin 18vmin;
+  padding: 6vmin 18vmin;
 }
 
 footer p>span {
