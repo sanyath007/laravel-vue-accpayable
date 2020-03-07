@@ -96,14 +96,6 @@ class DebtController extends Controller
         return $lastId;
     }
 
-    public function add($creditor)
-    {
-    	return view('debts.add', [
-    		"creditor" => Creditor::where('supplier_id', '=', $creditor)->first(),
-            "debttypes" => DebtType::all(),
-    	]);
-    }
-
     public function store(Request $req)
     {
         $debt = new Debt();
@@ -230,11 +222,10 @@ class DebtController extends Controller
 
     public function setZero(Request $req)
     {
-        if(Debt::where('debt_id', '=', $req['debt_id'])->update(['debt_status' => '4']) <> 0) {
-            return [
-                'status' => 'success',
-                'message' => 'Updated id ' . $req['debt_id'] . 'is successed.',
-            ];
+        $debt = Debt::with('debttype')->find($req['id']);
+
+        if($debt->update(['debt_status' => '4']) <> 0) {
+            return $debt;
         } else {
             return [
                 'status' => 'error',

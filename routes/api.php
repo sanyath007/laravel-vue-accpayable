@@ -93,7 +93,6 @@ Route::delete('debttypes/delete/{debttypeId}', 'DebttypeController@delete');
 Route::get('debts/list', 'DebtController@list');
 Route::get('debts/{creditor}/{sdate}/{edate}/{showall}', 'DebtController@debtRpt');
 Route::get('debts/get-debt/{debtId}', 'DebtController@getById');
-Route::get('debts/add/{creditor}', 'DebtController@add');
 Route::post('debts/store', 'DebtController@store');
 Route::get('debts/edit/{creditor}/{debtId}', 'DebtController@edit');
 Route::put('debts/{debtId}', 'DebtController@update');

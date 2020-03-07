@@ -110,12 +110,10 @@ export default {
   fetchSumCredit({ commit }) {
     axios.get('/debts/sum-credit')
     .then(res => {
-      Vue.$toast.success('Test Toast!!!', { position: 'top-right' })
       commit('SET_SUM_CREDIT', res.data)
     })
     .catch(err => {
       console.log(err)
-      Vue.$toast.error('Test Toast!!!', { position: 'top-right' })
     })
   },
   fetchBalance({ commit }) {
@@ -144,8 +142,6 @@ export default {
   update({ commit }, data) {
     commit('DEBTS_REQUEST')
 
-    console.log(data)
-
     axios.put(`/debts/${data.debt_id}`, data)
       .then(res => {
         Vue.$toast.success('Update data successful !!', { position: 'top-right' })
@@ -159,17 +155,29 @@ export default {
   },
   delete({ commit }, id) {
     commit('DEBTS_REQUEST')
-
-    console.log(data)
-
+    
     axios.delete(`/debts/${id}`)
+    .then(res => {
+      Vue.$toast.success('Delete data successful !!', { position: 'top-right' })
+      commit('DELETE_SUCCESS', id)
+    })
+    .catch(err => {
+      console.log(err)
+      Vue.$toast.error('An error occurs !!', { position: 'top-right' })
+      commit('DEBT_FAILURE')
+    })
+  },
+  setzero({ commit }, id) {
+    commit('DEBTS_REQUEST')
+
+    axios.post('/debts/setzero', { id: id })
       .then(res => {
-        console.log(res)
-        Vue.$toast.success('Delete data successful !!', { position: 'top-right' })
-        commit('DELETE_SUCCESS', id)
+        console.log('setzero response',res)
+        Vue.$toast.success('ลดหนี้ศูนย์รายการ ID : ' + id + ' เรียบร้อย !!', { position: 'top-right' })
+        commit('SETZERO_SUCCESS', id)
       })
       .catch(err => {
-        console.log(err)
+        console.log('setZero error', err)
         Vue.$toast.error('An error occurs !!', { position: 'top-right' })
         commit('DEBT_FAILURE')
       })

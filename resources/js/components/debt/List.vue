@@ -55,7 +55,7 @@
           <i class="fa fa-edit"></i>
         </a>
         <a
-          @click="del(debt.debt_id, debt.supplier_id)"
+          @click="del(debt.debt_id)"
           v-show="(debt.debt_status==0)"
           class="text-danger"
           :style="{'cursor': 'pointer'}"
@@ -70,7 +70,7 @@
   <paginate
     v-show="pager.last_page > 1"
     :page-count="pager.last_page || 1"
-    :click-handler="getDebts"
+    :click-handler="onPaginateClick"
     :prev-text="'Prev'"
     :next-text="'Next'"
     :container-class="'pagination'"
@@ -98,70 +98,28 @@ export default {
     })
   },
   methods: {
-    getDebts (page) {
+    onPaginateClick(page) {
       this.$store.dispatch('debt/fetchDebts', {
         url: this.pager.path,
         page: (typeof page !== 'number') ? 1 : page
       })
     },
-    setzero (debtId, supplierId) {
+    setzero(debtId, supplierId) {
       if (confirm('คุณต้องการลดหนี้ศูนย์รายการ ID : ' + debtId + ' ใช่หรือไม่ ?')) {
-        this.$http.post('/debts/setzero/' + debtId)
-          .then(res => {
-            console.log(res)
-            this.$bvToast.toast('ลดหนี้ศูนย์รายการ ID : ' + debtId + ' เรียบร้อย !!', {
-              title: 'Info',
-              variant: 'success',
-              autoHideDelay: 2000
-            })
+        this.$store.dispatch('debt/setzero', debtId)
 
-            this.$store.dispatch('debt/fetchAll', {
-              supplierId: this.debt.supplier,
-              startDate: 0,
-              endDate: 0,
-              showAll: 1,
-              page: 1
-            })
-          })
-          .catch(err => {
-            this.$bvToast.toast(`พบข้อผิดพลาด "${err}"`, {
-              title: 'Error',
-              variant: 'danger',
-              autoHideDelay: 2000
-            })
-          })
+        this.$store.dispatch('debt/fetchAll', {
+          url: `/debts/${supplierId}/0/0/1`,
+          page: 1
+        })
       }
     },
-    edit (debtId) {
+    edit(debtId) {
       this.$store.dispatch('debt/fetchById', debtId)
     },
-    del (debtId, supplierId) {
+    del(debtId) {
       if (confirm('คุณต้องการลบรายการ ID : ' + debtId + ' ใช่หรือไม่ ?')) {
-        this.$http.delete('/debts/delete/' + debtId)
-          .then(res => {
-            console.log(res)
-            this.$bvToast.toast(`ลบข้อมูลเรียบร้อย !!`, {
-              title: 'Info',
-              variant: 'success',
-              autoHideDelay: 2000
-            })
-
-            this.$store.dispatch('debt/fetchAll', {
-              supplierId: supplierId,
-              startDate: 0,
-              endDate: 0,
-              showAll: 1,
-              page: 1
-            })
-          })
-          .catch(err => {
-            console.log(err)
-            this.$bvToast.toast(`พบข้อผิดพลาด "${err}"`, {
-              title: 'Error',
-              variant: 'danger',
-              autoHideDelay: 2000
-            })
-          })
+        this.$store.dispatch('debt/delete', debtId)
       }
     }
   }

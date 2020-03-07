@@ -63,6 +63,10 @@ export default {
     state.loading = false
     state.debts = state.debts.filter(debt => debt.debt_id !== payload)
   },
+  SETZERO_SUCCESS: (state, payload) => {
+    state.loading = false
+    // state.debts = state.debts.filter(debt => debt.debt_id !== payload)
+  },
   DEBT_FAILURE: (state) => {
     state.loading = false
   }
