@@ -32,8 +32,6 @@ export default {
   logout: ({ commit }) => {
     commit('LOGOUT')
     localStorage.removeItem('token')
-
-    router.push('/login')
   },
   fetchUserProfile: ({ commit }, userId) => {
     axios.defaults.headers.common['Authorization'] = `bearer ${localStorage.getItem('token')}`

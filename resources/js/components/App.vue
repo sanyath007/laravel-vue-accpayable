@@ -57,8 +57,6 @@ export default {
         let decoded = jwtDecode(this.token)
         let isNotExpired = Date.now() < moment.unix(decoded.exp).toDate()
 
-        console.log(Date.now() < moment.unix(decoded.exp).toDate())
-
         if (isNotExpired && this.isLoggedIn) {
           this.$store.dispatch('user/fetchUserProfile', decoded.sub)
           // this.$store.commit('user/SET_CURRENT_USER', decoded.sub)
