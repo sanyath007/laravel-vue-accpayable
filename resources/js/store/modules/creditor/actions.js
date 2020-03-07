@@ -6,7 +6,6 @@ export default {
     console.log('searchKey=' + searchKey + ' page=' + page)
     axios.get('/creditors/search/' + searchKey + '?page=' + page)
       .then(res => {
-        console.log(res)
         commit('SET_CREDITORS', res.data.creditors.data)
         commit('SET_PAGER', res.data.creditors)
       })
@@ -17,7 +16,6 @@ export default {
   fetchAll ({ commit }) {
     axios.get('/creditors/list')
       .then(res => {
-        console.log(res)
         commit('SET_CREDITORS', res.data.creditors)
       })
       .catch(err => {
@@ -27,7 +25,6 @@ export default {
   fetchById ({ commit }, data) {
     axios.get('/creditors/get-creditor/' + data)
       .then(res => {
-        console.log(res)
         commit('SET_CREDITOR', res.data.creditor)
       })
       .catch(err => {

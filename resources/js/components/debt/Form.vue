@@ -489,17 +489,17 @@ export default {
   methods: {
     onSubmit: function (event) {
       this.submitted = true
-
+      
       this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
         if (valid) {
-          // Convert date format to db date
+          /** Convert date format to db date */
           this.debt.debt_date = this.debt.debt_date && getDate(this.debt.debt_date)
           this.debt.debt_doc_date = this.debt.debt_doc_date && getDate(this.debt.debt_doc_date)
           this.debt.debt_doc_recdate = this.debt.debt_doc_recdate && getDate(this.debt.debt_doc_recdate)
           this.debt.deliver_date = this.debt.deliver_date && getDate(this.debt.deliver_date)
           this.debt.doc_receive = this.debt.doc_receive && getDate(this.debt.doc_receive)
-          // Specified user who updated data
+          /** Specified user who updated data */
           this.debt.debt_userid = this.currentUser.id
 
           if (this.editDebt.debt_id) {
@@ -509,20 +509,12 @@ export default {
           } else {
             console.log('Insertion debt')
 
-            // Specified user who created data
+            /** Specified user who created data */
             this.debt.debt_creby = this.currentUser.id
             this.$store.dispatch('debt/store', this.debt)
           }
 
           $(this.$refs.debtFormModal).modal('hide')
-
-          this.$store.dispatch('debt/fetchAll', {
-            supplierId: this.debt.supplier,
-            startDate: 0,
-            endDate: 0,
-            showAll: 1,
-            page: 1
-          })
 
           /** Clear data from control */
           this.clearData()
@@ -536,6 +528,9 @@ export default {
       })
     },
     clearData: function () {
+      // Reset vee-validator object
+      this.$validator.reset()
+
       this.debt = {
         debt_date: '',
         debt_doc_no: '',

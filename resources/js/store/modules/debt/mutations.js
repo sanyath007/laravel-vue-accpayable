@@ -47,12 +47,21 @@ export default {
   },
   STORE_SUCCESS: (state, payload) => {
     state.loading = false
+    state.debts = [...state.debts, payload]
   },
   UPDATE_SUCCESS: (state, payload) => {
     state.loading = false
+    state.debts = state.debts.map(debt => {
+      if(debt.debt_id===payload.debt_id) {
+        debt = payload
+      }
+
+      return debt
+    })
   },
   DELETE_SUCCESS: (state, payload) => {
     state.loading = false
+    state.debts = state.debts.filter(debt => debt.debt_id !== payload)
   },
   DEBT_FAILURE: (state) => {
     state.loading = false

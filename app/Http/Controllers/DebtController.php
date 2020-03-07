@@ -135,11 +135,7 @@ class DebtController extends Controller
         $debt->debt_status = '0';
 
         if($debt->save()) {
-            return [
-                "status" => "success",
-                "message" => "Insert success.",
-                "data"  => $debt,
-            ];
+            return Debt::with('debttype')->find($debt->debt_id);
         } else {
             return [
                 "status" => "error",
@@ -182,7 +178,7 @@ class DebtController extends Controller
 
     public function update(Request $req, $debtId)
     {
-        $debt = Debt::find($debtId);
+        $debt = Debt::with('debttype')->find($debtId);
         
         $debt->debt_date = $req['debt_date'];
         $debt->debt_doc_recno = $req['debt_doc_recno'];
@@ -203,17 +199,11 @@ class DebtController extends Controller
         $debt->debt_total = $req['debt_total'];
         $debt->debt_remark = $req['debt_remark'];
 
-        $debt->debt_creby = $req['debt_creby'];
-        $debt->debt_credate = date("Y-m-d H:i:s");
         $debt->debt_userid = $req['debt_userid'];
         $debt->debt_chgdate = date("Y-m-d H:i:s");
 
         if($debt->save()) {
-            return [
-                "status" => "success",
-                "message" => "Insert success.",
-                "data" => $debt,
-            ];
+            return $debt;
         } else {
             return [
                 "status" => "error",
@@ -226,13 +216,10 @@ class DebtController extends Controller
 
     public function delete($debtId)
     {
-        $debt = Debt::find($debtId);
+        $debt = Debt::with('debttype')->find($debtId);
 
         if($debt->delete()) {
-            return [
-                "status" => "success",
-                "message" => "Delete success.",
-            ];
+            return $debt;
         } else {
             return [
                 "status" => "error",

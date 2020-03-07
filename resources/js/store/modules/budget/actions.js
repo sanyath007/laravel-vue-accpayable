@@ -4,7 +4,6 @@ export default {
   fetchAll ({ commit }) {
     axios.get('/budgets')
     .then(res => {
-        console.log(res)
         commit('SET_BUDGETS', res.data)
       })
       .catch(err => {

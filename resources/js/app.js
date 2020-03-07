@@ -27,10 +27,10 @@ Vue.use(Vuetify)
 Vue.prototype.$http = axios
 
 axios.interceptors.response.use(response => {
-  console.log('axios interceptors', response)
+  // console.log('axios interceptors', response)
   return response
 }, error => {
-  console.log('axios interceptors', error)
+  // console.log('axios interceptors', error)
 
   /** return Error object with Promise */
   return Promise.reject(error);

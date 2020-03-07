@@ -130,13 +130,10 @@ export default {
   store({ commit }, data) {
     commit('DEBTS_REQUEST')
 
-    console.log(data)
-
     axios.post('/debts/store', data)
       .then(res => {
-        console.log(res)
         Vue.$toast.success('Insert data successful !!', { position: 'top-right' })
-        commit('STORE_SUCCESS', res)
+        commit('STORE_SUCCESS', res.data)
       })
       .catch(err => {
         console.log(err)
@@ -151,9 +148,8 @@ export default {
 
     axios.put(`/debts/${data.debt_id}`, data)
       .then(res => {
-        console.log(res)
         Vue.$toast.success('Update data successful !!', { position: 'top-right' })
-        commit('UPDATE_SUCCESS', res)
+        commit('UPDATE_SUCCESS', res.data)
       })
       .catch(err => {
         console.log(err)
@@ -166,16 +162,16 @@ export default {
 
     console.log(data)
 
-    // axios.delete(`/debts/${id}`)
-    //   .then(res => {
-    //     console.log(res)
-    //     Vue.$toast.success('Delete data successful !!', { position: 'top-right' })
-    //     commit('DELETE_SUCCESS', res)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //     Vue.$toast.error('An error occurs !!', { position: 'top-right' })
-    //     commit('DEBT_FAILURE')
-    //   })
+    axios.delete(`/debts/${id}`)
+      .then(res => {
+        console.log(res)
+        Vue.$toast.success('Delete data successful !!', { position: 'top-right' })
+        commit('DELETE_SUCCESS', id)
+      })
+      .catch(err => {
+        console.log(err)
+        Vue.$toast.error('An error occurs !!', { position: 'top-right' })
+        commit('DEBT_FAILURE')
+      })
   }
 }
