@@ -1,10 +1,14 @@
 import axios from '../../../utils/api'
 
 export default {
-  fetchAllWithPagination ({ commit }, data) {
+  fetchAllWithPagination({ commit }, data) {
     let { searchKey, page } = data
-    console.log('searchKey=' + searchKey + ' page=' + page)
-    axios.get('/creditors/search/' + searchKey + '?page=' + page)
+    
+    let url = `/creditors/search/${searchKey}`
+    url = page > 1 ? `${url}?page=${page}` : url
+
+    console.log(url)
+    axios.get(url)
       .then(res => {
         commit('SET_CREDITORS', res.data.creditors.data)
         commit('SET_PAGER', res.data.creditors)
@@ -13,7 +17,7 @@ export default {
         console.log(err)
       })
   },
-  fetchAll ({ commit }) {
+  fetchAll({ commit }) {
     axios.get('/creditors/list')
       .then(res => {
         commit('SET_CREDITORS', res.data.creditors)
@@ -22,7 +26,7 @@ export default {
         console.log(err)
       })
   },
-  fetchById ({ commit }, data) {
+  fetchById({ commit }, data) {
     axios.get('/creditors/get-creditor/' + data)
       .then(res => {
         commit('SET_CREDITOR', res.data.creditor)
@@ -31,24 +35,46 @@ export default {
         console.log(err)
       })
   },
-  update ({ commit, dispatch }, data) {
-    axios.put('/creditors/update/' + data)
+  fetchPrefixes({ commit }) {
+    axios.get('/creditors/prefixes')
       .then(res => {
-        console.log(res)
-        dispatch('fetchAll', { searchKey: '0', page: 1 })
+        commit('SET_PREFIXES', res.data)
       })
       .catch(err => {
         console.log(err)
       })
   },
-  delete ({ commit, dispatch }, data) {
-    axios.delete('/creditors/delete/' + data)
+  store({ commit }, data) {
+    axios.post('/creditors/store', data)
+      .then(res => {
+        console.log(res)
+        commit('STORE_SUCCESS', res.data)
+      })
+      .catch(err => {
+        console.log(err)
+        commit('CREDITOR_FAILURE')
+      })
+  },
+  update({ commit }, data) {
+    axios.put(`/creditors/${data.id}`, data)
+      .then(res => {
+        console.log(res)
+        commit('UPDATE_SUCCESS', res.data)
+      })
+      .catch(err => {
+        console.log(err)
+        commit('CREDITOR_FAILURE')
+      })
+  },
+  delete({ commit }, id) {
+    axios.delete(`/creditors/${id}`)
     .then(res => {
       console.log(res)
-      dispatch('fetchAll', { searchKey: '0', page: 1 })
+      commit('DELETE_SUCCESS', id)
     })
     .catch(err => {
       console.log(err)
+      commit('CREDITOR_FAILURE')
     })
   }
 }

@@ -3,6 +3,8 @@ import getters from './getters'
 import mutations from './mutations'
 
 const state = {
+  loading: false,
+  prefixes: [],
   creditor: {},
   creditors: [],
   pager: {},

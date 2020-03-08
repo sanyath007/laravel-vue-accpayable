@@ -44,11 +44,9 @@ class CreditorController extends Controller
         return $lastId;
     }
 
-    public function add()
+    public function prefixes()
     {
-    	return [
-            'prefixes' => SupplierPrefix::all(),
-    	];
+    	return SupplierPrefix::all();
     }
 
     public function store(Request $req)
@@ -56,6 +54,7 @@ class CreditorController extends Controller
         $lastId = $this->generateAutoId();
 
         $creditor = new Creditor();
+
         $creditor->supplier_id = $lastId;
         $creditor->prename_id = $req['prefix'];
         $creditor->supplier_name = $req['supplier_name'];
@@ -77,10 +76,7 @@ class CreditorController extends Controller
         $creditor->supplier_agent_email = $req['supplier_agent_email'];
 
         if($creditor->save()) {
-            return [
-                "status" => "success",
-                "message" => "Insert success.",
-            ];
+            return $creditor;
         } else {
             return [
                 "status" => "error",
@@ -96,17 +92,10 @@ class CreditorController extends Controller
         ];
     }
 
-    public function edit($creditorId)
-    {
-        return view('creditors.edit', [
-            'creditor' => Creditor::find($creditorId),
-            'prefixs' => SupplierPrefix::all(),
-        ]);
-    }
-
-    public function update(Request $req)
+    public function update(Request $req, $creditorId)
     {
         $creditor = Creditor::find($req['supplier_id']);
+
         $creditor->prename_id = $req['prefix'];
         $creditor->supplier_name = $req['supplier_name'];
         $creditor->supplier_payto = $req['supplier_name'];
@@ -127,10 +116,7 @@ class CreditorController extends Controller
         $creditor->supplier_agent_email = $req['supplier_agent_email'];
 
         if($creditor->save()) {
-            return [
-                "status" => "success",
-                "message" => "Update success.",
-            ];
+            return $creditor;
         } else {
             return [
                 "status" => "error",
@@ -144,10 +130,7 @@ class CreditorController extends Controller
         $creditor = Creditor::find($creditorId);
 
         if($creditor->delete()) {
-            return [
-                "status" => "success",
-                "message" => "Delete success.",
-            ];
+            return $creditor;
         } else {
             return [
                 "status" => "error",

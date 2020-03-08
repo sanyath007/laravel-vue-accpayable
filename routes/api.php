@@ -73,12 +73,9 @@ Route::get('account/ledger-debttype-excel/{sdate}/{edate}/{showall}', 'AccountCo
 Route::get('creditors/list', 'CreditorController@list');
 Route::get('creditors/search/{searchKey}', 'CreditorController@search');
 Route::get('creditors/get-creditor/{creditorId}', 'CreditorController@getById');
-Route::get('creditors/add', 'CreditorController@add');
 Route::post('creditors/store', 'CreditorController@store');
-Route::get('creditors/edit/{creditorId}', 'CreditorController@edit');
-Route::put('creditors/update', 'CreditorController@update');
-Route::delete('creditors/delete/{creditorId}', 'CreditorController@delete');
-
+Route::put('creditors/{creditorId}', 'CreditorController@update');
+Route::delete('creditors/{creditorId}', 'CreditorController@delete');
 Route::get('creditors/prefixes', 'CreditorController@prefixes');
 
 Route::get('debttypes', 'DebtTypeController@list');
