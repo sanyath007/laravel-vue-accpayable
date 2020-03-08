@@ -1,6 +1,6 @@
 <template>
 <div class="table-responsive" style="margin-top: 10px;">
-  <table class="table table-striped table-bordered">
+  <table class="table table-striped table-bordered mb-3">
     <tr>
       <th style="width: 3%; text-align: center;">#</th>
       <th style="width: 10%; text-align: center;">รหัส</th>
@@ -34,38 +34,50 @@
       </td>
     </tr>
   </table>
+
+  <paginate
+    v-show="pager.last_page > 1"
+    :page-count="pager.last_page || 1"
+    :click-handler="onPageClick"
+    :prev-text="'Prev'"
+    :next-text="'Next'"
+    :container-class="'pagination'"
+    :page-class="'page-item'"
+    :page-link-class="'page-link'"
+    :prev-class="'page-item'"
+    :prev-link-class="'page-link'"
+    :next-class="'page-item'"
+    :next-link-class="'page-link'"
+    :first-last-button="true"
+    :hide-prev-next="true"
+  />
 </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'DebttypeList',
-  props: ['debttypes', 'pager'],
+  props: ['debttypes'],
+  computed: {
+    ...mapGetters({
+      pager: 'debttype/getPager'
+    })
+  },
   methods: {
-    edit (debttypeId) {
+    onPageClick(page) {
+      let pattern = /[^\/]+$/      
+      let searchKey = (this.pager.path).match(pattern);
+
+      this.$store.dispatch('debttype/fetchBySearch', { searchKey, page })
+    },
+    edit(debttypeId) {
       this.$store.dispatch('debttype/fetchById', debttypeId)
     },
-    del (debttypeId) {
+    del(debttypeId) {
       if (confirm('คุณต้องการลบรายการ ID : ' + debttypeId + ' ใช่หรือไม่ ?')) {
-        this.$http.delete('/debttypes/delete/' + debttypeId)
-          .then(res => {
-            console.log(res)
-            this.$bvToast.toast(`ลบข้อมูลเรียบร้อย !!`, {
-              title: 'Info',
-              variant: 'success',
-              autoHideDelay: 2000
-            })
-
-            this.$store.dispatch('debttype/fetchBySearch', { searchKey: '0', page: 1 })
-          })
-          .catch(err => {
-            console.log(err)
-            this.$bvToast.toast(`พบข้อผิดพลาด "${err}"`, {
-              title: 'Error',
-              variant: 'danger',
-              autoHideDelay: 2000
-            })
-          })
+        this.$store.dispatch('debttype/delete', debttypeId)
       }
     }
   }

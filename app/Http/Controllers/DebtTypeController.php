@@ -39,11 +39,9 @@ class DebtTypeController extends Controller
         return $lastId;
     }
 
-    public function add()
+    public function cates()
     {
-    	return [
-            'cates' => \DB::table('nrhosp_acc_debt_cate')->select('*')->get(),
-    	];
+    	return \DB::table('nrhosp_acc_debt_cate')->select('*')->get();
     }
 
     public function store(Request $req)
@@ -51,6 +49,7 @@ class DebtTypeController extends Controller
         $lastId = $this->generateAutoId();
 
         $debttype = new DebtType();
+        
         $debttype->debt_type_id = $lastId;
         $debttype->debt_type_name = $req['debt_type_name'];
         $debttype->debt_cate_id = $req['debt_cate'];
@@ -58,10 +57,7 @@ class DebtTypeController extends Controller
         $debttype->debt_type_status = '1';
 
         if($debttype->save()) {
-            return [
-                "status" => "success",
-                "message" => "Insert success.",
-            ];
+            return $debttype;
         } else {
             return [
                 "status" => "error",
@@ -94,10 +90,7 @@ class DebtTypeController extends Controller
         $debttype->debt_cate_name = $req['debt_cate_name'];
 
         if($debttype->save()) {
-            return [
-                "status" => "success",
-                "message" => "Update success.",
-            ];
+            return $debttype;
         } else {
             return [
                 "status" => "error",
@@ -111,10 +104,7 @@ class DebtTypeController extends Controller
         $debttype = DebtType::find($debttypeId);
 
         if($debttype->delete()) {
-            return [
-                "status" => "success",
-                "message" => "Delete success.",
-            ];
+            return $debttype;
         } else {
             return [
                 "status" => "error",

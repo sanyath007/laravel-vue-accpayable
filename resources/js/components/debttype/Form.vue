@@ -2,6 +2,7 @@
   <div
     class="modal fade"
     id="debttypeFormModal"
+    ref="debttypeFormModal"
     tabindex="-1"
     role="dialog"
     aria-labelledby="myModalLabel"
@@ -79,28 +80,36 @@
 <script>
 import { mapGetters } from 'vuex'
 
+const dict = {
+  custom: {
+    debt_type_name: {
+      required: 'กรุณาระบุประเภทหนี้ก่อน'
+    }
+  }
+}
+
 export default {
   name: 'DebttypeForm',
   props: ['editDebttype'],
   data () {
     return {
-      cates: [],
+      submitted: false,
       debttype: {
         debt_type_name: '',
         debt_cate: '',
         debt_cate_name: '',
         debt_type_status: '1'
-      },
-      submitted: false
+      }
     }
   },
   mounted () {
     this.submitted = false
-    this.onInitForm()
+    this.$store.dispatch('debttype/fetchCates')
   },
   computed: {
     ...mapGetters({
-      token: 'user/getToken'
+      token: 'user/getToken',
+      cates: 'debttype/getCates'
     })
   },
   watch: {
@@ -115,34 +124,26 @@ export default {
     }
   },
   methods: {
-    onInitForm () {
-      this.$http.get('/debttypes/add')
-        .then(res => {
-          console.log(res.data)
-          this.cates = res.data.cates
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    onSubmit: function (event) {
+    onSubmit: function(event) {
       this.submitted = true
 
-      if (this.editDebttype.debt_type_id) {
-        console.log('This edition data')
-      } else {
-        console.log('This insertion data')
-      }
-
+      this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
         if (valid) {
           if (this.editDebttype.debt_type_id) {
-            this.updateData()
+            console.log('This edition data')
+            
+            this.$store.dispatch('debttype/update', this.debttype)
           } else {
-            this.storeData()
+            console.log('This insertion data')
+
+            this.$store.dispatch('debttype/store', this.debttype)
           }
 
           $(this.$refs.debttypeFormModal).modal('hide')
+
+          /** Clear data from control */
+          this.clearData()
         } else {
           this.$bvToast.toast(`คุณกรอกข้อมูลยังไม่ครบ !!`, {
             title: 'Warning',
@@ -152,57 +153,9 @@ export default {
         }
       })
     },
-    storeData: function () {
-      this.$http.post('/debttypes/store', this.debttype)
-        .then(res => {
-          console.log(res)
-
-          this.$bvToast.toast(`Successful !!`, {
-            title: 'Info',
-            variant: 'success',
-            autoHideDelay: 2000
-          })
-
-          this.$store.dispatch('creditor/fetchAll', { searchKey: '0', page: 1 })
-        })
-        .catch(err => {
-          console.log(err)
-
-          this.$bvToast.toast(`Error ${err}`, {
-            title: 'Error',
-            variant: 'danger',
-            autoHideDelay: 2000
-          })
-        })
-
-      this.clearData() // Clear data from control
-    },
-    updateData: function () {
-      this.$http.put('/debttypes/update', this.debttype)
-        .then(res => {
-          console.log(res)
-
-          this.$bvToast.toast(`Successful !!`, {
-            title: 'Info',
-            variant: 'success',
-            autoHideDelay: 2000
-          })
-
-          this.$store.dispatch('creditor/fetchAll', { searchKey: '0', page: 1 })
-        })
-        .catch(err => {
-          console.log(err)
-
-          this.$bvToast.toast(`Error ${err}`, {
-            title: 'Error',
-            variant: 'danger',
-            autoHideDelay: 2000
-          })
-        })
-
-      this.clearData() // Clear data from control
-    },
     clearData: function () {
+      this.$validator.reset()
+
       this.debttype = {
         debt_type_name: '',
         debt_cate: '',

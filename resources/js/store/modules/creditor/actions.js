@@ -7,7 +7,6 @@ export default {
     let url = `/creditors/search/${searchKey}`
     url = page > 1 ? `${url}?page=${page}` : url
 
-    console.log(url)
     axios.get(url)
       .then(res => {
         commit('SET_CREDITORS', res.data.creditors.data)

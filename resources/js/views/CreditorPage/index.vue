@@ -2,6 +2,11 @@
   <div class="container-fluid">
     <breadcrumb :pageTitle="'เจ้าหนี้'" />
 
+    <loading :active.sync="isLoading" 
+      :can-cancel="true"
+      :is-full-page="true"
+    />
+    
     <div class="row mb-2">
       <div class="col-md-6">
         <h3>เจ้าหนี้</h3>
@@ -30,13 +35,19 @@ import SearchKeyword from '../../components/SearchKeyword'
 import CreditorList from '../../components/creditor/List'
 import CreditorForm from '../../components/creditor/Form'
 
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 export default {
   name: 'creditor-page',
   components: {
     'breadcrumb': Breadcrumb,
     'search-keyword': SearchKeyword,
     'creditor-list': CreditorList,
-    'creditor-form': CreditorForm
+    'creditor-form': CreditorForm,
+    Loading
   },
   mounted() {
     this.getCreditors({})
@@ -45,6 +56,7 @@ export default {
   computed: {
     ...mapGetters({
       token: 'user/getToken',
+      isLoading: 'creditor/isLoading',
       creditor: 'creditor/getById',
       creditors: 'creditor/getAll',
     })

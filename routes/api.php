@@ -79,13 +79,13 @@ Route::delete('creditors/{creditorId}', 'CreditorController@delete');
 Route::get('creditors/prefixes', 'CreditorController@prefixes');
 
 Route::get('debttypes', 'DebtTypeController@list');
-Route::get('debttypes/search/{searchKey}', 'DebttypeController@search');
-Route::get('debttypes/get-debttype/{debttypeId}', 'DebttypeController@getById');
-Route::get('debttypes/add', 'DebtTypeController@add');
-Route::post('debttypes/store', 'DebttypeController@store');
-Route::get('debttypes/edit/{debttypeId}', 'DebttypeController@edit');
-Route::put('debttypes/{debtId}', 'DebttypeController@update');
-Route::delete('debttypes/delete/{debttypeId}', 'DebttypeController@delete');
+Route::get('debttypes/search/{searchKey}', 'DebtTypeController@search');
+Route::get('debttypes/get-debttype/{debttypeId}', 'DebtTypeController@getById');
+Route::post('debttypes', 'DebtTypeController@store');
+Route::get('debttypes/edit/{debttypeId}', 'DebtTypeController@edit');
+Route::put('debttypes/{debtId}', 'DebtTypeController@update');
+Route::delete('debttypes/{debttypeId}', 'DebtTypeController@delete');
+Route::get('debttypes/cates', 'DebtTypeController@cates');
 
 Route::get('debts/list', 'DebtController@list');
 Route::get('debts/{creditor}/{sdate}/{edate}/{showall}', 'DebtController@debtRpt');
