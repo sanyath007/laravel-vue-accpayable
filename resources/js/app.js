@@ -4,10 +4,13 @@ import vSelect from 'vue-select'
 import VeeValidate from 'vee-validate'
 import BootstrapVue from 'bootstrap-vue'
 import Paginate from 'vuejs-paginate'
-// import Vuetify from 'vuetify'
+import Vuetify from 'vuetify'
+// import { DatePicker } from 'ant-design-vue'
 
+// import 'ant-design-vue/lib/date-picker/style/css'
 import 'vue-select/dist/vue-select.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vuetify/dist/vuetify.min.css'
 
 import App from './components/App'
 
@@ -22,7 +25,8 @@ Vue.component('v-select', vSelect)
 Vue.component('paginate', Paginate)
 Vue.use(VeeValidate)
 Vue.use(BootstrapVue)
-// Vue.use(Vuetify)
+Vue.use(Vuetify)
+// Vue.use(DatePicker)
 
 Vue.prototype.$http = axios
 
@@ -41,7 +45,7 @@ const app = new Vue({
   components: { 
     App, 
   },
-  // vuetify: new Vuetify(),
+  vuetify: new Vuetify(),
   router,
   store
 })

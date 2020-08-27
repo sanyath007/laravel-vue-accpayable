@@ -140,8 +140,29 @@
                   </div>
 
                   <div class="form-group">
-                    <label>วันที่รับหนังสือ :</label>
-                    <date-picker
+                    <!--<label>วันที่รับหนังสือ :</label>-->
+                    <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="true"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="debt.debt_doc_recdate"
+                          label="วันที่รับหนังสือ"
+                          prepend-icon="event"
+                          hint="DD/MM/YYYY"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker v-model="date" no-title scrollable locale="th" />
+                    </v-menu>
+                    <!--<date-picker
                       id="debt_doc_recdate"
                       name="debt_doc_recdate"
                       v-model="debt.debt_doc_recdate"
@@ -150,7 +171,7 @@
                       :format="'dd/MM/yyyy'"
                       v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
                       placeholder="เลือกวันที่รับหนังสือ"
-                    />
+                    />-->
                     <span class="text-danger small" v-show="submitted && errors.has('debt_doc_recdate')">
                       {{ errors.first('debt_doc_recdate') }}
                     </span>
@@ -364,6 +385,7 @@ import { mapGetters } from 'vuex'
 import DatePicker from 'vuejs-datepicker'
 import { en, th } from 'vuejs-datepicker/dist/locale'
 import { getDate } from '../../utils/date-func'
+import locale from 'ant-design-vue/es/date-picker/locale/th_TH';
 
 // Custom validator dict
 const dict = {
@@ -439,7 +461,11 @@ export default {
       dpLang: {
         en: en,
         th: th
-      }
+      },
+      locale,
+      date: new Date().toISOString().substr(0, 10),
+      menu: false,
+      modal: false
     }
   },
   created() {
@@ -484,7 +510,10 @@ export default {
     supplierSelected: function () {
       this.debt.supplier = this.supplierSelected.supplier_id
       this.debt.supplier_name = this.supplierSelected.supplier_name
-    }
+    },
+    date (val) {
+      this.debt.debt_doc_recdate = this.formatDate(this.date)
+    },
   },
   methods: {
     onSubmit: function (event) {
@@ -560,7 +589,13 @@ export default {
     },
     calculateVat: function () {
       this.debt.debt_vat = ((parseFloat(this.debt.debt_amount) * parseFloat(this.debt.debt_vatrate)) / 100).toFixed(2)
-    }
+    },
+    formatDate (date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
   }
 }
 </script>
