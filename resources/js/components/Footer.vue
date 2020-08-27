@@ -4,11 +4,7 @@
       <div class="row text-left">
         <div class="col-md-5">
           <h1 class="text-light">About Us</h1>
-          <p class="text-muted">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita ad illo et optio quam vero alias eaque.
-            Dolor.
-          </p>
-          <p class="pt-4 text-muted">
+          <p class="pt-2 text-muted">
             Copyright &copy;2019 All rigth reserved | This template is made with by
             <span>Daily Tuition</span>
           </p>

@@ -362,7 +362,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import DatePicker from 'vuejs-datepicker'
-import {en, th} from 'vuejs-datepicker/dist/locale'
+import { en, th } from 'vuejs-datepicker/dist/locale'
 import { getDate } from '../../utils/date-func'
 
 // Custom validator dict
