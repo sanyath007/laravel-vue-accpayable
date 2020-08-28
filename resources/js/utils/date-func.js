@@ -1,13 +1,14 @@
 import moment from 'moment'
 
 export const conv2ThDate = date => {
-  let arr = date.split('-')
-  return arr[2] + '/' + arr[1] + '/' + (parseInt(arr[0]) + 543)
+  let [year, month, day] = date.split('-')
+  return day + '/' + month + '/' + (parseInt(year) + 543)
 }
 
 export const conv2DbDate = date => {
-  let arr = date.split('/')
-  return (parseInt(arr[2]) - 543) + '-' + arr[1] + '-' + arr[0]
+  let [day, month, year] = date.split('/')
+  console.log('year', year)
+  return (parseInt(year) - 543) + '-' + month + '-' + day
 }
 
 export const getDate = (date) => {

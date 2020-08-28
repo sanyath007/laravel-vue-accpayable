@@ -17,29 +17,11 @@
 
     <div class="row">
       <div class="form-group col-6">
-        <label>จากวันที่ :</label>
-        <date-picker
-          id="searchStartDate"
-          name="searchStartDate"
-          v-model="searchStartDate"
-          :language="dpLang.th"
-          :bootstrap-styling="true"
-          :format="'dd/MM/yyyy'"
-          placeholder="เลือกวันที่"
-        />
+        <date-picker dataModel="searchStartDate" @inputDate="setDateFromDatePicker" label="จากวันที่" />
       </div>
 
       <div class="form-group col-6">
-        <label>ถึงวันที่ :</label>
-        <date-picker
-          id="searchEndDate"
-          name="searchEndDate"
-          v-model="searchEndDate"
-          :language="dpLang.th"
-          :bootstrap-styling="true"
-          :format="'dd/MM/yyyy'"
-          placeholder="เลือกวันที่"
-        />
+        <date-picker dataModel="searchEndDate" @inputDate="setDateFromDatePicker" label="ถึงวันที่" />
       </div>
     </div>
 
@@ -58,9 +40,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import DatePicker from 'vuejs-datepicker'
-import {en, th} from 'vuejs-datepicker/dist/locale'
-import { getDate } from '../utils/date-func'
+import DatePicker from './DatePicker'
+import { getDate, conv2DbDate } from '../utils/date-func'
 
 export default {
   name: 'SerachBox',
@@ -72,11 +53,7 @@ export default {
       supplierSelected: '',
       searchStartDate: 0,
       searchEndDate: 0,
-      showAll: true,
-      dpLang: {
-        en: en,
-        th: th
-      }
+      showAll: true
     }
   },
   created() {
@@ -92,8 +69,8 @@ export default {
     getData (page) {
       this.$emit('onSearch', {
         supplier: this.supplierSelected || 0,
-        startDate: this.searchStartDate ? getDate(this.searchStartDate) : 0,
-        endDate: this.searchEndDate ? getDate(this.searchEndDate) : 0,
+        startDate: this.searchStartDate ? conv2DbDate(this.searchStartDate) : 0,
+        endDate: this.searchEndDate ? conv2DbDate(this.searchEndDate) : 0,
         showAll: this.showAll ? 1 : 0,
         page: (typeof page !== 'number') ? 1 : page
       })
@@ -101,6 +78,9 @@ export default {
     toggleShowAll () {
       this.showAll = event.target.checked
       this.getData()
+    },
+    setDateFromDatePicker: function (date, field) {
+      this.[field] = date
     }
   },
 }
