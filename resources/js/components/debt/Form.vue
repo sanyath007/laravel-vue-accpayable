@@ -112,16 +112,6 @@
                   <div class="form-group">
                     <!--<label>วันที่ลงบัญชี :</label>-->
                     <date-picker dataModel="debt_date" @inputDate="setDateFromDatePicker" label="วันที่ลงบัญชี" />
-                    <!--<date-picker
-                      id="debt_date"
-                      name="debt_date"
-                      v-model="debt.debt_date"
-                      :language="dpLang.th"
-                      :bootstrap-styling="true"
-                      :format="'dd/MM/yyyy'"
-                      v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-                      placeholder="เลือกวันที่ลงบัญชี"
-                    />-->
                     <span class="text-danger small" v-show="submitted && errors.has('debt_date')">
                       {{ errors.first('debt_date') }}
                     </span>
@@ -159,16 +149,6 @@
                   <div class="form-group">
                     <!--<label>วันที่ใบส่งของ/ใบกำกับภาษี :</label>-->
                     <date-picker dataModel="deliver_date" @inputDate="setDateFromDatePicker" label="วันที่วันที่ใบส่งของ/ใบกำกับภาษี" />
-                    <!--<date-picker
-                      id="deliver_date"
-                      name="deliver_date"
-                      v-model="debt.deliver_date"
-                      :language="dpLang.th"
-                      :bootstrap-styling="true"
-                      :format="'dd/MM/yyyy'"
-                      v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-                      placeholder="เลือกวันที่วันที่ใบส่งของ/ใบกำกับภาษี"
-                    />-->
                     <span class="text-danger small" v-show="submitted && errors.has('deliver_date')">
                       {{ errors.first('deliver_date') }}
                     </span>
@@ -298,16 +278,6 @@
                     <div class="form-group">
                       <label>วันที่รับเอกสาร :</label>
                       <date-picker dataModel="doc_receive" @inputDate="setDateFromDatePicker" label="วันที่รับเอกสาร" />
-                      <!--<date-picker
-                        id="doc_receive"
-                        name="doc_receive"
-                        v-model="debt.doc_receive"
-                        :language="dpLang.th"
-                        :bootstrap-styling="true"
-                        :format="'dd/MM/yyyy'"
-                        v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-                        placeholder="เลือกวันที่รับเอกสาร"
-                      />-->
                       <span class="text-danger small" v-show="submitted && errors.has('doc_receive')">
                         {{ errors.first('doc_receive') }}
                       </span>
@@ -473,11 +443,11 @@ export default {
       this.$validator.validateAll().then(valid => {
         if (valid) {
           /** Convert date format to db date */
-          this.debt.debt_date = this.debt.debt_date && getDate(this.debt.debt_date)
-          this.debt.debt_doc_date = this.debt.debt_doc_date && getDate(this.debt.debt_doc_date)
-          this.debt.debt_doc_recdate = this.debt.debt_doc_recdate && getDate(this.debt.debt_doc_recdate)
-          this.debt.deliver_date = this.debt.deliver_date && getDate(this.debt.deliver_date)
-          this.debt.doc_receive = this.debt.doc_receive && getDate(this.debt.doc_receive)
+          this.debt.debt_date = this.debt.debt_date && conv2DbDate(this.debt.debt_date)
+          this.debt.debt_doc_date = this.debt.debt_doc_date && conv2DbDate(this.debt.debt_doc_date)
+          this.debt.debt_doc_recdate = this.debt.debt_doc_recdate && conv2DbDate(this.debt.debt_doc_recdate)
+          this.debt.deliver_date = this.debt.deliver_date && conv2DbDate(this.debt.deliver_date)
+          this.debt.doc_receive = this.debt.doc_receive && conv2DbDate(this.debt.doc_receive)
           /** Specified user who updated data */
           this.debt.debt_userid = this.currentUser.id
 

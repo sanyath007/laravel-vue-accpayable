@@ -23,7 +23,7 @@
             @input="clearData"
           />
           <span class="text-danger small" v-show="submitted && errors.has('supplier_id')">
-              กรุณาเลือกเจ้าหนี้
+            กรุณาเลือกเจ้าหนี้
           </span>
         </div>
 
@@ -44,7 +44,7 @@
             tabindex="8"
           />
           <div class="invalid-feedback" v-show="submitted && errors.has('app_recdoc_no')">
-              กรุณาระบุเลขที่รับเอกสาร
+            กรุณาระบุเลขที่รับเอกสาร
           </div>
         </div>
 
@@ -61,7 +61,7 @@
             tabindex="4"
           />
           <div class="invalid-feedback" v-show="submitted && errors.has('app_doc_no')">
-              กรุณาระบุเลขที่ขออนุมัติ
+            กรุณาระบุเลขที่ขออนุมัติ
           </div>
         </div>
 
@@ -70,38 +70,20 @@
       <div class="col-md-6">
         
         <div class="form-group">
-          <label>วันที่รับเอกสาร :</label>
-          <date-picker
-            id="app_recdoc_date"
-            name="app_recdoc_date"
-            v-model="approve.app_recdoc_date"
-            :language="dpLang.th"
-            :bootstrap-styling="true"
-            :format="'dd/MM/yyyy'"
-            v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-            placeholder="เลือกวันที่รับเอกสาร"
-            tabindex="5"
-          />
+          <!--<label>วันที่รับเอกสาร :</label>-->
+          <date-picker dataModel="app_recdoc_date" @inputDate="setDateFromDatePicker" label="วันที่รับเอกสาร" />
+
           <span class="text-danger small" v-show="submitted && errors.has('app_recdoc_date')">
-              กรุณาเลือกวันที่รับเอกสาร
+            กรุณาเลือกวันที่รับเอกสาร
           </span>
         </div>
 
         <div class="form-group">
-          <label>วันที่ขออนุมัติ :</label>
-          <date-picker
-            id="app_date"
-            name="app_date"
-            v-model="approve.app_date"
-            :language="dpLang.th"
-            :bootstrap-styling="true"
-            :format="'dd/MM/yyyy'"
-            v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-            placeholder="เลือกวันที่ขออนุมัติ"
-            tabindex="1"
-          />
+          <!--<label>วันที่ขออนุมัติ :</label>-->
+          <date-picker dataModel="app_date" @inputDate="setDateFromDatePicker" label="วันที่ขออนุมัติ" />
+
           <span class="text-danger small" v-show="submitted && errors.has('app_date')">
-              กรุณาเลือกวันที่ขออนุมัติ
+            กรุณาเลือกวันที่ขออนุมัติ
           </span>
         </div>
 
@@ -119,12 +101,12 @@
         <div class="row m-2 mt-3">
           <div class="col-md-12">
 
-            <a href="#" class="btn btn-primary" role="button" @click="showSupplierDebts($event)">
-              <i class="far fa-calendar-plus"></i> เพิ่ม
-            </a>
-            <a href="#" class="btn btn-danger" role="button" @click="removeFromApproveDebts()">
-              <i class="far fa-calendar-minus"></i> ลบ
-            </a>
+            <v-btn color="primary" dark @click="showSupplierDebts($event)">
+              <v-icon dark>mdi-basket-plus</v-icon>
+            </v-btn>
+            <v-btn color="error" dark @click="removeFromApproveDebts()">
+              <v-icon dark>mdi-delete</v-icon>
+            </v-btn>
 
             <div class="table-responsive">
               <table class="table table-bordered table-striped" style="font-size: 12px; margin-top: 10px;">
@@ -181,7 +163,7 @@
                 </option>
               </select>
               <span class="text-danger small" v-show="submitted && errors.has('budget_id')">
-                  กรุณาเลือกประเภทงบประมาณ
+                กรุณาเลือกประเภทงบประมาณ
               </span>
             </div>
 
@@ -357,15 +339,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import DatePicker from 'vuejs-datepicker'
-import {en, th} from 'vuejs-datepicker/dist/locale'
+import DatePicker from '../DatePicker'
 
 import Breadcrumb from '../../components/Breadcrumb'
 import DebtSelectionModal from '../debt/SelectionModal'
 
 import { ArabicNumberToText } from '../../utils/thaibath'
 import { currencyFormat } from '../../utils/number-func'
-import { getDate } from '../../utils/date-func'
+import { getDate, conv2DbDate } from '../../utils/date-func'
 
 // Custom validator dict
 const dict = {
@@ -432,11 +413,7 @@ export default {
         chg_user: '',
         debts: []
       },
-      approveDebtsToRemove: [],
-      dpLang: {
-        en: en,
-        th: th
-      }
+      approveDebtsToRemove: []
     }
   },
   created() {
@@ -481,8 +458,8 @@ export default {
       this.$validator.validateAll().then(valid => {
         if (valid) {
           // Convert date format to db date
-          this.approve.app_date = this.approve.app_date && getDate(this.approve.app_date)
-          this.approve.app_recdoc_date = this.approve.app_recdoc_date && getDate(this.approve.app_recdoc_date)
+          this.approve.app_date = this.approve.app_date && conv2DbDate(this.approve.app_date)
+          this.approve.app_recdoc_date = this.approve.app_recdoc_date && conv2DbDate(this.approve.app_recdoc_date)
           // Get supplier name
           this.approve.pay_to = this.suppliers.filter(s => s.supplier_id === this.approve.supplier)[0].supplier_name
           // Specified user who updated data
@@ -590,6 +567,9 @@ export default {
         chg_user: '',
         debts: []
       }
+    },
+    setDateFromDatePicker: function (date, field) {
+      this.approve[field] = date
     }
   }
 }

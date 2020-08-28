@@ -7,7 +7,6 @@ export const conv2ThDate = date => {
 
 export const conv2DbDate = date => {
   let [day, month, year] = date.split('/')
-  console.log('year', year)
   return (parseInt(year) - 543) + '-' + month + '-' + day
 }
 
