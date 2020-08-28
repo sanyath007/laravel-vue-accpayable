@@ -1,16 +1,15 @@
 <template>
-  <div :style="containerBackgroundStyle">
-    <v-app>
-      <v-main>
-        <header-section :is-logged-in="isLoggedIn" :current-user="currentUser" />
-        <v-container>
-          <router-view></router-view>
-        </v-container>
-      </v-main>
-      
-      <footer-section />
-    </v-app>
-  </div>
+  <v-app :style="containerBackgroundStyle">
+    <header-section :is-logged-in="isLoggedIn" :current-user="currentUser" />
+
+    <!--<v-main>-->
+      <v-container>
+        <router-view></router-view>
+      </v-container>
+    <!--</v-main>-->
+    
+    <footer-section />
+  </v-app>
 </template>
 
 <script>

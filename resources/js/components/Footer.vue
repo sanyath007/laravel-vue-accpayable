@@ -6,7 +6,7 @@
           <h1 class="text-light">About Us</h1>
           <p class="pt-2 text-muted">
             Copyright &copy;2019 All rigth reserved | This template is made with by
-            <span>Daily Tuition</span>
+            <span>Sanya Thammawong</span>
           </p>
         </div>
         <div class="col-md-5">

@@ -139,8 +139,7 @@
                     >
                   </div>
 
-                  <div class="form-group">
-                    <!--<label>วันที่รับหนังสือ :</label>-->
+                  <div class="form-group">                    
                     <v-menu
                       ref="menu"
                       v-model="menu"
@@ -154,15 +153,15 @@
                           v-model="debt.debt_doc_recdate"
                           label="วันที่รับหนังสือ"
                           prepend-icon="event"
-                          hint="DD/MM/YYYY"
                           readonly
                           v-bind="attrs"
                           v-on="on"
-                        ></v-text-field>
+                        />
                       </template>
-                      <v-date-picker v-model="date" no-title scrollable locale="th" />
+                      <v-date-picker v-model="date" no-title @input="menu = false" scrollable locale="th" />
                     </v-menu>
-                    <!--<date-picker
+                    <!--<label>วันที่รับหนังสือ :</label>
+                    <date-picker
                       id="debt_doc_recdate"
                       name="debt_doc_recdate"
                       v-model="debt.debt_doc_recdate"
@@ -178,7 +177,8 @@
                   </div>
 
                   <div class="form-group">
-                    <label>วันที่หนังสือ :</label>
+                    <date-picker2 :dataModel="debt.debt_doc_date" :label="'วันที่หนังสือ'" />
+                    <!--<label>วันที่หนังสือ :</label>
                     <date-picker
                       id="debt_doc_date"
                       name="debt_doc_date"
@@ -188,7 +188,7 @@
                       :format="'dd/MM/yyyy'"
                       v-validate="{date_format: 'dd/MM/yyyy'}"
                       placeholder="เลือกวันที่หนังสือ"
-                    />
+                    />-->
                     <span class="text-danger small" v-show="submitted && errors.has('debt_doc_date')">
                       {{ errors.first('debt_doc_date') }}
                     </span>
@@ -385,7 +385,8 @@ import { mapGetters } from 'vuex'
 import DatePicker from 'vuejs-datepicker'
 import { en, th } from 'vuejs-datepicker/dist/locale'
 import { getDate } from '../../utils/date-func'
-import locale from 'ant-design-vue/es/date-picker/locale/th_TH';
+import locale from 'ant-design-vue/es/date-picker/locale/th_TH'
+import DatePicker2 from '../DatePicker'
 
 // Custom validator dict
 const dict = {
@@ -431,7 +432,8 @@ const dict = {
 export default {
   name: 'DebtForm',
   components: {
-    'date-picker': DatePicker
+    'date-picker': DatePicker,
+    'date-picker2': DatePicker2,
   },
   props: ['editDebt', 'supplierSelected'],
   data () {
@@ -512,13 +514,16 @@ export default {
       this.debt.supplier_name = this.supplierSelected.supplier_name
     },
     date (val) {
-      this.debt.debt_doc_recdate = this.formatDate(this.date)
+      this.debt.debt_doc_recdate = this.formatDate(val)
+    },
+    debt_doc_date (val) {
+      this.debt.debt_doc_date = this.formatDate(val)
     },
   },
   methods: {
     onSubmit: function (event) {
       this.submitted = true
-      
+      console.log(this.debt.doc_receive)
       this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
         if (valid) {
@@ -594,7 +599,7 @@ export default {
       if (!date) return null
 
       const [year, month, day] = date.split('-')
-      return `${day}/${month}/${year}`
+      return `${day}/${month}/${parseInt(year)+543}`
     },
   }
 }
