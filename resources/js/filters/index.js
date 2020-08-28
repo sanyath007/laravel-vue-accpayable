@@ -6,6 +6,6 @@ Vue.filter('currency', function (value) {
 
 Vue.filter('thdate', function (date) {
   if (!date) return;
-  let arr = date.split('-')
-  return arr[2] + '/' + arr[1] + '/' + (parseInt(arr[0]) + 543)
+  let [year, month, day] = date.split('-')
+  return day + '/' + month + '/' + (parseInt(year) + 543)
 })
