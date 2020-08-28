@@ -68,13 +68,13 @@
       </v-container>
     <!--</v-main>-->
     
-    <!--<v-footer
-      color="indigo"
+    <v-footer
+      color="purple darken-4"
       app
     >
       <span class="white--text">&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>-->
-    <footer-section />
+    </v-footer>
+    <!--<footer-section />-->
     
   </v-app>
 </template>
