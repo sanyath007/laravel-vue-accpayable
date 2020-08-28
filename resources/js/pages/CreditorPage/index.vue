@@ -12,10 +12,9 @@
         <h3>เจ้าหนี้</h3>
       </div>
       <div class="col-md-6 text-right">
-        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#creditorFormModal">
-          <i class="fa fa-plus"></i>
-          เพิ่มรายการ
-        </a>
+        <v-btn class="mx-2" fab dark color="indigo" data-toggle="modal" data-target="#creditorFormModal">
+          <v-icon dark>mdi-plus</v-icon>
+        </v-btn>
       </div>
     </div>
 

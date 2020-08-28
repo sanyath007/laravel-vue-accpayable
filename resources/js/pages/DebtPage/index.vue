@@ -13,10 +13,9 @@
         <h3>รายการรับหนี้</h3>
       </div>
       <div class="col-md-6 text-right">
-        <a href="#" class="btn btn-primary" @click="showModal">
-          <i class="fa fa-plus"></i>
-          เพิ่มรายการ
-        </a>
+        <v-btn class="mx-2" fab dark color="indigo" @click="showModal">
+          <v-icon dark>mdi-plus</v-icon>
+        </v-btn>
       </div>
     </div>
     <!-- Page header -->

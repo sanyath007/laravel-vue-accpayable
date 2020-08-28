@@ -1,12 +1,14 @@
 <template>
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-      <a href="#">Home</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page" v-if="pageTitle">{{ pageTitle }}</li>
-  </ol>
-</nav>
+  <v-breadcrumbs :items="items">
+    <template v-slot:item="{ item }">
+      <v-breadcrumbs-item
+        :href="item.href"
+        :disabled="item.disabled"
+      >
+        {{ item.text }}
+      </v-breadcrumbs-item>
+    </template>
+  </v-breadcrumbs>
 </template>
 
 <script>
@@ -15,8 +17,23 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Breadcrumb',
   props: ['pageTitle'],
+  data () {
+    return {
+      items: [
+        {
+          text: 'Home',
+          disabled: false,
+          href: 'breadcrumbs_dashboard',
+        },
+      ]
+    }
+  },
   mounted () {
-    console.log(this.currentPage)
+    this.items.push({
+      text: this.pageTitle,
+      disabled: true,
+      href: 'breadcrumbs_dashboard',
+    })
   },
   computed: {
     ...mapGetters({

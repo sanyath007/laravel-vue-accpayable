@@ -13,7 +13,10 @@
         <h3>รายการขออนุมัติจ่ายหนี้</h3>
       </div>
       <div class="col-md-6 text-right">
-        <router-link to="approve/form" class="btn btn-primary">เพิ่มรายการ</router-link>
+        <!--router-link-->
+        <v-btn to="approve/form" class="mx-2" fab dark color="indigo">
+          <v-icon dark>mdi-plus</v-icon>
+        </v-btn>
       </div>
     </div>
     <!-- Page Header -->
