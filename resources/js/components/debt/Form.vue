@@ -110,8 +110,9 @@
 
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>วันที่ลงบัญชี :</label>
-                    <date-picker
+                    <!--<label>วันที่ลงบัญชี :</label>-->
+                    <date-picker dataModel="debt_date" @inputDate="setDateFromDatePicker" label="วันที่ลงบัญชี" />
+                    <!--<date-picker
                       id="debt_date"
                       name="debt_date"
                       v-model="debt.debt_date"
@@ -120,7 +121,7 @@
                       :format="'dd/MM/yyyy'"
                       v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
                       placeholder="เลือกวันที่ลงบัญชี"
-                    />
+                    />-->
                     <span class="text-danger small" v-show="submitted && errors.has('debt_date')">
                       {{ errors.first('debt_date') }}
                     </span>
@@ -140,63 +141,25 @@
                   </div>
 
                   <div class="form-group">                    
-                    <v-menu
-                      ref="menu"
-                      v-model="menu"
-                      :close-on-content-click="true"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="debt.debt_doc_recdate"
-                          label="วันที่รับหนังสือ"
-                          prepend-icon="event"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        />
-                      </template>
-                      <v-date-picker v-model="date" no-title @input="menu = false" scrollable locale="th" />
-                    </v-menu>
-                    <!--<label>วันที่รับหนังสือ :</label>
-                    <date-picker
-                      id="debt_doc_recdate"
-                      name="debt_doc_recdate"
-                      v-model="debt.debt_doc_recdate"
-                      :language="dpLang.th"
-                      :bootstrap-styling="true"
-                      :format="'dd/MM/yyyy'"
-                      v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-                      placeholder="เลือกวันที่รับหนังสือ"
-                    />-->
+                    <!--<label>วันที่รับหนังสือ :</label>-->
+                    <date-picker dataModel="debt_doc_recdate" @inputDate="setDateFromDatePicker" label="วันที่รับหนังสือ" />
                     <span class="text-danger small" v-show="submitted && errors.has('debt_doc_recdate')">
                       {{ errors.first('debt_doc_recdate') }}
                     </span>
                   </div>
 
                   <div class="form-group">
-                    <date-picker2 :dataModel="debt.debt_doc_date" :label="'วันที่หนังสือ'" />
-                    <!--<label>วันที่หนังสือ :</label>
-                    <date-picker
-                      id="debt_doc_date"
-                      name="debt_doc_date"
-                      v-model="debt.debt_doc_date"
-                      :language="dpLang.th"
-                      :bootstrap-styling="true"
-                      :format="'dd/MM/yyyy'"
-                      v-validate="{date_format: 'dd/MM/yyyy'}"
-                      placeholder="เลือกวันที่หนังสือ"
-                    />-->
+                    <!--<label>วันที่หนังสือ :</label>-->
+                    <date-picker dataModel="debt_doc_date" @inputDate="setDateFromDatePicker" label="วันที่หนังสือ" />
                     <span class="text-danger small" v-show="submitted && errors.has('debt_doc_date')">
                       {{ errors.first('debt_doc_date') }}
                     </span>
                   </div>
 
                   <div class="form-group">
-                    <label>วันที่ใบส่งของ/ใบกำกับภาษี :</label>
-                    <date-picker
+                    <!--<label>วันที่ใบส่งของ/ใบกำกับภาษี :</label>-->
+                    <date-picker dataModel="deliver_date" @inputDate="setDateFromDatePicker" label="วันที่วันที่ใบส่งของ/ใบกำกับภาษี" />
+                    <!--<date-picker
                       id="deliver_date"
                       name="deliver_date"
                       v-model="debt.deliver_date"
@@ -205,7 +168,7 @@
                       :format="'dd/MM/yyyy'"
                       v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
                       placeholder="เลือกวันที่วันที่ใบส่งของ/ใบกำกับภาษี"
-                    />
+                    />-->
                     <span class="text-danger small" v-show="submitted && errors.has('deliver_date')">
                       {{ errors.first('deliver_date') }}
                     </span>
@@ -334,7 +297,8 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>วันที่รับเอกสาร :</label>
-                      <date-picker
+                      <date-picker dataModel="doc_receive" @inputDate="setDateFromDatePicker" label="วันที่รับเอกสาร" />
+                      <!--<date-picker
                         id="doc_receive"
                         name="doc_receive"
                         v-model="debt.doc_receive"
@@ -343,7 +307,7 @@
                         :format="'dd/MM/yyyy'"
                         v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
                         placeholder="เลือกวันที่รับเอกสาร"
-                      />
+                      />-->
                       <span class="text-danger small" v-show="submitted && errors.has('doc_receive')">
                         {{ errors.first('doc_receive') }}
                       </span>
@@ -382,11 +346,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import DatePicker from 'vuejs-datepicker'
-import { en, th } from 'vuejs-datepicker/dist/locale'
 import { getDate } from '../../utils/date-func'
-import locale from 'ant-design-vue/es/date-picker/locale/th_TH'
-import DatePicker2 from '../DatePicker'
+import DatePicker from '../DatePicker'
 
 // Custom validator dict
 const dict = {
@@ -433,7 +394,6 @@ export default {
   name: 'DebtForm',
   components: {
     'date-picker': DatePicker,
-    'date-picker2': DatePicker2,
   },
   props: ['editDebt', 'supplierSelected'],
   data () {
@@ -459,15 +419,7 @@ export default {
         debt_year: '',
         doc_receive: '',
         debt_remark: ''
-      },
-      dpLang: {
-        en: en,
-        th: th
-      },
-      locale,
-      date: new Date().toISOString().substr(0, 10),
-      menu: false,
-      modal: false
+      }
     }
   },
   created() {
@@ -512,18 +464,11 @@ export default {
     supplierSelected: function () {
       this.debt.supplier = this.supplierSelected.supplier_id
       this.debt.supplier_name = this.supplierSelected.supplier_name
-    },
-    date (val) {
-      this.debt.debt_doc_recdate = this.formatDate(val)
-    },
-    debt_doc_date (val) {
-      this.debt.debt_doc_date = this.formatDate(val)
-    },
+    }
   },
   methods: {
     onSubmit: function (event) {
       this.submitted = true
-      console.log(this.debt.doc_receive)
       this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
         if (valid) {
@@ -595,12 +540,9 @@ export default {
     calculateVat: function () {
       this.debt.debt_vat = ((parseFloat(this.debt.debt_amount) * parseFloat(this.debt.debt_vatrate)) / 100).toFixed(2)
     },
-    formatDate (date) {
-      if (!date) return null
-
-      const [year, month, day] = date.split('-')
-      return `${day}/${month}/${parseInt(year)+543}`
-    },
+    setDateFromDatePicker: function (date, field) {
+      this.debt[field] = date
+    }
   }
 }
 </script>

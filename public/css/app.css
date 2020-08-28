@@ -131,7 +131,6 @@ body {
   position: absolute;
   top: -52px;
   left: -13px;
-  -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
@@ -217,7 +216,6 @@ body {
   padding: 15px 15px 15px 60px;
   display: block;
   line-height: 1.2;
-  -webkit-transition: color 0.4s;
   transition: color 0.4s;
 }
 
@@ -238,7 +236,6 @@ body {
   font-size: 30px;
   color: #cc9a9a;
   margin-bottom: 11px;
-  -webkit-transition: color 0.2s ease-out;
   transition: color 0.2s ease-out;
 }
 

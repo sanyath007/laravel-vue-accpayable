@@ -10,7 +10,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
         v-model="value"
-        label="label"
+        :label="label"
         prepend-icon="event"
         readonly
         v-bind="attrs"
@@ -23,8 +23,8 @@
 
 <script>
 export default {
-  name: 'DatePicker2',
-  props: ['dataModel', 'label'],
+  name: 'DatePicker',
+  props: ['dataModel', 'inputDate', 'label'],
   data() {
     return {
       value: '',
@@ -35,9 +35,20 @@ export default {
   },
   watch: {
     date (val) {
-      console.log(val);
-      this.value = val
+      this.value = this.formatDate(val)
+      this.setData(this.value)
     }
   },
+  methods: {
+    formatDate (date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${parseInt(year)+543}`
+    },
+    setData (date) {
+      this.$emit("inputDate", date, this.dataModel)
+    }
+  }
 }
 </script>
