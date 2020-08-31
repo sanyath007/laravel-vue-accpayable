@@ -1,9 +1,9 @@
 <template>
-<div class="card">
+<v-card>
   <div class="card-body">
 
-    <div class="row">
-      <div class="form-group col-12">
+    <v-row>
+      <v-col>
         <label for="">เจ้าหนี้ :</label>
         <v-select
           :options="suppliers"
@@ -12,30 +12,28 @@
           v-model="supplierSelected"
           @input="getData"
         />
-      </div>
-    </div>
+      </v-col>
+    </v-row>
 
-    <div class="row">
-      <div class="form-group col-6">
-        <date-picker dataModel="searchStartDate" @inputDate="setDateFromDatePicker" label="จากวันที่" />
-      </div>
+    <v-row class="mx-1">
+      <date-picker dataModel="searchStartDate" @inputDate="setDateFromDatePicker" label="จากวันที่" />
+    
+      <date-picker dataModel="searchEndDate" @inputDate="setDateFromDatePicker" label="ถึงวันที่" />
+    </v-row>
 
-      <div class="form-group col-6">
-        <date-picker dataModel="searchEndDate" @inputDate="setDateFromDatePicker" label="ถึงวันที่" />
-      </div>
-    </div>
-
-    <b-form-checkbox
-      id="showAll"
-      name="showAll"
-      v-model="showAll"
-      @change="toggleShowAll"
-    >
-      เลือกทั้งหมด
-    </b-form-checkbox>
+    <v-row class="mx-2">
+      <b-form-checkbox
+        id="showAll"
+        name="showAll"
+        v-model="showAll"
+        @change="toggleShowAll"
+      >
+        เลือกทั้งหมด
+      </b-form-checkbox>
+    </v-row>
 
   </div><!-- /.card-body -->
-</div><!-- /.card -->
+</v-card>
 </template>
 
 <script>
@@ -85,3 +83,7 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+
+</style>
