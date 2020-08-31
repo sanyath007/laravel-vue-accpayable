@@ -9,6 +9,7 @@ import ApprovePage from '../pages/ApprovePage'
 import ApproveList from '../containers/approve/ListContainer'
 import ApproveForm from '../components/approve/Form'
 import PaymentPage from '../pages/PaymentPage'
+import PaymentList from '../containers/payment/ListContainer'
 import PaymentForm from '../components/payment/Form'
 import CreditorPage from '../pages/CreditorPage'
 import DebtTypePage from '../pages/DebtTypePage'
@@ -63,6 +64,11 @@ const router = new VueRouter({
 			name: 'payment',
 			component: PaymentPage,
 			children: [
+				{
+					/** when /payment is matched */
+					path: '',
+					component: PaymentList,
+				},
 				{
 					/** when /payment/form is matched */
 					path: 'form',

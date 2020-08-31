@@ -36,19 +36,14 @@
       <v-toolbar-title>Accpayable System</v-toolbar-title>
     </v-app-bar>-->
 
-    <!--<v-main>-->
+    <v-main>
       <v-container
-        class="fill-height"
         fluid
       >
-        <router-view></router-view>
-
-        <!--<v-row
-          align="center"
-          justify="center"
-        >
+        <v-row>
           <v-col class="text-center">
-            <v-tooltip left>
+            <router-view></router-view>
+            <!--<v-tooltip left>
               <template v-slot:activator="{ on }">
                 <v-btn
                   :href="source"
@@ -61,12 +56,12 @@
                 </v-btn>
               </template>
               <span>Source</span>
-            </v-tooltip>
+            </v-tooltip>-->
           </v-col>
-        </v-row>-->
+        </v-row>
 
       </v-container>
-    <!--</v-main>-->
+    </v-main>
     
     <v-footer
       color="purple darken-4"
