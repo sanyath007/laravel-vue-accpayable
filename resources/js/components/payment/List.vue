@@ -1,6 +1,6 @@
 <template>
 <div class="table-responsive" style="margin-top: 10px;">
-  <table class="table table-striped table-bordered">
+  <table class="table table-striped table-bordered mb-4">
     <tr>
       <th style="width: 3%; text-align: center;">#</th>
       <th style="width: 6%; text-align: center;">รหัสรายการ</th>
@@ -45,14 +45,44 @@
       </td>
     </tr>
   </table>
+
+  <paginate
+    v-show="pager.last_page > 1"
+    :page-count="pager.last_page || 1"
+    :click-handler="getPayments"
+    :prev-text="'Prev'"
+    :next-text="'Next'"
+    :container-class="'pagination'"
+    :page-class="'page-item'"
+    :page-link-class="'page-link'"
+    :prev-class="'page-item'"
+    :prev-link-class="'page-link'"
+    :next-class="'page-item'"
+    :next-link-class="'page-link'"
+    :first-last-button="true"
+    :hide-prev-next="true"
+  />
 </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'PaymentList',
-  props: ['payments', 'pager'],
+  props: ['payments'],
+    computed: {
+    ...mapGetters({
+      pager: 'payment/getPager'
+    })
+  },
   methods: {
+    getPayments (page) {
+      this.$store.dispatch('payment/getAll', {
+        url: this.pager.path,
+        page: (typeof page !== 'number') ? 1 : page
+      })
+    },
     edit (debtid) {
 
     },

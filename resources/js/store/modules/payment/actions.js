@@ -3,11 +3,14 @@ import { getDate } from '../../../utils/date-func'
 
 export default {
   getAll ({ commit }, data) {
-    let { supplierId, startDate, endDate, showAll, page } = data
-    console.log(`${supplierId}/${getDate(startDate)}/${getDate(endDate)}/${showAll}?page=${page}`)
-    axios.get(`/payments/${supplierId}/${getDate(startDate)}/${getDate(endDate)}/${showAll}?page=${page}`)
-      .then(res => {
-        console.log(res)
+    let { url, page } = data
+    
+    commit('PAYMENT_REQUEST')
+
+    const endpoint = page === 1 ? url : `${url}?page=${page}`
+    
+    axios.get(endpoint)
+    .then(res => {
         commit('SET_PAYMENTS', res.data.payments.data)
         commit('SET_PAGER', res.data.payments)
       })
