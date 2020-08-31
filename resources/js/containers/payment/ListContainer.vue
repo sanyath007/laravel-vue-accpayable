@@ -8,14 +8,7 @@
       :is-full-page="true"
     />
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 5px;">
-      <h3>รายการตัดจ่ายหนี้</h3>
-    
-      <!--router-link-->
-      <v-btn to="payment/form" class="mx-2" fab dark color="indigo">
-        <v-icon dark>mdi-plus</v-icon>
-      </v-btn>
-    </div>
+    <page-header title="รายการตัดจ่ายหนี้" link-to="payment/form" />
     <!-- Page Header -->
 
     <!-- Search Box -->
@@ -48,6 +41,7 @@ import Breadcrumb from '../../components/Breadcrumb'
 import SearchBox from '../../components/SearchBox'
 import PaymentList from '../../components/payment/List'
 import PaymentForm from '../../components/payment/Form'
+import PageHeader from '../../components/PageHeader'
 // Import component
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
@@ -57,6 +51,7 @@ export default {
   name: 'PaymentPage',
   components: {
     'breadcrumb': Breadcrumb,
+    'page-header': PageHeader,
     'payment-list': PaymentList,
     'payment-form': PaymentForm,
     'search-box': SearchBox,

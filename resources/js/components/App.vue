@@ -41,7 +41,7 @@
         fluid
       >
         <v-row>
-          <v-col class="text-center">
+          <v-col>
             <router-view></router-view>
             <!--<v-tooltip left>
               <template v-slot:activator="{ on }">

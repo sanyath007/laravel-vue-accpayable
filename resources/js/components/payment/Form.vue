@@ -2,380 +2,364 @@
 <div class="container-fluid">
   <breadcrumb :pageTitle="'บันทึกรายการตัดจ่ายหนี้'" />
 
-  <h4>บันทึกรายการตัดจ่ายหนี้</h4>
+  <page-header title="บันทึกรายการตัดจ่ายหนี้" />
+
   <hr style="margin: 0; margin-bottom: 10px;">
 
-  <!-- <b-form @submit.prevent="onSubmit($event)"> -->
+  <div class="row">
+    <div class="col-md-12">
 
-    <div class="row">
-      <div class="col-md-12">
-
-        <div class="form-group">
-          <label>เจ้าหนี้ :</label>
-          <v-select
-            id="supplier_id"
-            name="supplier_id"
-            :options="suppliers"
-            :reduce="s => s.supplier_id"
-            label="supplier_name"
-            v-model="payment.supplier"
-            v-validate="{required: true}"
-            @input="clearData"
-          />
-          <!-- <select
-            id="supplier_id"
-            name="supplier_id"
-            v-model="payment.supplier"
-            class="form-control"
-            tabindex="0"
-          >
-            <option value="">-- กรุณาเลือก --</option>
-            <option v-for="s in suppliers" :value="s.supplier_id" :key="s.supplier_id">
-              {{ s.supplier_name }}
-            </option>
-
-          </select> -->
-          <span class="text-danger small" v-show="submitted && errors.has('supplier_id')">
-              กรุณาเลือกเจ้าหนี้
-          </span>
-        </div>
-      </div><!-- /.col -->
-
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>เลขที่ บค. :</label>
-          <input
-            type="text"
-            id="paid_doc_no"
-            name="paid_doc_no"
-            v-model="payment.paid_doc_no"
-            :class="{ 'form-control': true, 'is-invalid': submitted && errors.has('paid_doc_no') }"
-            v-validate="'required'"
-            placeholder="ระบุเลขที่ บค."
-            tabindex="8"
-          />
-          <div class="invalid-feedback" v-show="submitted && errors.has('paid_doc_no')">
-              กรุณาระบุเลขที่ บค.
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label>เลขที่เช็ค :</label>
-          <input
-            type="text"
-            id="cheque_no"
-            name="cheque_no"
-            v-model="payment.cheque_no"
-            :class="{ 'form-control': true, 'is-invalid': submitted && errors.has('cheque_no') }"
-            v-validate="'required'"
-            placeholder="ระบุเลขที่เช็ค"
-            tabindex="4"
-          />
-          <div class="invalid-feedback" v-show="submitted && errors.has('cheque_no')">
-              กรุณาระบุเลขที่เช็ค
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>ธนาคาร :</label>
-          <select
-            id="bank_acc_id"
-            name="bank_acc_id"
-            v-model="payment.bank_acc"
-            v-validate="'required'"
-            :class="{ 'form-control': true, 'is-invalid': submitted && errors.has('bank_acc_id') }"
-            tabindex="0"
-          >
-            <option value="">-- กรุณาเลือก --</option>
-            <option v-for="b in bankaccs" :value="b.bank_acc_id" :key="b.bank_acc_id">
-              {{ b.bank[0].bank_name + ' (' + b.bank_acc_no + ') ' + b.bank_acc_name }}
-            </option>
-          </select>
-          <span class="text-danger small" v-show="submitted && errors.has('bank_acc_id')">
-              กรุณาเลือกธนาคาร
-          </span>
-        </div>
-
-      </div><!-- /.col -->
-
-      <div class="col-md-6">
-
-        <div class="form-group">
-          <label>วันที่ บค. :</label>
-          <date-picker
-            id="paid_date"
-            name="paid_date"
-            v-model="payment.paid_date"
-            :language="dpLang.th"
-            :bootstrap-styling="true"
-            :format="'dd/MM/yyyy'"
-            v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-            placeholder="เลือกวันที่ บค."
-            tabindex="5"
-          />
-          <span class="text-danger small" v-show="submitted && errors.has('paid_date')">
-              {{ errors.first('paid_date')}}
-          </span>
-        </div>
-
-        <div class="form-group">
-          <label>วันที่เช็ค :</label>
-          <date-picker
-            id="cheque_date"
-            name="cheque_date"
-            v-model="payment.cheque_date"
-            :language="dpLang.th"
-            :bootstrap-styling="true"
-            :format="'dd/MM/yyyy'"
-            v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-            placeholder="เลือกวันที่เช็ค"
-            tabindex="1"
-          />
-          <span class="text-danger small" v-show="submitted && errors.has('cheque_date')">
-              {{ errors.first('cheque_date')}}
-          </span>
-        </div>
-
-        <div class="form-group">
-          <label>ผู้รับเช็ค :</label>
-          <input
-            type="text"
-            id="cheque_receiver"
-            name="cheque_receiver"
-            v-model="payment.cheque_receiver"
-            :class="{ 'form-control': true, 'is-invalid': submitted && errors.has('cheque_receiver') }"
-            v-validate="'required'"
-            placeholder="ระบุผู้รับเช็ค"
-            tabindex="4"
-          />
-          <div class="invalid-feedback" v-show="submitted && errors.has('cheque_receiver')">
-              กรุณาระบุผู้รับเช็ค
-          </div>
-        </div>
-
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-
-    <nav>
-      <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">รายการหนี้</a>
+      <div class="form-group">
+        <label>เจ้าหนี้ :</label>
+        <v-select
+          id="supplier_id"
+          name="supplier_id"
+          :options="suppliers"
+          :reduce="s => s.supplier_id"
+          label="supplier_name"
+          v-model="payment.supplier"
+          v-validate="{required: true}"
+          @input="clearData"
+        />
+        <span class="text-danger small" v-show="submitted && errors.has('supplier_id')">
+            กรุณาเลือกเจ้าหนี้
+        </span>
       </div>
-    </nav>
+    </div><!-- /.col -->
 
-    <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-        <div class="row m-2 mt-3">
-          <div class="col-md-12">
-            
-            <a href="#" class="btn btn-primary" role="button" @click="showSupplierApproves($event)">
-              <i class="far fa-calendar-plus"></i> เพิ่ม
-            </a>
-            <a href="#" class="btn btn-danger" role="button" @click="removeFromPaymentApproves()">
-              <i class="far fa-calendar-minus"></i> ลบ
-            </a>
-
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped" style="font-size: 12px; margin-top: 10px;">
-                  <thead>
-                    <tr>
-                      <th style="width: 3%; text-align: center;">#</th>
-                      <th style="width: 6%; text-align: center;">รหัส</th>
-                      <th style="width: 8%; text-align: center;">เลขที่ขออนุมัติ</th>
-                      <th style="width: 8%; text-align: center;">วันที่ขออนุมัติ</th>
-                      <th style="text-align: left;">สั่งจ่าย</th>
-                      <th style="width: 5%; text-align: center;">จำนวนบิล</th>
-                      <th style="width: 7%; text-align: center;">ฐานภาษี</th>
-                      <th style="width: ุ6%; text-align: center;">VAT</th>
-                      <th style="width: 7%; text-align: center;">ยอดสุทธิ</th>
-                      <th style="width: 7%; text-align: center;">ภาษีหัก ณ ที่จ่าย</th>
-                      <th style="width: 7%; text-align: center;">ยอดเช็ค</th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="payment.approves">
-                    <tr v-for="approve in payment.approves" :key="approve.app_id">
-                      <td>
-                        <input type="checkbox" @click="addToApproveDebtToRemove(approve)">
-                      </td>
-                      <td style="text-align: center;">{{ approve.app_id }}</td>
-                      <td style="text-align: center;">{{ approve.app_doc_no }}</td>
-                      <td style="text-align: center;">{{ approve.app_date | thdate }}</td>
-                      <td style="text-align: left;">{{ approve.pay_to }}</td>
-                      <td style="text-align: center;">
-                        <a href=""><h5><span class="badge badge-primary">
-                          {{ approve.app_detail.length }}
-                        </span></h5></a>
-                      </td>
-                      <td style="text-align: right;">{{ approve.net_val | currency }}</td>
-                      <td style="text-align: right;">{{ approve.vatamt | currency }}</td>
-                      <td style="text-align: right;">{{ approve.net_total | currency }}</td>
-                      <td style="text-align: right;">{{ approve.tax_val | currency }}</td>
-                      <td style="text-align: right;">{{ approve.cheque | currency }}</td>
-                    </tr>
-                  </tbody>
-              </table>
-            </div>
-
-            <hr style="margin: 0; margin-bottom: 10px;">
-          </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>เลขที่ บค. :</label>
+        <input
+          type="text"
+          id="paid_doc_no"
+          name="paid_doc_no"
+          v-model="payment.paid_doc_no"
+          :class="{ 'form-control': true, 'is-invalid': submitted && errors.has('paid_doc_no') }"
+          v-validate="'required'"
+          placeholder="ระบุเลขที่ บค."
+          tabindex="8"
+        />
+        <div class="invalid-feedback" v-show="submitted && errors.has('paid_doc_no')">
+            กรุณาระบุเลขที่ บค.
         </div>
+      </div>
+      
+      <div class="form-group">
+        <label>เลขที่เช็ค :</label>
+        <input
+          type="text"
+          id="cheque_no"
+          name="cheque_no"
+          v-model="payment.cheque_no"
+          :class="{ 'form-control': true, 'is-invalid': submitted && errors.has('cheque_no') }"
+          v-validate="'required'"
+          placeholder="ระบุเลขที่เช็ค"
+          tabindex="4"
+        />
+        <div class="invalid-feedback" v-show="submitted && errors.has('cheque_no')">
+            กรุณาระบุเลขที่เช็ค
+        </div>
+      </div>
 
-        <div class="row m-2">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>ประเภทงบประมาณ :</label>
-              <select
-                id="budget_id"
-                name="budget_id"
-                v-model="payment.budget"
-                v-validate="{required: true}"
-                :class="{'form-control': true, 'is-invalid': submitted && errors.has('budget_id')}"
-                tabindex="2"
-              >
-                <option value="" selected="selected">-- กรุณาเลือก --</option>
-                <option v-for="b in budgets" :value="b.budget_id" :key="b.budget_id">
-                  {{ b.budget_name }}
-                </option>
-              </select>
-              <span class="text-danger small" v-show="submitted && errors.has('budget_id')">
-                  กรุณาเลือกประเภทงบประมาณ
-              </span>
+      <div class="form-group">
+        <label>ธนาคาร :</label>
+        <select
+          id="bank_acc_id"
+          name="bank_acc_id"
+          v-model="payment.bank_acc"
+          v-validate="'required'"
+          :class="{ 'form-control': true, 'is-invalid': submitted && errors.has('bank_acc_id') }"
+          tabindex="0"
+        >
+          <option value="">-- กรุณาเลือก --</option>
+          <option v-for="b in bankaccs" :value="b.bank_acc_id" :key="b.bank_acc_id">
+            {{ b.bank[0].bank_name + ' (' + b.bank_acc_no + ') ' + b.bank_acc_name }}
+          </option>
+        </select>
+        <span class="text-danger small" v-show="submitted && errors.has('bank_acc_id')">
+            กรุณาเลือกธนาคาร
+        </span>
+      </div>
+
+    </div><!-- /.col -->
+
+    <div class="col-md-6">
+
+      <div class="form-group">
+        <label>วันที่ บค. :</label>
+        <date-picker
+          id="paid_date"
+          name="paid_date"
+          v-model="payment.paid_date"
+          :language="dpLang.th"
+          :bootstrap-styling="true"
+          :format="'dd/MM/yyyy'"
+          v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
+          placeholder="เลือกวันที่ บค."
+          tabindex="5"
+        />
+        <span class="text-danger small" v-show="submitted && errors.has('paid_date')">
+            {{ errors.first('paid_date')}}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>วันที่เช็ค :</label>
+        <date-picker
+          id="cheque_date"
+          name="cheque_date"
+          v-model="payment.cheque_date"
+          :language="dpLang.th"
+          :bootstrap-styling="true"
+          :format="'dd/MM/yyyy'"
+          v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
+          placeholder="เลือกวันที่เช็ค"
+          tabindex="1"
+        />
+        <span class="text-danger small" v-show="submitted && errors.has('cheque_date')">
+            {{ errors.first('cheque_date')}}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>ผู้รับเช็ค :</label>
+        <input
+          type="text"
+          id="cheque_receiver"
+          name="cheque_receiver"
+          v-model="payment.cheque_receiver"
+          :class="{ 'form-control': true, 'is-invalid': submitted && errors.has('cheque_receiver') }"
+          v-validate="'required'"
+          placeholder="ระบุผู้รับเช็ค"
+          tabindex="4"
+        />
+        <div class="invalid-feedback" v-show="submitted && errors.has('cheque_receiver')">
+            กรุณาระบุผู้รับเช็ค
+        </div>
+      </div>
+
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">รายการหนี้</a>
+    </div>
+  </nav>
+
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <div class="row m-2 mt-3">
+        <div class="col-md-12">
+          
+          <a href="#" class="btn btn-primary" role="button" @click="showSupplierApproves($event)">
+            <i class="far fa-calendar-plus"></i> เพิ่ม
+          </a>
+          <a href="#" class="btn btn-danger" role="button" @click="removeFromPaymentApproves()">
+            <i class="far fa-calendar-minus"></i> ลบ
+          </a>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped" style="font-size: 12px; margin-top: 10px;">
+                <thead>
+                  <tr>
+                    <th style="width: 3%; text-align: center;">#</th>
+                    <th style="width: 6%; text-align: center;">รหัส</th>
+                    <th style="width: 8%; text-align: center;">เลขที่ขออนุมัติ</th>
+                    <th style="width: 8%; text-align: center;">วันที่ขออนุมัติ</th>
+                    <th style="text-align: left;">สั่งจ่าย</th>
+                    <th style="width: 5%; text-align: center;">จำนวนบิล</th>
+                    <th style="width: 7%; text-align: center;">ฐานภาษี</th>
+                    <th style="width: ุ6%; text-align: center;">VAT</th>
+                    <th style="width: 7%; text-align: center;">ยอดสุทธิ</th>
+                    <th style="width: 7%; text-align: center;">ภาษีหัก ณ ที่จ่าย</th>
+                    <th style="width: 7%; text-align: center;">ยอดเช็ค</th>
+                  </tr>
+                </thead>
+                <tbody v-if="payment.approves">
+                  <tr v-for="approve in payment.approves" :key="approve.app_id">
+                    <td>
+                      <input type="checkbox" @click="addToApproveDebtToRemove(approve)">
+                    </td>
+                    <td style="text-align: center;">{{ approve.app_id }}</td>
+                    <td style="text-align: center;">{{ approve.app_doc_no }}</td>
+                    <td style="text-align: center;">{{ approve.app_date | thdate }}</td>
+                    <td style="text-align: left;">{{ approve.pay_to }}</td>
+                    <td style="text-align: center;">
+                      <a href=""><h5><span class="badge badge-primary">
+                        {{ approve.app_detail.length }}
+                      </span></h5></a>
+                    </td>
+                    <td style="text-align: right;">{{ approve.net_val | currency }}</td>
+                    <td style="text-align: right;">{{ approve.vatamt | currency }}</td>
+                    <td style="text-align: right;">{{ approve.net_total | currency }}</td>
+                    <td style="text-align: right;">{{ approve.tax_val | currency }}</td>
+                    <td style="text-align: right;">{{ approve.cheque | currency }}</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+
+          <hr style="margin: 0; margin-bottom: 10px;">
+        </div>
+      </div>
+
+      <div class="row m-2">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>ประเภทงบประมาณ :</label>
+            <select
+              id="budget_id"
+              name="budget_id"
+              v-model="payment.budget"
+              v-validate="{required: true}"
+              :class="{'form-control': true, 'is-invalid': submitted && errors.has('budget_id')}"
+              tabindex="2"
+            >
+              <option value="" selected="selected">-- กรุณาเลือก --</option>
+              <option v-for="b in budgets" :value="b.budget_id" :key="b.budget_id">
+                {{ b.budget_name }}
+              </option>
+            </select>
+            <span class="text-danger small" v-show="submitted && errors.has('budget_id')">
+                กรุณาเลือกประเภทงบประมาณ
+            </span>
+          </div>
+
+          <span class="col-md-12" style="margin: 10px 5px; font-weight: bold;">
+            ({{ payment.totalstr }})
+          </span>
+        </div><!-- /.col -->
+
+        <div class="col-md-6">
+          <div class="row">
+            
+            <div class="form-group col-md-6">
+              <label>ยอดหนี้ :</label>
+              <input
+                type="text"
+                id="net_total"
+                name="net_total"
+                v-model="payment.net_total"
+                v-validate="{required: true, regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
+                :class="{'form-control': true, 'is-invalid': submitted && errors.has('net_total')}"
+                class="text-right"
+                tabindex="1"
+              />
+              <div class="invalid-feedback" v-show="submitted && errors.has('net_total')">
+                {{ errors.first('net_total')}}
+              </div>
             </div>
 
-            <span class="col-md-12" style="margin: 10px 5px; font-weight: bold;">
-              ({{ payment.totalstr }})
-            </span>
-          </div><!-- /.col -->
-
-          <div class="col-md-6">
-            <div class="row">
-              
-              <div class="form-group col-md-6">
-                <label>ยอดหนี้ :</label>
-                <input
-                  type="text"
-                  id="net_total"
-                  name="net_total"
-                  v-model="payment.net_total"
-                  v-validate="{required: true, regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
-                  :class="{'form-control': true, 'is-invalid': submitted && errors.has('net_total')}"
-                  class="text-right"
-                  tabindex="1"
-                />
-                <div class="invalid-feedback" v-show="submitted && errors.has('net_total')">
-                  {{ errors.first('net_total')}}
-                </div>
+            <div class="form-group col-md-6">
+              <label>ฐานภาษี :</label>
+              <input
+                type="text"
+                id="net_val"
+                name="net_val"
+                v-model="payment.net_val"
+                v-validate="{required: true, regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
+                :class="{'form-control': true, 'is-invalid': submitted && errors.has('net_val')}"
+                class="text-right"
+                tabindex="1"
+              />
+              <div class="invalid-feedback" v-show="submitted && errors.has('net_val')">
+                {{ errors.first('net_val')}}
               </div>
+            </div>
 
-              <div class="form-group col-md-6">
-                <label>ฐานภาษี :</label>
-                <input
-                  type="text"
-                  id="net_val"
-                  name="net_val"
-                  v-model="payment.net_val"
-                  v-validate="{required: true, regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
-                  :class="{'form-control': true, 'is-invalid': submitted && errors.has('net_val')}"
-                  class="text-right"
-                  tabindex="1"
-                />
-                <div class="invalid-feedback" v-show="submitted && errors.has('net_val')">
-                  {{ errors.first('net_val')}}
-                </div>
+          </div><!-- /.row -->
+
+          <div class="row">
+
+            <div class="form-group col-md-6">
+              <label>ส่วนลด :</label>
+              <input
+                type="text"
+                id="discount"
+                name="discount"
+                v-model="payment.discount"
+                v-validate="{regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
+                :class="{'form-control': true, 'is-invalid': submitted && errors.has('discount')}"
+                class="text-right"
+                tabindex="1"
+              />
+              <div class="invalid-feedback" v-show="submitted && errors.has('budget_id')">
+                กรุณาระบุส่วนลดเป็นตัวเลข
               </div>
+            </div>
 
-            </div><!-- /.row -->
-
-            <div class="row">
-
-              <div class="form-group col-md-6">
-                <label>ส่วนลด :</label>
-                <input
-                  type="text"
-                  id="discount"
-                  name="discount"
-                  v-model="payment.discount"
-                  v-validate="{regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
-                  :class="{'form-control': true, 'is-invalid': submitted && errors.has('discount')}"
-                  class="text-right"
-                  tabindex="1"
-                />
-                <div class="invalid-feedback" v-show="submitted && errors.has('budget_id')">
-                  กรุณาระบุส่วนลดเป็นตัวเลข
-                </div>
+            <div class="form-group col-md-6">
+              <label>ค่าปรับ :</label>
+              <input
+                type="text"
+                id="fine"
+                name="fine"
+                v-model="payment.fine"
+                v-validate="{regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
+                :class="{'form-control': true, 'is-invalid': submitted && errors.has('fine')}"
+                class="text-right"
+                tabindex="1"
+              />
+              <div class="invalid-feedback" v-show="submitted && errors.has('budget_id')">
+                กรุณาระบุค่าปรับเป็นตัวเลข
               </div>
+            </div>
 
-              <div class="form-group col-md-6">
-                <label>ค่าปรับ :</label>
-                <input
-                  type="text"
-                  id="fine"
-                  name="fine"
-                  v-model="payment.fine"
-                  v-validate="{regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
-                  :class="{'form-control': true, 'is-invalid': submitted && errors.has('fine')}"
-                  class="text-right"
-                  tabindex="1"
-                />
-                <div class="invalid-feedback" v-show="submitted && errors.has('budget_id')">
-                  กรุณาระบุค่าปรับเป็นตัวเลข
-                </div>
+          </div><!-- /.row -->
+
+          <div class="row">
+            
+            <div class="form-group col-md-6">
+              <label>ภาษีหัก ณ ที่จ่าย :</label>
+              <input
+                type="text"
+                id="net_amt"
+                name="net_amt"
+                v-model="payment.net_amt"
+                v-validate="{required: true, regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
+                :class="{'form-control': true, 'is-invalid': submitted && errors.has('net_amt')}"
+                class="text-right"
+                tabindex="1"
+              />
+              <div class="invalid-feedback" v-show="submitted && errors.has('net_amt')">
+                {{ errors.first('net_amt')}}
               </div>
+            </div>
 
-            </div><!-- /.row -->
-
-            <div class="row">
-              
-              <div class="form-group col-md-6">
-                <label>ภาษีหัก ณ ที่จ่าย :</label>
-                <input
-                  type="text"
-                  id="net_amt"
-                  name="net_amt"
-                  v-model="payment.net_amt"
-                  v-validate="{required: true, regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
-                  :class="{'form-control': true, 'is-invalid': submitted && errors.has('net_amt')}"
-                  class="text-right"
-                  tabindex="1"
-                />
-                <div class="invalid-feedback" v-show="submitted && errors.has('net_amt')">
-                  {{ errors.first('net_amt')}}
-                </div>
+            <div class="form-group col-md-6">
+              <label>ยอดจ่ายเช็ค :</label>
+              <input
+                type="text"
+                id="total"
+                name="total"
+                v-model="payment.total"
+                v-validate="{required: true, regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
+                :class="{'form-control': true, 'is-invalid': submitted && errors.has('total')}"
+                class="text-right"
+                tabindex="1"
+              />
+              <div class="invalid-feedback" v-show="submitted && errors.has('total')">
+                {{ errors.first('total')}}
               </div>
+            </div>
 
-              <div class="form-group col-md-6">
-                <label>ยอดจ่ายเช็ค :</label>
-                <input
-                  type="text"
-                  id="total"
-                  name="total"
-                  v-model="payment.total"
-                  v-validate="{required: true, regex: /^[-+]?[0-9]*\.?[0-9]+$/}"
-                  :class="{'form-control': true, 'is-invalid': submitted && errors.has('total')}"
-                  class="text-right"
-                  tabindex="1"
-                />
-                <div class="invalid-feedback" v-show="submitted && errors.has('total')">
-                  {{ errors.first('total')}}
-                </div>
-              </div>
+          </div><!-- /.row -->
 
-            </div><!-- /.row -->
+        </div><!-- /.col -->
+      </div><!-- /.row -->
 
-          </div><!-- /.col -->
-        </div><!-- /.row -->
+    </div><!-- /.tab-pane -->
+  </div><!-- /.tab-content -->
 
-      </div><!-- /.tab-pane -->
-    </div><!-- /.tab-content -->
-
-    <button type="submit" class="btn btn-primary float-right" @click="onSubmit($event)" v-if="true">
-      บันทึก
-    </button>
-    <button type="submit" class="btn btn-warning float-right" @click="onSubmit($event)" v-if="false">
-      แก้ไข
-    </button>
-    <div class="clearfix">...</div>
-
-  <!-- </b-form> -->
+  <button type="submit" class="btn btn-primary float-right" @click="onSubmit($event)" v-if="true">
+    บันทึก
+  </button>
+  <button type="submit" class="btn btn-warning float-right" @click="onSubmit($event)" v-if="false">
+    แก้ไข
+  </button>
+  <div class="clearfix">...</div>
 
   <approve-selection
     :supplier="payment.supplier"
@@ -467,6 +451,7 @@ import {en, th} from 'vuejs-datepicker/dist/locale'
 // import moment from 'moment'
 
 import Breadcrumb from '../../components/Breadcrumb'
+import PageHeader from '../../components/PageHeader'
 import ApproveSelectionModal from '../approve/SelectionModal'
 
 import { ArabicNumberToText } from '../../utils/thaibath'
@@ -477,6 +462,7 @@ export default {
   name: 'ApproveForm',
   components: {
     'breadcrumb': Breadcrumb,
+    'page-header': PageHeader,
     'date-picker': DatePicker,
     'approve-selection': ApproveSelectionModal
   },
