@@ -46,7 +46,14 @@
     </tr>
   </table>
 
-  <paginate
+  <v-pagination
+    v-model="pager.current_page"
+    :length="pager.last_page"
+    :total-visible="7"
+    @input="getPayments"
+  />
+
+  <!--<paginate
     v-show="pager.last_page > 1"
     :page-count="pager.last_page || 1"
     :click-handler="getPayments"
@@ -61,7 +68,8 @@
     :next-link-class="'page-link'"
     :first-last-button="true"
     :hide-prev-next="true"
-  />
+  />-->
+    
 </div>
 </template>
 
@@ -71,7 +79,12 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'PaymentList',
   props: ['payments'],
-    computed: {
+  data() {
+    return {
+      page: 1
+    }
+  },
+  computed: {
     ...mapGetters({
       pager: 'payment/getPager'
     })

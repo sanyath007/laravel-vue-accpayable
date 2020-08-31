@@ -59,7 +59,6 @@ export default {
   },
   methods: {
     handleSearch(searchKeys) {
-      console.log(searchKeys)
       this.$store.dispatch('payment/getAll', {
         url: `/payments/${searchKeys.supplier}/${searchKeys.startDate}/${searchKeys.endDate}/${searchKeys.showAll}`,
         page: searchKeys.page
