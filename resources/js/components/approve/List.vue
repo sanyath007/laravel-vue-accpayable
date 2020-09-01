@@ -23,9 +23,11 @@
       <td style="text-align: center;">{{ approve.app_date | thdate }}</td>
       <td style="text-align: left;">{{ approve.pay_to }}</td>
       <td style="text-align: center;">
-        <a href=""><h5><span class="badge badge-primary">
-          {{ approveDebts[approve.app_id].length }}
-        </span></h5></a>
+        <a href="">
+          <span class="badge badge-primary">
+            {{ approveDebts[approve.app_id].length }}
+          </span>
+        </a>
       </td>
       <td style="text-align: right;">{{ approve.net_val | currency }}</td>
       <td style="text-align: right;">{{ approve.vatamt | currency }}</td>
@@ -61,22 +63,13 @@
     </tr>
   </table>
   
-  <paginate
-    v-show="pager.last_page > 1"
-    :page-count="pager.last_page || 1"
-    :click-handler="getApproves"
-    :prev-text="'Prev'"
-    :next-text="'Next'"
-    :container-class="'pagination'"
-    :page-class="'page-item'"
-    :page-link-class="'page-link'"
-    :prev-class="'page-item'"
-    :prev-link-class="'page-link'"
-    :next-class="'page-item'"
-    :next-link-class="'page-link'"
-    :first-last-button="true"
-    :hide-prev-next="true"
+  <v-pagination
+    v-model="page"
+    :length="pager.last_page"
+    :total-visible="7"
+    @input="getApproves"
   />
+
 </div>
 </template>
 
@@ -86,6 +79,11 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'ApproveList',
   props: ['approves', 'approveDebts'],
+  data() {
+    return {
+      page: 1
+    }
+  },
   computed: {
     ...mapGetters({
       pager: 'approve/getPager'
@@ -140,6 +138,6 @@ export default {
 
 <style scoped>
 table {
-  font-size: 14px;
+  font-size: 12px;
 }
 </style>

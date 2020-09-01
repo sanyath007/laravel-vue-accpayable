@@ -67,22 +67,13 @@
     </tr>
   </table>
 
-  <paginate
-    v-show="pager.last_page > 1"
-    :page-count="pager.last_page || 1"
-    :click-handler="onPaginateClick"
-    :prev-text="'Prev'"
-    :next-text="'Next'"
-    :container-class="'pagination'"
-    :page-class="'page-item'"
-    :page-link-class="'page-link'"
-    :prev-class="'page-item'"
-    :prev-link-class="'page-link'"
-    :next-class="'page-item'"
-    :next-link-class="'page-link'"
-    :first-last-button="true"
-    :hide-prev-next="true"
+  <v-pagination
+    v-model="page"
+    :length="pager.last_page"
+    :total-visible="7"
+    @input="onPaginateClick"
   />
+
 </div>
 </template>
 
@@ -92,6 +83,11 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'DebtList',
   props: ['lists', 'actions'],
+  data() {
+    return {
+      page: 1
+    }
+  },
   computed: {
     ...mapGetters({
       pager: 'debt/getPager'
