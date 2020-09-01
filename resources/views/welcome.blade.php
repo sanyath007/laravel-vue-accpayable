@@ -14,13 +14,14 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.1/css/all.css">
+        <!-- <link rel="stylesheet" href="/css/app.css"> -->
     </head>
     <body>
         <div id="app">
             <App></App>
         </div>
         
-        <script type="text/javascript" src="./js/app.js"></script>
+        <script type="text/javascript" src="/js/app.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js">
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
