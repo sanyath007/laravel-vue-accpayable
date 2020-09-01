@@ -87,36 +87,18 @@
     <div class="col-md-6">
 
       <div class="form-group">
-        <label>วันที่ บค. :</label>
-        <date-picker
-          id="paid_date"
-          name="paid_date"
-          v-model="payment.paid_date"
-          :language="dpLang.th"
-          :bootstrap-styling="true"
-          :format="'dd/MM/yyyy'"
-          v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-          placeholder="เลือกวันที่ บค."
-          tabindex="5"
-        />
+        <!--<label>วันที่ บค. :</label>-->
+        <date-picker dataModel="paid_date" @inputDate="setDateFromDatePicker" label="วันที่ บค." />
+
         <span class="text-danger small" v-show="submitted && errors.has('paid_date')">
             {{ errors.first('paid_date')}}
         </span>
       </div>
 
       <div class="form-group">
-        <label>วันที่เช็ค :</label>
-        <date-picker
-          id="cheque_date"
-          name="cheque_date"
-          v-model="payment.cheque_date"
-          :language="dpLang.th"
-          :bootstrap-styling="true"
-          :format="'dd/MM/yyyy'"
-          v-validate="{required: true, date_format: 'dd/MM/yyyy'}"
-          placeholder="เลือกวันที่เช็ค"
-          tabindex="1"
-        />
+        <!--<label>วันที่เช็ค :</label>-->
+        <date-picker dataModel="cheque_date" @inputDate="setDateFromDatePicker" label="วันที่เช็ค" />
+
         <span class="text-danger small" v-show="submitted && errors.has('cheque_date')">
             {{ errors.first('cheque_date')}}
         </span>
@@ -153,12 +135,12 @@
       <div class="row m-2 mt-3">
         <div class="col-md-12">
           
-          <a href="#" class="btn btn-primary" role="button" @click="showSupplierApproves($event)">
-            <i class="far fa-calendar-plus"></i> เพิ่ม
-          </a>
-          <a href="#" class="btn btn-danger" role="button" @click="removeFromPaymentApproves()">
-            <i class="far fa-calendar-minus"></i> ลบ
-          </a>
+          <v-btn color="primary" dark @click="showSupplierApproves($event)">
+            <v-icon dark>mdi-basket-plus</v-icon>
+          </v-btn>
+          <v-btn color="error" dark @click="removeFromPaymentApproves()">
+            <v-icon dark>mdi-delete</v-icon>
+          </v-btn>
 
           <div class="table-responsive">
             <table class="table table-bordered table-striped" style="font-size: 12px; margin-top: 10px;">
@@ -353,13 +335,15 @@
     </div><!-- /.tab-pane -->
   </div><!-- /.tab-content -->
 
-  <button type="submit" class="btn btn-primary float-right" @click="onSubmit($event)" v-if="true">
-    บันทึก
-  </button>
-  <button type="submit" class="btn btn-warning float-right" @click="onSubmit($event)" v-if="false">
-    แก้ไข
-  </button>
-  <div class="clearfix">...</div>
+  <v-layout>
+    <v-spacer></v-spacer>
+    <v-btn align-end type="submit" color="primary" @click="onSubmit($event)" v-if="true">
+      บันทึก
+    </v-btn>
+    <v-btn type="submit" color="warning" @click="onSubmit($event)" v-if="false">
+      แก้ไข
+    </v-btn>
+  </v-layout>
 
   <approve-selection
     :supplier="payment.supplier"
@@ -431,24 +415,22 @@
               v-model="confirm.total"
               class="form-control">
           </div>
-
         </div><!-- /. modal-body -->
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" @click="calculatePaidConfirm">ตกลง</button>
+          <v-btn type="submit" color="primary" @click="calculatePaidConfirm">ตกลง</v-btn>
         </div><!-- /. modal-footer -->
 
       </div>
     </div>
-  </div>
+  </div><!-- /.modal container -->
+
 </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import DatePicker from 'vuejs-datepicker'
-import {en, th} from 'vuejs-datepicker/dist/locale'
-// import moment from 'moment'
+import DatePicker from '../DatePicker'
 
 import Breadcrumb from '../../components/Breadcrumb'
 import PageHeader from '../../components/PageHeader'
@@ -505,10 +487,6 @@ export default {
       budgets: [],
       bankaccs: [],
       paymentApprovesToRemove: [],
-      dpLang: {
-        en: en,
-        th: th
-      }
     }
   },
   created() {
@@ -772,6 +750,9 @@ export default {
         discount: 0.00,
         total: 0.00
       }
+    },
+    setDateFromDatePicker: function (date, field) {
+      this.payment[field] = date
     }
   }
 }

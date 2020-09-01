@@ -6,7 +6,6 @@
   <hr style="margin: 0; margin-bottom: 10px;">
 
   <!-- <b-form @submit.prevent="onSubmit($event)"> -->
-
     <div class="row">
       <div class="col-md-12">
 
@@ -318,14 +317,15 @@
       </div><!-- /.tab-pane -->
     </div><!-- /.tab-content -->
 
-    <button type="submit" class="btn btn-primary float-right" @click="onSubmit($event)" v-if="true">
-      บันทึก
-    </button>
-    <button type="submit" class="btn btn-warning float-right" @click="onSubmit($event)" v-if="false">
-      แก้ไข
-    </button>
-    <div class="clearfix">...</div>
-
+    <v-layout>
+      <v-spacer></v-spacer>
+      <v-btn type="submit" color="primary" @click="onSubmit($event)" v-if="true">
+        บันทึก
+      </v-btn>
+      <v-btn type="submit" color="warning" @click="onSubmit($event)" v-if="false">
+        แก้ไข
+      </v-btn>
+    </v-layout>
   <!-- </b-form> -->
 
   <debt-selection
@@ -334,6 +334,7 @@
     @selectedDebts="calculateApproveTotal"
     ref="modal"
   />
+  
 </div>
 </template>
 
