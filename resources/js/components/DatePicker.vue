@@ -15,6 +15,7 @@
         readonly
         v-bind="attrs"
         v-on="on"
+        :rules="rules"
       />
     </template>
     <v-date-picker v-model="date" no-title @input="menu = false" scrollable locale="th" />
@@ -24,7 +25,21 @@
 <script>
 export default {
   name: 'DatePicker',
-  props: ['dataModel', 'inputDate', 'label'],
+  props: {
+    dataModel: {
+      type: String
+    },
+    inputDate: {
+      type: String
+    },
+    label: {
+      type: String
+    },
+    rules: {
+        type: Array,
+        required: false
+    }
+  },
   data() {
     return {
       value: '',
@@ -32,6 +47,9 @@ export default {
       menu: false,
       modal: false
     }
+  },
+  mounted: {
+
   },
   watch: {
     date (val) {

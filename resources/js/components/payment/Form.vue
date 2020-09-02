@@ -87,8 +87,7 @@
     <div class="col-md-6">
 
       <div class="form-group">
-        <!--<label>วันที่ บค. :</label>-->
-        <date-picker dataModel="paid_date" @inputDate="setDateFromDatePicker" label="วันที่ บค." />
+        <date-picker dataModel="paid_date" @inputDate="setDateFromDatePicker" label="วันที่ บค." :rules="[rules.required]" />
 
         <span class="text-danger small" v-show="submitted && errors.has('paid_date')">
             {{ errors.first('paid_date')}}
@@ -96,8 +95,7 @@
       </div>
 
       <div class="form-group">
-        <!--<label>วันที่เช็ค :</label>-->
-        <date-picker dataModel="cheque_date" @inputDate="setDateFromDatePicker" label="วันที่เช็ค" />
+        <date-picker dataModel="cheque_date" @inputDate="setDateFromDatePicker" label="วันที่เช็ค" :rules="[rules.required]" />
 
         <span class="text-danger small" v-show="submitted && errors.has('cheque_date')">
             {{ errors.first('cheque_date')}}
@@ -430,15 +428,53 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import DatePicker from '../DatePicker'
 
-import Breadcrumb from '../../components/Breadcrumb'
-import PageHeader from '../../components/PageHeader'
+import Breadcrumb from '../Breadcrumb'
+import PageHeader from '../PageHeader'
+import DatePicker from '../DatePicker'
 import ApproveSelectionModal from '../approve/SelectionModal'
 
 import { ArabicNumberToText } from '../../utils/thaibath'
 import { currencyFormat } from '../../utils/number-func'
 import { getDate } from '../../utils/date-func'
+
+// Custom validator dict
+const dict = {
+  custom: {
+    paid_date: {
+      required: 'กรุณาระบุวันที่ บค.',
+      date_format: 'กรุณาระบุวันที่ บค. ในรูปแบบ dd/mm/yyyy'
+    },
+    cheque_date: {
+      required: 'กรุณาระบุวันที่เช็ค',
+      date_format: 'กรุณาระบุวันที่เช็คในรูปแบบ dd/mm/yyyy'
+    },
+    net_val: {
+      required: 'กรุณาระบุฐานภาษี',
+      regex: 'กรุณาระบุฐานภาษีเป็นตัวเลข'
+    },
+    vatrate: {
+      required: 'กรุณาระบุอัตราภาษี (%)',
+      regex: 'กรุณาระบุอัตราภาษี (%) เป็นตัวเลข'
+    },
+    vatamt: {
+      required: 'กรุณาระบุจำนวนภาษี',
+      regex: 'กรุณาระบุจำนวนภาษีเป็นตัวเลข'
+    },
+    tax_val: {
+      required: 'กรุณาระบุภาษีหัก ณ ที่จ่าย',
+      regex: 'กรุณาระบุภาษีหัก ณ ที่จ่ายป็นตัวเลข'
+    },
+    net_total: {
+      required: 'กรุณาระบุยอดหนี้สุทธิ',
+      regex: 'กรุณาระบุยอดหนี้สุทธิป็นตัวเลข'
+    },
+    cheque: {
+      required: 'กรุณาระบุยอดจ่ายเช็ค',
+      regex: 'กรุณาระบุยอดจ่ายเช็คป็นตัวเลข'
+    }
+  }
+}
 
 export default {
   name: 'ApproveForm',
@@ -517,69 +553,22 @@ export default {
     },
     onSubmit: function (event) {
       this.submitted = true
-      const dict = {
-        custom: {
-          paid_date: {
-            required: 'กรุณาระบุวันที่ บค.',
-            date_format: 'กรุณาระบุวันที่ บค. ในรูปแบบ dd/mm/yyyy'
-          },
-          cheque_date: {
-            required: 'กรุณาระบุวันที่เช็ค',
-            date_format: 'กรุณาระบุวันที่เช็คในรูปแบบ dd/mm/yyyy'
-          },
-          net_val: {
-            required: 'กรุณาระบุฐานภาษี',
-            regex: 'กรุณาระบุฐานภาษีเป็นตัวเลข'
-          },
-          vatrate: {
-            required: 'กรุณาระบุอัตราภาษี (%)',
-            regex: 'กรุณาระบุอัตราภาษี (%) เป็นตัวเลข'
-          },
-          vatamt: {
-            required: 'กรุณาระบุจำนวนภาษี',
-            regex: 'กรุณาระบุจำนวนภาษีเป็นตัวเลข'
-          },
-          tax_val: {
-            required: 'กรุณาระบุภาษีหัก ณ ที่จ่าย',
-            regex: 'กรุณาระบุภาษีหัก ณ ที่จ่ายป็นตัวเลข'
-          },
-          net_total: {
-            required: 'กรุณาระบุยอดหนี้สุทธิ',
-            regex: 'กรุณาระบุยอดหนี้สุทธิป็นตัวเลข'
-          },
-          cheque: {
-            required: 'กรุณาระบุยอดจ่ายเช็ค',
-            regex: 'กรุณาระบุยอดจ่ายเช็คป็นตัวเลข'
-          }
-        }
-      }
-
-      if (this.editApprove && this.editApprove.app_id) {
-        console.log('Edition approve')
-      } else {
-        console.log('Insertion approve')
-      }
-
       this.$validator.localize('en', dict)
       this.$validator.validateAll().then(valid => {
         console.log(this.$validator.errors)
 
         if (valid) {
           if (this.editApprove && this.editApprove.app_id) {
-            this.updateData()
+            console.log('Edition approve')
+            // update data
           } else {
+            console.log('Insertion approve')
             this.calculatePaidConfirm()
+            // insert data
           }
 
-          // this.$store.dispatch('approve/fetchAll', {
-          //   supplierId: 0,
-          //   startDate: 0,
-          //   endDate: 0,
-          //   showAll: 1,
-          //   page: 1
-          // })
-
-          // this.clearData() // Clear data from control
+          /** Clear data from control */
+          this.clearData()
         } else {
           this.$bvToast.toast(`คุณกรอกข้อมูลยังไม่ครบ !!`, {
             title: 'Warning',
